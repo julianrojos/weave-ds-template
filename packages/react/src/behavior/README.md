@@ -65,7 +65,7 @@ vocabulary stops being closed.
 ## How agnosticism gets proved
 
 A primitive implemented here is only evidence about React. The conformance definitions live in
-`@ds/contracts` as framework-neutral data — "given linear navigation with wrap and skipDisabled,
+`@juro/contracts` as framework-neutral data — "given linear navigation with wrap and skipDisabled,
 ArrowRight from the last enabled item lands on the first enabled item" — and each backend ships a
 thin adapter that runs them against its emitted output in a real DOM.
 

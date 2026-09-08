@@ -12,20 +12,20 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Checkbox'] {
+[data-juro-component='Checkbox'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
 /* Hiding is a contract claim, not a style. See the note in the emitter. */
-[data-ds-component='Checkbox'][hidden],
-[data-ds-component='Checkbox'] [hidden] {
+[data-juro-component='Checkbox'][hidden],
+[data-juro-component='Checkbox'] [hidden] {
   display: none !important;
 }
 
-[data-ds-component='Checkbox'] [data-ds-part='box'] {
+[data-juro-component='Checkbox'] [data-juro-part='box'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Checkbox'] [data-ds-part='label'] {
+[data-juro-component='Checkbox'] [data-juro-part='label'] {
   /* no declared layout for this part */
 }

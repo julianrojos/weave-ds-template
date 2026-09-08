@@ -19,7 +19,7 @@
  */
 
 /* --- cancelling the UA stylesheet -------------------------------------------------------- */
-[data-ds-component='Dialog'] {
+[data-juro-component='Dialog'] {
   border: none;
   padding: 0;
   background: transparent;
@@ -27,13 +27,13 @@
   max-inline-size: none;
   max-block-size: none;
 }
-[data-ds-component='Dialog'][open] {
+[data-juro-component='Dialog'][open] {
   display: flex;
   flex-direction: column;
 }
 /* --- end of the reset -------------------------------------------------------------------- */
 
-[data-ds-component='Dialog'] {
+[data-juro-component='Dialog'] {
   background: #202024;
   border-radius: 0.6rem;
   padding: 1.25rem;
@@ -46,31 +46,31 @@
  * child, carry an attribute, or be the target of an event. That last one is why pressing it
  * does not close the dialog — the press reports the dialog itself as its target.
  */
-[data-ds-component='Dialog']::backdrop {
+[data-juro-component='Dialog']::backdrop {
   background: rgb(0 0 0 / 0.6);
 }
 
-[data-ds-component='Dialog'][data-ds-size='s'] {
+[data-juro-component='Dialog'][data-juro-size='s'] {
   inline-size: 22rem;
 }
-[data-ds-component='Dialog'][data-ds-size='m'] {
+[data-juro-component='Dialog'][data-juro-size='m'] {
   inline-size: 30rem;
 }
-[data-ds-component='Dialog'][data-ds-size='l'] {
+[data-juro-component='Dialog'][data-juro-size='l'] {
   inline-size: 40rem;
 }
-[data-ds-component='Dialog'] [data-ds-part='title'] {
+[data-juro-component='Dialog'] [data-juro-part='title'] {
   color: #f2f2f4;
   font-size: 1rem;
   font-weight: 600;
 }
-[data-ds-component='Dialog'] [data-ds-part='body'] {
+[data-juro-component='Dialog'] [data-juro-part='body'] {
   color: #a3a3ab;
   font-size: 0.875rem;
   line-height: 1.6;
   padding-block: 0.6rem 0.2rem;
 }
-[data-ds-component='Dialog'] [data-ds-part='actions'] {
+[data-juro-component='Dialog'] [data-juro-part='actions'] {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;

@@ -34,7 +34,7 @@ When that happens the fix is to move the fact into the contract, not to widen th
 ## Why the schema lives here and not with the contracts
 
 `binding.schema.json` contains `"framework": { "const": "react" }`. A schema that names a framework
-is a framework artifact, so `@ds/contracts` may not hold it — that package's entire value is that
+is a framework artifact, so `@juro/contracts` may not hold it — that package's entire value is that
 nothing in it knows what React is.
 
 It was called `react-binding.schema.json` while it sat at the repo root next to the agnostic schema

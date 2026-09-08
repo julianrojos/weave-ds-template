@@ -110,18 +110,18 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
       {...rest}
       ref={setDialogRef}
       id={baseId}
-      data-ds-state-open={openValue || undefined}
-      data-ds-size={size}
+      data-juro-state-open={openValue || undefined}
+      data-juro-size={size}
       aria-labelledby={`${baseId}-title`}
-      data-ds-component="Dialog"
-      data-ds-part="root"
+      data-juro-component="Dialog"
+      data-juro-part="root"
       className={className}
     >
-      <div id={`${baseId}-title`} data-ds-part="title">
+      <div id={`${baseId}-title`} data-juro-part="title">
         {title}
       </div>
-      <div data-ds-part="body">{body}</div>
-      <div data-ds-part="actions">{actions}</div>
+      <div data-juro-part="body">{body}</div>
+      <div data-juro-part="actions">{actions}</div>
       {children}
     </dialog>
   );

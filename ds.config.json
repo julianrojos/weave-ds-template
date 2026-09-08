@@ -1,11 +1,9 @@
 {
   "_doc": "Single source of truth for this design system's identity. Set ONCE per project via `pnpm init-ds <name>`, which rewrites this file and every reference to it. Never rename by find-and-replace: the codemod also moves the package scope, the CSS custom-property prefix and the data-attribute prefix, and missing one of them leaves the repo half-renamed in a way no build error catches.",
-
-  "name": "ds",
-  "scope": "@ds",
-  "tokenPrefix": "ds",
-  "dataPrefix": "ds",
-
+  "name": "juro",
+  "scope": "@juro",
+  "tokenPrefix": "juro",
+  "dataPrefix": "juro",
   "_names": {
     "_note": "These descriptions avoid spelling out the current prefix, so they stay accurate after `pnpm init-ds` renames it. Read them against the values above.",
     "name": "Human/short name of the system. Used in generated headings.",

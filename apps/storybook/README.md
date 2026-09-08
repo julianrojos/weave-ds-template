@@ -19,7 +19,7 @@ Stories sit **next to the component they document**, not in this app:
 packages/react/src/**/<Name>.stories.tsx
 ```
 
-`.storybook/main.ts` globs them from there and aliases `@ds/react` to source, so a story
+`.storybook/main.ts` globs them from there and aliases `@juro/react` to source, so a story
 hot-reloads against the component you are editing.
 
 ## When it earns its place

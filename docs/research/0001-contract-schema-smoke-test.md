@@ -9,7 +9,7 @@
 - **Method:** Four contracts were drafted by hand — `Switch`, `Field`, `Accordion`,
   `AccordionItem` — written the way the unstyled, contract-driven library intends them, then
   validated against the current schema with Ajv 2020 (`allErrors: true`). A second control run
-  replaced every `null` paint with the legal prefix `--ds-placeholder-` and re-validated, to
+  replaced every `null` paint with the legal prefix `--juro-placeholder-` and re-validated, to
   establish whether `null` was the sole cause of rejection or merely the loudest.
 
   The drafts are working artifacts and were **not** committed. The deliverable is this report.
@@ -62,7 +62,7 @@ Every one of them is a paint channel written as `null`:
 
 ### The control run isolates the cause
 
-With every `null` swapped for `--ds-placeholder-` and nothing else changed:
+With every `null` swapped for `--juro-placeholder-` and nothing else changed:
 
 | Contract        | Result      | Null channels swapped |
 | --------------- | ----------- | --------------------- |

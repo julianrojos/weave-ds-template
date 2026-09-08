@@ -23,7 +23,7 @@ export interface RangeControl {
  * A number in a range, operated by keyboard and pointer.
  *
  * The arithmetic lives in ./range-stepping.ts as pure functions, so it can be executed against the
- * conformance cases in `@ds/contracts/conformance/range-stepping.json`. This hook is the React
+ * conformance cases in `@juro/contracts/conformance/range-stepping.json`. This hook is the React
  * binding around it: the track's box, pointer capture, and the drag.
  *
  * @param options  the contract's `range` block merged with the operated state's min/max/step

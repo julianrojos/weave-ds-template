@@ -72,6 +72,6 @@ there and 5 are deferred to a browser, each naming why; all 29 range cases execu
 stepping is arithmetic and a case needing a rendered DOM would mean the arithmetic had leaked.
 
 There is a sibling of this directory for the WEB PLATFORM mapping — which ARIA attribute a state
-reaches the DOM through — in [`@ds/platform-web/conformance`](../../platform-web/conformance/). It
+reaches the DOM through — in [`@juro/platform-web/conformance`](../../platform-web/conformance/). It
 is separate because these cases are agnostic and those are not: `ArrowRight` means something on any
 platform, and `aria-checked` does not.

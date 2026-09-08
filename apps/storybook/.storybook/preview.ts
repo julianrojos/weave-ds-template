@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/react-vite';
 
 // The generated token stylesheet. Until tokens exist this is an empty :root {} — a valid state.
-import '@ds/tokens/css';
+import '@juro/tokens/css';
 
 const preview: Preview = {
   parameters: {

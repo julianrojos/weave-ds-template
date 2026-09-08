@@ -47,7 +47,7 @@ import {
   rendersFalse,
   submitsByDefault,
   visibilityOf,
-} from '@ds/platform-web';
+} from '@juro/platform-web';
 
 const WEB = loadProfile();
 
@@ -380,7 +380,7 @@ function emitTsx(name, contract, binding, prefix) {
   if (navigation) {
     assume(
       'how a collection moves focus between its members',
-      'a member registration protocol over React context, plus useLinearNavigation from @ds/react/behavior',
+      'a member registration protocol over React context, plus useLinearNavigation from @juro/react/behavior',
       'The contract declares WHAT the keyboard does — orientation, wrap, whether selection follows focus, what happens at a disabled member — and says nothing about how a backend learns which DOM nodes its members are. React does it with a context carrying register/unregister and a callback ref; a web component would use slot assignment; a template compiler could resolve it statically. The protocol belongs to this backend and the conformance cases are what keep the inventions equivalent.',
     );
   }
@@ -484,7 +484,7 @@ function emitTsx(name, contract, binding, prefix) {
   if (nativelyEdited) types.push('ChangeEvent');
   s.push(`import type { ${types.join(', ')} } from 'react';`);
   if (range) {
-    s.push(`import { snap, useRangeControl, type RangeOptions } from '@ds/react/behavior';`);
+    s.push(`import { snap, useRangeControl, type RangeOptions } from '@juro/react/behavior';`);
   }
   if (navigation) {
     // A real package import, not copied code. What you can see you own; what must be correct you
@@ -496,7 +496,7 @@ function emitTsx(name, contract, binding, prefix) {
   useLinearNavigation,
   type MemberRegistration,
   type NavigationOptions,
-} from '@ds/react/behavior';`,
+} from '@juro/react/behavior';`,
     );
   }
   if (member) {
@@ -512,7 +512,7 @@ function emitTsx(name, contract, binding, prefix) {
       `// Transcribed from ${name}.contract.json: the \`range\` block, plus min/max/step from the`,
     );
     s.push(`// \`${range.state}\` state. The cases this commits us to are in`);
-    s.push(`// @ds/contracts/conformance/range-stepping.json.`);
+    s.push(`// @juro/contracts/conformance/range-stepping.json.`);
     s.push(`const RANGE: RangeOptions = {`);
     s.push(`  min: ${rangeState.min},`);
     s.push(`  max: ${rangeState.max},`);
@@ -527,7 +527,7 @@ function emitTsx(name, contract, binding, prefix) {
   if (navigation) {
     s.push(`// Transcribed field for field from ${name}.contract.json > collection.navigation.`);
     s.push(
-      `// The cases this commits us to are in @ds/contracts/conformance/linear-navigation.json.`,
+      `// The cases this commits us to are in @juro/contracts/conformance/linear-navigation.json.`,
     );
     s.push(`const NAVIGATION: NavigationOptions = {`);
     for (const [k, v] of Object.entries(navigation)) {
@@ -897,7 +897,7 @@ function emitTsx(name, contract, binding, prefix) {
     // Which channel this state reaches the DOM through is a WEB PLATFORM decision, not a React
     // one: it depends on the role, on whether the element bears one at all, and on whether the
     // attribute's `false` is meaningful. `channelFor` answers it, and the cases pinning that
-    // answer down live in @ds/platform-web/conformance/aria-mapping.json.
+    // answer down live in @juro/platform-web/conformance/aria-mapping.json.
     const decision = channelFor(
       {
         state: st,

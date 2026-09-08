@@ -63,14 +63,14 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(function Rad
       aria-checked={selected}
       tabIndex={ctx.isTabStop(value) ? 0 : -1}
       onClick={activate}
-      data-ds-component="RadioItem"
-      data-ds-part="root"
+      data-juro-component="RadioItem"
+      data-juro-part="root"
       className={className}
     >
-      <div data-ds-part="control">
-        <div hidden={!selected} data-ds-part="mark" />
+      <div data-juro-part="control">
+        <div hidden={!selected} data-juro-part="mark" />
       </div>
-      <div data-ds-part="label">{label}</div>
+      <div data-juro-part="label">{label}</div>
       {children}
     </div>
   );

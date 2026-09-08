@@ -1,5 +1,5 @@
 {
-  "name": "@ds/platform-web",
+  "name": "@juro/platform-web",
   "version": "0.0.0",
   "private": true,
   "type": "module",

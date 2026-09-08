@@ -58,11 +58,11 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
       {...rest}
       ref={ref}
       id={baseId}
-      data-ds-state-open={openValue || undefined}
+      data-juro-state-open={openValue || undefined}
       aria-disabled={disabled || undefined}
-      data-ds-placement={placement}
-      data-ds-component="Tooltip"
-      data-ds-part="root"
+      data-juro-placement={placement}
+      data-juro-component="Tooltip"
+      data-juro-part="root"
       className={className}
     >
       <div
@@ -70,11 +70,11 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
         aria-describedby={
           [openValue ? `${baseId}-popup` : null].filter(Boolean).join(' ') || undefined
         }
-        data-ds-part="trigger"
+        data-juro-part="trigger"
       >
         {trigger}
       </div>
-      <div role="tooltip" id={`${baseId}-popup`} hidden={!openValue} data-ds-part="popup">
+      <div role="tooltip" id={`${baseId}-popup`} hidden={!openValue} data-juro-part="popup">
         {content}
       </div>
       {children}

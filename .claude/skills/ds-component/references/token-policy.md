@@ -5,15 +5,15 @@ prefix, never a value.
 
 ```json
 "paints": {
-  "background-color": "--ds-color-fill-",
-  "border-color": ["--ds-color-border-", "literal"],
+  "background-color": "--juro-color-fill-",
+  "border-color": ["--juro-color-border-", "literal"],
   "opacity": "literal"
 }
 ```
 
 ## Why a prefix and not a value
 
-If the contract held `background-color: var(--ds-color-fill-loud)`, it would be a second copy of
+If the contract held `background-color: var(--juro-color-fill-loud)`, it would be a second copy of
 what the stylesheet says — and the stylesheet is the one the browser reads, so the contract would
 be the copy that rots.
 
@@ -24,11 +24,11 @@ against this prefix.
 ## Prefer group-less role families
 
 ```json
-"background-color": "--ds-color-fill-"      // good
-"background-color": "--ds-color-brand-"     // almost always wrong
+"background-color": "--juro-color-fill-"      // good
+"background-color": "--juro-color-brand-"     // almost always wrong
 ```
 
-The group-less roles (`--ds-color-fill-`, `--ds-color-border-`, `--ds-color-on-`) are the slots
+The group-less roles (`--juro-color-fill-`, `--juro-color-border-`, `--juro-color-on-`) are the slots
 that a `variant` prop re-points. A component styled against them **picks up every variant for
 free**. Naming a branded family pins the component to one colour, and the first time someone needs
 `variant="danger"` the whole stylesheet has to be rewritten.
@@ -37,7 +37,7 @@ free**. Naming a branded family pins the component to one colour, and the first 
 
 | Atom                   | Means                                                                                  |
 | ---------------------- | -------------------------------------------------------------------------------------- |
-| `"--ds-space-"`        | a token prefix — the declaration must resolve into that family                         |
+| `"--juro-space-"`      | a token prefix — the declaration must resolve into that family                         |
 | `"literal"`            | a deliberate non-token value: `transparent`, `0`, `currentColor`, a 1px hairline       |
 | `"component-property"` | an unprefixed component knob (`--button-width`) — the documented customization channel |
 
@@ -47,7 +47,7 @@ what a hardcoded hex looks like from the outside, so the reason is what separate
 ## Arrays are a permitted set, not a preference
 
 ```json
-"border-color": ["--ds-color-border-", "literal"]
+"border-color": ["--juro-color-border-", "literal"]
 ```
 
 Read as: _this channel legitimately draws from more than one source across states and variants_.
@@ -70,7 +70,7 @@ is how a reviewer stops reading a file that is mostly signal.
 `report:paints` finds the CSS by pairing the part name with the class name:
 
 ```
-data-ds-part="icon-start"  ->  .iconStart in Button.module.css
+data-juro-part="icon-start"  ->  .iconStart in Button.module.css
 ```
 
 **Break that pairing and the token policy silently becomes documentation instead of a check.** The

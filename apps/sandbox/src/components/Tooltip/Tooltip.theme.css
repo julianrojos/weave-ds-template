@@ -13,11 +13,11 @@
  * with overflow: hidden, and it will not flip.
  * ==========================================================================================
  */
-[data-ds-component='Tooltip'] {
+[data-juro-component='Tooltip'] {
   position: relative;
   display: inline-block;
 }
-[data-ds-component='Tooltip'] [data-ds-part='popup'] {
+[data-juro-component='Tooltip'] [data-juro-part='popup'] {
   position: absolute;
   inset-block-end: calc(100% + 6px);
   inset-inline-start: 50%;
@@ -28,7 +28,7 @@
 }
 /* --- end of misplaced structure -------------------------------------------------------- */
 
-[data-ds-component='Tooltip'] [data-ds-part='popup'] {
+[data-juro-component='Tooltip'] [data-juro-part='popup'] {
   background: #2a2a30;
   color: #e8e8ea;
   border-radius: 0.35rem;

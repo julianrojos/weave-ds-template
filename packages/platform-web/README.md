@@ -1,4 +1,4 @@
-# `@ds/platform-web`
+# `@juro/platform-web`
 
 **What the web platform is, as data.** Which ARIA attribute a state maps to, which roles accept it,
 which elements have a native `disabled`, which are focusable, which carry an implicit role, and how
@@ -14,11 +14,11 @@ That matters because a **Vue, Angular or web-components emitter needs all eleven
 React Native emitter needs **none of them** and needs its own equivalent. So there are three layers,
 not two:
 
-| Layer                  | Holds                                   | Shared by           |
-| ---------------------- | --------------------------------------- | ------------------- |
-| `@ds/contracts`        | what the component _is_                 | everyone            |
-| **`@ds/platform-web`** | **ARIA, DOM, focus, native attributes** | every _web_ backend |
-| `@ds/react`            | one framework's idiom                   | React only          |
+| Layer                    | Holds                                   | Shared by           |
+| ------------------------ | --------------------------------------- | ------------------- |
+| `@juro/contracts`        | what the component _is_                 | everyone            |
+| **`@juro/platform-web`** | **ARIA, DOM, focus, native attributes** | every _web_ backend |
+| `@juro/react`            | one framework's idiom                   | React only          |
 
 The evidence that this is worth separating is not tidiness. **The same class of defect appeared five
 times in five code paths** — a state reaching no ARIA attribute or the wrong one: radios with no
@@ -29,7 +29,7 @@ conformance cases in [`conformance/`](./conformance/).
 
 ## The boundary
 
-The mirror of the rule in `@ds/contracts`:
+The mirror of the rule in `@juro/contracts`:
 
 > **If it would still be true in a Vue, Svelte or Lit backend rendering the same DOM, it belongs
 > here.**
@@ -49,7 +49,7 @@ platform, never a component.
 
 **The JSON is the specification; `resolve.mjs` is a convenience.** A Dart or Swift emitter reads the
 same `profile.json`, writes its own resolver, and runs the same conformance cases. That is the whole
-arrangement, and it is the same one `@ds/contracts/conformance` uses for keyboard behaviour.
+arrangement, and it is the same one `@juro/contracts/conformance` uses for keyboard behaviour.
 
 ## Three tables, not one
 

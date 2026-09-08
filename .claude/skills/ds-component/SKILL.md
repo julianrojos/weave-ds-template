@@ -69,14 +69,14 @@ complains.
 
 ## The three invariants the entire toolchain rests on
 
-**1. A named node carries `data-ds-part="x"` AND `className={styles.x}`, with the same name.**
+**1. A named node carries `data-juro-part="x"` AND `className={styles.x}`, with the same name.**
 
 ```tsx
-<span data-ds-part="icon-start" className={styles.iconStart}>
+<span data-juro-part="icon-start" className={styles.iconStart}>
 ```
 
 _Why:_ it is what makes `pnpm report:paints` possible at all. That check resolves
-`data-ds-part` → CSS class → declarations → `var()` chain → declared token policy. Break the pairing
+`data-juro-part` → CSS class → declarations → `var()` chain → declared token policy. Break the pairing
 and the token policy silently becomes documentation instead of a check. It is also the stable,
 unhashed handle a consumer targets, since CSS Modules hashes the class name out of reach.
 

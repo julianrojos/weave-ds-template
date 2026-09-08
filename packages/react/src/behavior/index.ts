@@ -1,4 +1,4 @@
-// Public barrel for @ds/react/behavior — the interaction primitives emitted components import.
+// Public barrel for @juro/react/behavior — the interaction primitives emitted components import.
 //
 // This is the ONE place this package ships runtime JavaScript, and the one place the "you own your
 // generated component" rule bends. The reasoning, including the honest objection to it, is in

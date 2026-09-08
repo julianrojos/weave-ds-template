@@ -32,10 +32,10 @@ importers:
 
   apps/sandbox:
     dependencies:
-      '@ds/react':
+      '@juro/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -64,7 +64,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
       class-variance-authority:
@@ -74,7 +74,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
     devDependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../tokens
       '@types/react':

@@ -26,7 +26,7 @@ and its contract pair (`<Name>.contract.json` + `<Name>.react.json`). Runs throu
 **figma-console MCP** — there is no CLI step.
 
 The point is that Figma stays _derived_. Every colour, radius, space and type decision in the
-generated set binds to a Figma variable or style that mirrors a `--ds-*` token, so a token change in
+generated set binds to a Figma variable or style that mirrors a `--juro-*` token, so a token change in
 the repo has one obvious counterpart in the file. Anything that cannot bind is reported, never
 silently baked in.
 
@@ -67,16 +67,16 @@ it passed.
 
 Per the repo's first rule, pull context on demand; don't front-load it.
 
-| When                                                           | Read                                                                                                                       |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| Always, before generating                                      | `references/figma-file.md` — what has actually been measured in the source file, and how to re-derive IDs when they move   |
-| Always, before generating                                      | `references/token-to-variable.md` — the `--ds-*` ↔ Figma-variable mapping, the `-ds-` infix trap, **and what cannot bind** |
-| Writing the `figma_execute` scripts                            | `references/generation-recipe.md` — script skeleton, chunking, and the gotchas that cost real time                         |
-| The axes multiply past ~50 variants, or a state axis is wanted | `references/wrapper-pattern.md` — one public component over private sets, and the state-layer recipe                       |
-| Always, before reporting                                       | `references/property-check.md` — instantiate the set and drive every property. This is where the bugs are                  |
-| Naming a property or its values                                | `.ai/maps/prop-map.md` §1–2 — **the canon.** A Figma variant value must equal the prop value exactly                       |
-| Understanding what the component IS                            | `pnpm contract <Name>` — the merged contract-plus-source view, no build needed                                             |
-| Authoring rules the component followed                         | `packages/contracts/components/README.md`                                                                                  |
+| When                                                           | Read                                                                                                                         |
+| -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Always, before generating                                      | `references/figma-file.md` — what has actually been measured in the source file, and how to re-derive IDs when they move     |
+| Always, before generating                                      | `references/token-to-variable.md` — the `--juro-*` ↔ Figma-variable mapping, the `-ds-` infix trap, **and what cannot bind** |
+| Writing the `figma_execute` scripts                            | `references/generation-recipe.md` — script skeleton, chunking, and the gotchas that cost real time                           |
+| The axes multiply past ~50 variants, or a state axis is wanted | `references/wrapper-pattern.md` — one public component over private sets, and the state-layer recipe                         |
+| Always, before reporting                                       | `references/property-check.md` — instantiate the set and drive every property. This is where the bugs are                    |
+| Naming a property or its values                                | `.ai/maps/prop-map.md` §1–2 — **the canon.** A Figma variant value must equal the prop value exactly                         |
+| Understanding what the component IS                            | `pnpm contract <Name>` — the merged contract-plus-source view, no build needed                                               |
+| Authoring rules the component followed                         | `packages/contracts/components/README.md`                                                                                    |
 
 Agnostic know-how index: <https://www.giorris.dev/figma/refs/refs-map.md>. Those references are
 written for any design system — **where they disagree with this file, this file wins**, because it
@@ -97,7 +97,7 @@ The source file separates the two by collection name. Measured on 2026-08-28:
 
 A primitive is a raw value with no role. Binding one produces a component that looks right and
 silently opts out of every axis the token layer will later carry — the Figma equivalent of a
-component writing `--ds-color-purple-500` instead of `--ds-color-fill-brand`.
+component writing `--juro-color-purple-500` instead of `--juro-color-fill-brand`.
 
 **Scope every variable lookup by collection id.** Names repeat across tiers; an unscoped
 `find()` can bind you to the wrong tier without any error.
@@ -132,15 +132,15 @@ leave a blank page behind from a failed attempt.
 3. **`<Name>.tsx`** — which parts render, which are conditional, what element is underneath.
    Conditional children and slots become **boolean** properties.
 4. **`<Name>.module.css`** — tokens only, by rule. Every value carrying design intent is
-   `var(--ds-*)`, which is exactly what makes the mapping mechanical.
+   `var(--juro-*)`, which is exactly what makes the mapping mechanical.
 
 **The `cva` axes are the axes.** This library declares every variant axis in `cva`, with a
 `defaultVariants` entry for each — that object is the only machine-readable home for a variant
 default. Do not infer axes from class names; read them from `cva` and from the contract, which the
 gate keeps in agreement.
 
-**Parts are `data-ds-part`, not BEM modifiers.** Every named node carries
-`data-ds-part="icon-start"` alongside its CSS-module class. That attribute is the stable join
+**Parts are `data-juro-part`, not BEM modifiers.** Every named node carries
+`data-juro-part="icon-start"` alongside its CSS-module class. That attribute is the stable join
 between the contract's anatomy, the CSS, and the layer you build in Figma — name your Figma layers
 after the part names so the two surfaces can be compared later. A part in the contract with no node
 in the set is a gap worth reporting.
@@ -183,7 +183,7 @@ it would misrepresent the component, and surfacing it is how the token gap gets 
 
 Note this repo's authoring rule while you are here: states the browser owns (`:hover`,
 `:focus-visible`, `:disabled`) are **not** props and **not** variant axes that map to props. Only a
-state the browser does not own gets `data-ds-state`. `.ai/maps/proposals/README.md` has the four-way
+state the browser does not own gets `data-juro-state`. `.ai/maps/proposals/README.md` has the four-way
 sort; a `State` axis in Figma is a design-only axis, and the description must say so.
 
 ### 4. Resolve dependencies
@@ -227,7 +227,7 @@ The step most likely to be quietly wrong. Work it in `references/token-to-variab
 the mapping into the report**, so the numbers can be checked against the CSS instead of trusted.
 
 The infix is the trap specific to this file: Figma names are `weave-ds-{path}` while the CSS
-property is `--ds-{path}`. The `weave` segment is part of the Figma name and must not survive into
+property is `--juro-{path}`. The `weave` segment is part of the Figma name and must not survive into
 the token. See `references/token-to-variable.md`.
 
 ### 6. Generate

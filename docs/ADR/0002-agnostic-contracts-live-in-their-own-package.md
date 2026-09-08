@@ -41,19 +41,19 @@ agnosticism enforceable at a package boundary rather than by convention about a 
 
 ## Decision
 
-1. **Agnostic contracts and the schema governing them live in `packages/contracts` (`@ds/contracts`).**
+1. **Agnostic contracts and the schema governing them live in `packages/contracts` (`@juro/contracts`).**
    `contracts/` at the repo root is removed.
 2. **Framework-specific artifacts live in that framework's own package** — including the schema that
    governs its bindings. `react-binding.schema.json` moved to `packages/react/bindings/binding.schema.json`,
    because a schema containing `"framework": {"const": "react"}` is a React artifact.
-3. **Nothing in `@ds/contracts` may name a framework.** Not an element name, not a hook, not a ref,
+3. **Nothing in `@juro/contracts` may name a framework.** Not an element name, not a hook, not a ref,
    not `className`, not an import form. The existing test still decides every case: _if it would
    still be true in React Native, it belongs in the contract._
 4. **The agnostic prop vocabulary lives with the contracts; each framework's spelling of it lives
-   with that framework.** `prop-canon.json` in `@ds/contracts` holds axis names, canonical values and
+   with that framework.** `prop-canon.json` in `@juro/contracts` holds axis names, canonical values and
    the anti-synonym glossary; `prop-bindings.json` in each framework package holds only the places
    that framework's idiom differs.
-5. **Adding a framework must not require a change inside `@ds/contracts`.** A new backend is a new
+5. **Adding a framework must not require a change inside `@juro/contracts`.** A new backend is a new
    `packages/<framework>/` with its own bindings, emitter and prop-binding table. This binds future
    work: a change that can only be made by editing the contracts package to accommodate one
    framework is evidence the split has been breached, and the fix is to move the fact out, not to
@@ -73,7 +73,7 @@ catch and currently cannot.
 
 **The proof is a second backend, and it is a specific test, not a feeling:** a compiler for another
 target reads the same contracts and the same conformance definitions, and changes NOTHING inside
-`@ds/contracts` to do it. Decision 5 already states this as a rule for future work; until something
+`@juro/contracts` to do it. Decision 5 already states this as a rule for future work; until something
 exercises it, the rule has never been tried.
 
 The targets that would actually test it are deliberately unlike each other, because a second web
@@ -108,14 +108,14 @@ to, which roles accept it, which elements have a native `disabled`, which are fo
 backend needs all eleven; no Flutter or React Native backend needs any of them.
 
 That is neither agnostic nor framework-specific, so this record's two boxes had nowhere to put it and
-it ended up in a React file by default. It now lives in `@ds/platform-web` (2026-09-02), and the
+it ended up in a React file by default. It now lives in `@juro/platform-web` (2026-09-02), and the
 decision above is amended by extension rather than contradiction:
 
-- Decision 3 still holds unchanged. The web profile could not enter `@ds/contracts` precisely
+- Decision 3 still holds unchanged. The web profile could not enter `@juro/contracts` precisely
   because it is element names and ARIA attributes, and would fail the React Native test on every
   line. That test did its job.
-- Decision 5 — _adding a framework must not require a change inside `@ds/contracts`_ — now has a
-  sibling: **adding a web framework must not require a change inside `@ds/platform-web` either.** A
+- Decision 5 — _adding a framework must not require a change inside `@juro/contracts`_ — now has a
+  sibling: **adding a web framework must not require a change inside `@juro/platform-web` either.** A
   change that can only be made by editing the profile to suit one framework is the same evidence of
   a breached split, and the same fix applies: move the fact out.
 
@@ -162,7 +162,7 @@ nor the web profile had to change to accommodate it.
   a gate; three of the new READMEs describe folders that are currently empty, so they must be written
   to say what is target and what is built, and kept honest as that changes.
 - **A package must be wired by hand.** There is no turbo or nx, and the root `build` and `typecheck`
-  scripts name their packages literally. `@ds/contracts` needs no build today, so it is wired into
+  scripts name their packages literally. `@juro/contracts` needs no build today, so it is wired into
   nothing — which means the day it _does_ need one, nothing will remind anybody.
 - **It forecloses reading a contract beside its implementation.** The two are now in different
   packages, and `pnpm contract <Name>` composes a view across a package boundary. Diffing a contract
@@ -197,6 +197,6 @@ weakened: a contract inside `packages/react/` is a React artifact no matter what
 and the second backend would have to either duplicate it or reach across into a sibling package.
 
 **Name the package for the brand — `packages/weave`.** Rejected on mechanics. `pnpm init-ds` rewrites
-the `@ds/` scope, the `--ds-` token prefix and the `data-ds-` attribute prefix, but it cannot rewrite
+the `@juro/` scope, the `--juro-` token prefix and the `data-juro-` attribute prefix, but it cannot rewrite
 a directory name, and the CI straggler grep that catches a half-renamed repo would not catch it
 either. The brand arrives through the scope; the directory stays generic.

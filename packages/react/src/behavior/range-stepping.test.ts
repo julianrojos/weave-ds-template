@@ -1,4 +1,4 @@
-// Drives the conformance cases in @ds/contracts against this backend's implementation.
+// Drives the conformance cases in @juro/contracts against this backend's implementation.
 //
 // Same shape as linear-navigation.test.ts: the cases are DATA owned by the contracts package, and
 // this file is the React backend's adapter for them. Unlike that suite, nothing here is deferred to

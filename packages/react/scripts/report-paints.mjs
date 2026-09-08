@@ -11,9 +11,9 @@
  *
  * In React with CSS Modules the mapping is free, given one convention:
  *
- *     a named node carries data-ds-part="x" AND className={styles.x}, with the same name.
+ *     a named node carries data-juro-part="x" AND className={styles.x}, with the same name.
  *
- * That gives `data-ds-part="label"` -> `.label` in the module -> its declarations -> resolve
+ * That gives `data-juro-part="label"` -> `.label` in the module -> its declarations -> resolve
  * var() chains -> compare with the declared prefix. So the best idea in the original design
  * becomes checkable here.
  *

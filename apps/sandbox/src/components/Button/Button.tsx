@@ -49,17 +49,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ref={ref}
       type="button"
       disabled={disabled}
-      data-ds-state-loading={loading || undefined}
-      data-ds-hierarchy={hierarchy}
-      data-ds-variant={variant}
-      data-ds-size={size}
-      data-ds-component="Button"
-      data-ds-part="root"
+      data-juro-state-loading={loading || undefined}
+      data-juro-hierarchy={hierarchy}
+      data-juro-variant={variant}
+      data-juro-size={size}
+      data-juro-component="Button"
+      data-juro-part="root"
       className={className}
     >
-      <div data-ds-part="icon-start">{iconStart}</div>
-      <div data-ds-part="label">{children}</div>
-      <div data-ds-part="icon-end">{iconEnd}</div>
+      <div data-juro-part="icon-start">{iconStart}</div>
+      <div data-juro-part="label">{children}</div>
+      <div data-juro-part="icon-end">{iconEnd}</div>
     </button>
   );
 });

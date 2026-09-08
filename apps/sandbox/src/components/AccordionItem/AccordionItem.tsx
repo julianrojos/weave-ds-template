@@ -47,12 +47,12 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(func
       ref={ref}
       id={baseId}
       aria-disabled={disabled || undefined}
-      data-ds-state-open={selected || undefined}
-      data-ds-component="AccordionItem"
-      data-ds-part="root"
+      data-juro-state-open={selected || undefined}
+      data-juro-component="AccordionItem"
+      data-juro-part="root"
       className={className}
     >
-      <div data-ds-part="header">
+      <div data-juro-part="header">
         <button
           id={`${baseId}-trigger`}
           aria-controls={`${baseId}-panel`}
@@ -60,10 +60,10 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(func
           type="button"
           disabled={disabled || ctx.disabled}
           aria-expanded={selected}
-          data-ds-part="trigger"
+          data-juro-part="trigger"
         >
           {heading}
-          <div data-ds-part="indicator" />
+          <div data-juro-part="indicator" />
         </button>
       </div>
       <div
@@ -71,7 +71,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(func
         id={`${baseId}-panel`}
         aria-labelledby={`${baseId}-trigger`}
         hidden={!selected}
-        data-ds-part="panel"
+        data-juro-part="panel"
       >
         {panel}
       </div>

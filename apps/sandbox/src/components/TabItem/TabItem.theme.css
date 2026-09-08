@@ -1,7 +1,7 @@
 /* TabItem — THE CONSUMER'S FILE. Emitted once, empty, never regenerated. */
 
 /* --- structure, in the wrong file -------------------------------------------------------- */
-[data-ds-component='TabItem'] {
+[data-juro-component='TabItem'] {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -10,37 +10,37 @@
   font: inherit;
   cursor: pointer;
 }
-[data-ds-component='TabItem']:disabled {
+[data-juro-component='TabItem']:disabled {
   cursor: not-allowed;
 }
-[data-ds-component='TabItem'] [data-ds-part='indicator'] {
+[data-juro-component='TabItem'] [data-juro-part='indicator'] {
   position: absolute;
   inset-inline: 0;
   inset-block-end: -1px;
 }
 /* --- end of misplaced structure ---------------------------------------------------------- */
 
-[data-ds-component='TabItem'] {
+[data-juro-component='TabItem'] {
   padding: 0.5rem 0.8rem;
   min-block-size: 38px;
   color: #8b8b93;
   font-size: 0.875rem;
 }
-[data-ds-component='TabItem']:hover:not(:disabled) {
+[data-juro-component='TabItem']:hover:not(:disabled) {
   color: #d4d4d8;
 }
-[data-ds-component='TabItem']:disabled {
+[data-juro-component='TabItem']:disabled {
   color: #4a4a52;
 }
-[data-ds-component='TabItem'][aria-selected='true'] {
+[data-juro-component='TabItem'][aria-selected='true'] {
   color: #f2f2f4;
 }
-[data-ds-component='TabItem']:focus-visible {
+[data-juro-component='TabItem']:focus-visible {
   outline: 2px solid #8b83f0;
   outline-offset: -2px;
   border-radius: 0.25rem;
 }
-[data-ds-component='TabItem'] [data-ds-part='indicator'] {
+[data-juro-component='TabItem'] [data-juro-part='indicator'] {
   block-size: 2px;
   background: #5146e6;
 }

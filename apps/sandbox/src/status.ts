@@ -110,7 +110,7 @@ export const STATUS: ComponentStatus[] = [
     component: 'Slider',
     verdict: 'works',
     supplies:
-      'Range stepping and dragging. Publishes `--ds-fraction`, so the fill and thumb are positioned from the value rather than by the page.',
+      'Range stepping and dragging. Publishes `--juro-fraction`, so the fill and thumb are positioned from the value rather than by the page.',
     remaining: [],
     alsoKnown: [
       'CONSUMER: the 44px hit area its a11y notes require. A press anywhere on the track works, but the track is 4px thick and padding the root is the consumer’s to do.',
@@ -169,7 +169,7 @@ export const STATUS: ComponentStatus[] = [
 export const CROSS_CUTTING = [
   'No component emits its own layout. `structure.css` carries only a scoping handle and the hiding rule, because the contract has no way to say where a part sits — so every component’s real layout lives in the consumer’s theme file, which is the wrong place for it.',
   'No generated control takes part in a form. `name`, `value` and `required` are not states, not behaviour and not styling, and no contract can currently carry them.',
-  'The web-platform knowledge the emitter used to hold — which ARIA attribute a state maps to, which roles accept it, which elements have a native `disabled` — now lives in `@ds/platform-web` as data, with twenty conformance cases. Thirteen tables were counted; eleven were not React and moved. A second WEB backend reads them; a Flutter or React Native backend needs its own profile and none of this one.',
+  'The web-platform knowledge the emitter used to hold — which ARIA attribute a state maps to, which roles accept it, which elements have a native `disabled` — now lives in `@juro/platform-web` as data, with twenty conformance cases. Thirteen tables were counted; eleven were not React and moved. A second WEB backend reads them; a Flutter or React Native backend needs its own profile and none of this one.',
 ];
 
 export const COUNTS = STATUS.reduce((acc, s) => ({ ...acc, [s.verdict]: acc[s.verdict] + 1 }), {

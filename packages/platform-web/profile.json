@@ -2,7 +2,7 @@
   "platform": "web",
   "version": "0.0.0",
   "_doc": "What the WEB PLATFORM is, as data: element capabilities, the ARIA state vocabulary, and the mapping from a contract's words to the platform's. Extracted verbatim from packages/react/src/emit/emit.mjs. This file is a TRANSCRIPTION, not a correction — where a list is incomplete against the W3C specification it is incomplete here too, and the `_note` says so. Completing one is a separate change with its own diff.",
-  "_boundary": "Nothing framework-shaped may enter. `tabIndex`, `readOnly`, `className` and `htmlFor` are REACT's spellings of DOM names and belong in packages/react. The test is the mirror of @ds/contracts': if it would still be true in a Vue, Svelte or Lit backend rendering the same DOM, it belongs here.",
+  "_boundary": "Nothing framework-shaped may enter. `tabIndex`, `readOnly`, `className` and `htmlFor` are REACT's spellings of DOM names and belong in packages/react. The test is the mirror of @juro/contracts': if it would still be true in a Vue, Svelte or Lit backend rendering the same DOM, it belongs here.",
   "sources": [
     "https://www.w3.org/TR/wai-aria-1.2/",
     "https://html.spec.whatwg.org/multipage/",

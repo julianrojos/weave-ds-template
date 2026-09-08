@@ -65,12 +65,12 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(function T
       disabled={disabled}
       aria-readonly={readOnly || undefined}
       aria-invalid={invalid || undefined}
-      data-ds-size={size}
+      data-juro-size={size}
       value={valueValue}
       onChange={handleChange}
       readOnly={readOnly}
-      data-ds-component="TextField"
-      data-ds-part="root"
+      data-juro-component="TextField"
+      data-juro-part="root"
       className={className}
     />
   );

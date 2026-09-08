@@ -102,12 +102,12 @@
         "interactive/selectedBg -> codeSyntax.WEB: weave-ds-interactive-selectedbg"
       ],
       "examples": [
-        "space/3          -> --ds-space-3          -> space.3",
-        "radius/m         -> --ds-radius-m         -> radius.m",
-        "surface/primary  -> --ds-surface-primary  -> surface.primary"
+        "space/3          -> --juro-space-3          -> space.3",
+        "radius/m         -> --juro-radius-m         -> radius.m",
+        "surface/primary  -> --juro-surface-primary  -> surface.primary"
       ],
       "knownProblems": [
-        "PREFIX CONFLICT, UNDECIDED. `codeSyntax.WEB` carries a `weave-ds-` prefix while /ds.config.json declares tokenPrefix `ds`, i.e. `--ds-*`. Running `pnpm init-ds weave` would make it `--weave-*`, which still does not equal `weave-ds-*`. Three candidate prefixes, no decision. Settle which is canonical before generating tokens, and settle it in ds.config.json — never by hand-editing one side.",
+        "PREFIX CONFLICT, UNDECIDED. `codeSyntax.WEB` carries a `weave-ds-` prefix while /ds.config.json declares tokenPrefix `ds`, i.e. `--juro-*`. Running `pnpm init-ds weave` would make it `--weave-*`, which still does not equal `weave-ds-*`. Three candidate prefixes, no decision. Settle which is canonical before generating tokens, and settle it in ds.config.json — never by hand-editing one side.",
         "`space/0..9` is a numeric index while `radius/m` is a t-shirt scale — two naming systems in one file. Decide which one wins before generating; do not reproduce both.",
         "`interactive/selectedBg` is camelCase; every other token path is lowercase.",
         "`control/waveform` and `control/off` are component-specific but sit in the global namespace.",

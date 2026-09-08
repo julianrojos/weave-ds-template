@@ -13,7 +13,7 @@ glossary is their output aggregated across components.
 | -------------------------- | --------------------------------------------------------------- | ------------------------------------------- |
 | [`props.mjs`](./props.mjs) | Prop names, types, value sets, required-ness, JSDoc             | the merged view, the prop glossary          |
 | [`cva.mjs`](./cva.mjs)     | Variant axes and their **defaults**, read out of the `cva` call | contract parity — axes, values and defaults |
-| [`parts.mjs`](./parts.mjs) | Which `data-ds-part` names the component actually renders       | contract parity — anatomy                   |
+| [`parts.mjs`](./parts.mjs) | Which `data-juro-part` names the component actually renders     | contract parity — anatomy                   |
 
 ## Why syntax, not types
 
