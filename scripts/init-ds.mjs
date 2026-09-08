@@ -7,6 +7,8 @@
  *   --ds-…         -> --<name>-…       CSS custom properties
  *   data-ds-…      -> data-<name>-…    component anatomy attributes
  *   ds.config.json                     the identity itself
+ *   .figma/manifest.json               the above three rules, plus identity.prefix — bare
+ *                                       strings the rules above can't reach on their own
  *
  * WHY A CODEMOD RATHER THAN FIND-AND-REPLACE
  * The three prefixes above are the same decision expressed in three syntaxes, and they must move
@@ -14,6 +16,11 @@
  * and is wrong — the CSS variables no longer match the package that documents them, and nothing
  * anywhere reports it. That is exactly the class of breach this repo gates elsewhere; here it is
  * cheaper to make the operation atomic than to check it afterwards.
+ *
+ * ATOMICITY. Everything below is split into a VALIDATE phase (reads only, computes every file's
+ * new content, fails loudly on anything unexpected) and a WRITE phase (touches disk only once
+ * every check has passed). A failure partway through validation must never leave the repo
+ * half-renamed — that is the whole reason this is a codemod and not a shell one-liner.
  *
  * Run it ONCE, before writing any components. It is not a migration tool.
  */
@@ -37,13 +44,16 @@ const SKIP_DIRS = new Set([
 ]);
 
 /**
- * Two files must not be rewritten:
+ * Three files must not be rewritten by the generic walker:
  *   init-ds.mjs   — it contains the rename rules themselves, and rewriting them mid-run would
  *                   both corrupt the tool and make the operation non-repeatable.
  *   pnpm-lock.yaml— a lockfile is generated, and regexing it risks a subtly invalid graph.
  *                   `pnpm install` regenerates it correctly from the renamed manifests.
+ *   .figma/manifest.json
+ *                 — it needs the generic substitutions plus a structurally checked identity
+ *                   update, so it is handled below as one validated transformation.
  */
-const SKIP_FILES = new Set(['scripts/init-ds.mjs', 'pnpm-lock.yaml']);
+const SKIP_FILES = new Set(['scripts/init-ds.mjs', 'pnpm-lock.yaml', '.figma/manifest.json']);
 const EXTENSIONS = new Set([
   '.ts',
   '.tsx',
@@ -66,6 +76,11 @@ const name = args.find((a) => !a.startsWith('-'));
 function fatal(msg) {
   console.error(msg);
   process.exit(1);
+}
+
+/** Count non-overlapping occurrences of a literal substring — never a regex, never partial. */
+function countOccurrences(haystack, needle) {
+  return haystack.split(needle).length - 1;
 }
 
 if (!name) {
@@ -96,6 +111,10 @@ if (from !== 'ds') {
   );
 }
 
+// ============================================================================================
+// VALIDATE — reads and computation only. Nothing below this block writes to disk.
+// ============================================================================================
+
 // Order matters: `data-ds-` must be rewritten before the bare `--ds-`/`@ds/` rules, or a partial
 // match leaves a half-renamed attribute.
 const RULES = [
@@ -123,6 +142,7 @@ function* walk(dir) {
   }
 }
 
+// Every regex-eligible file: compute its new content now, write nothing yet.
 const changed = [];
 
 for (const file of walk(REPO_ROOT)) {
@@ -134,8 +154,7 @@ for (const file of walk(REPO_ROOT)) {
   for (const [re, to] of RULES) after = after.replace(re, to);
   if (after !== before) {
     const hits = RULES.reduce((n, [re]) => n + (before.match(re)?.length ?? 0), 0);
-    changed.push({ file: rel, hits });
-    if (!dry) writeFileSync(file, after);
+    changed.push({ file: rel, after, hits });
   }
 }
 
@@ -147,9 +166,73 @@ cfg.name = name;
 cfg.scope = `@${name}`;
 cfg.tokenPrefix = name;
 cfg.dataPrefix = name;
-if (!dry) writeFileSync(cfgPath, JSON.stringify(cfg, null, 2) + '\n');
+const cfgAfter = JSON.stringify(cfg, null, 2) + '\n';
 
-// ---------------------------------------------------------------------------------------
+// .figma/manifest.json's identity.prefix block holds the same bare `ds` / `@ds` / `--ds` /
+// `data-ds` strings — no trailing separator for any RULES regex to match, so it needs its own
+// rule too. Unlike ds.config.json this file carries hand-placed blank lines and short inline
+// arrays that a parse-and-restringify round-trip would flatten, so it is patched as text instead
+// — four targeted replacements, byte-identical everywhere else.
+const manifestPath = join(REPO_ROOT, '.figma', 'manifest.json');
+const manifestBefore = readFileSync(manifestPath, 'utf8');
+let manifestRuleHits = 0;
+let manifestAfter = manifestBefore;
+for (const [re, to] of RULES) {
+  manifestRuleHits += manifestAfter.match(re)?.length ?? 0;
+  manifestAfter = manifestAfter.replace(re, to);
+}
+const manifestRules = [
+  [`"name": "${from}"`, `"name": "${name}"`],
+  [`"scope": "@${from}"`, `"scope": "@${name}"`],
+  [`"token": "--${from}"`, `"token": "--${name}"`],
+  [`"data": "data-${from}"`, `"data": "data-${name}"`],
+];
+for (const [target, to] of manifestRules) {
+  // Two failure modes matter equally here: the target is missing (0 matches — `.replace()` would
+  // silently no-op) and the target is ambiguous (2+ matches — `.replace()` only touches the
+  // first, leaving the rest un-renamed). Both must abort before anything is written, or the
+  // script can report success while identity.prefix is only partly updated.
+  const hits = countOccurrences(manifestAfter, target);
+  if (hits !== 1) {
+    fatal(
+      `.figma/manifest.json: expected exactly one occurrence of ${JSON.stringify(target)} in ` +
+        `identity.prefix, found ${hits}.\n` +
+        'The block may have been hand-edited into a different shape. Fix it — and the matching ' +
+        'rule in scripts/init-ds.mjs if the shape is meant to change — before re-running.',
+    );
+  }
+  manifestAfter = manifestAfter.replace(target, to);
+}
+
+// Belt and braces: parse the patched text back as JSON and check the four fields landed in
+// identity.prefix specifically, not in some other part of the file that happened to match the
+// same literal text. This also catches a replacement that broke JSON syntax.
+let manifestParsed;
+try {
+  manifestParsed = JSON.parse(manifestAfter);
+} catch (err) {
+  fatal(`.figma/manifest.json: patched content is not valid JSON — ${err.message}`);
+}
+const expectedPrefix = { name, scope: `@${name}`, token: `--${name}`, data: `data-${name}` };
+for (const [key, expected] of Object.entries(expectedPrefix)) {
+  const actual = manifestParsed?.identity?.prefix?.[key];
+  if (actual !== expected) {
+    fatal(
+      `.figma/manifest.json: after patching, identity.prefix.${key} is ${JSON.stringify(actual)}, ` +
+        `expected ${JSON.stringify(expected)}. Aborting before any file is written.`,
+    );
+  }
+}
+
+// ============================================================================================
+// WRITE — every check above passed. Nothing from here on can discover a new problem.
+// ============================================================================================
+
+if (!dry) {
+  for (const c of changed) writeFileSync(join(REPO_ROOT, c.file), c.after);
+  writeFileSync(cfgPath, cfgAfter);
+  writeFileSync(manifestPath, manifestAfter);
+}
 
 // A longer or shorter name changes string widths inside markdown tables, so Prettier's column
 // alignment goes stale and `pnpm verify` fails on format:check. Reformatting here is not a
@@ -176,9 +259,13 @@ if (!dry && changed.length) {
 const total = changed.reduce((n, c) => n + c.hits, 0);
 console.log(
   `${dry ? '[dry run] would rename' : 'renamed'} "${from}" -> "${name}" — ` +
-    `${total} occurrence(s) across ${changed.length} file(s), plus ds.config.json.\n`,
+    `${total} occurrence(s) across ${changed.length} file(s).\n`,
 );
 for (const c of changed) console.log(`  ${String(c.hits).padStart(4)}  ${c.file}`);
+console.log(
+  `\n${dry ? '[dry run] would update' : 'updated'} ds.config.json (the identity fields) and ` +
+    `.figma/manifest.json (${manifestRuleHits} prefix reference(s) and identity.prefix).`,
+);
 
 if (dry) {
   console.log('\nNothing was written. Re-run without --dry to apply.');
