@@ -9,12 +9,12 @@ import {
   useLinearNavigation,
   type MemberRegistration,
   type NavigationOptions,
-} from '@ds/react/behavior';
+} from '@juro/react/behavior';
 import './Tabs.structure.css';
 import './Tabs.theme.css';
 
 // Transcribed field for field from Tabs.contract.json > collection.navigation.
-// The cases this commits us to are in @ds/contracts/conformance/linear-navigation.json.
+// The cases this commits us to are in @juro/contracts/conformance/linear-navigation.json.
 const NAVIGATION: NavigationOptions = {
   orientation: 'horizontal',
   wrap: true,
@@ -103,12 +103,12 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
         rest.onKeyDown?.(event);
         nav.onKeyDown(event);
       }}
-      data-ds-component="Tabs"
-      data-ds-part="root"
+      data-juro-component="Tabs"
+      data-juro-part="root"
       className={className}
     >
       <TabsContext.Provider value={contextValue}>
-        <div role="tablist" id={`${baseId}-list`} data-ds-part="list" />
+        <div role="tablist" id={`${baseId}-list`} data-juro-part="list" />
         {children}
       </TabsContext.Provider>
     </div>

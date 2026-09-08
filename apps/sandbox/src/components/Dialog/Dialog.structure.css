@@ -12,14 +12,14 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Dialog'] {
+[data-juro-component='Dialog'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
 /* Hiding is a contract claim, not a style. See the note in the emitter. */
-[data-ds-component='Dialog']:not([open]),
-[data-ds-component='Dialog'][hidden],
-[data-ds-component='Dialog'] [hidden] {
+[data-juro-component='Dialog']:not([open]),
+[data-juro-component='Dialog'][hidden],
+[data-juro-component='Dialog'] [hidden] {
   display: none !important;
 }
 
@@ -31,14 +31,14 @@
  * inside instead, or scope it to [open].
  */
 
-[data-ds-component='Dialog'] [data-ds-part='title'] {
+[data-juro-component='Dialog'] [data-juro-part='title'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Dialog'] [data-ds-part='body'] {
+[data-juro-component='Dialog'] [data-juro-part='body'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Dialog'] [data-ds-part='actions'] {
+[data-juro-component='Dialog'] [data-juro-part='actions'] {
   /* no declared layout for this part */
 }

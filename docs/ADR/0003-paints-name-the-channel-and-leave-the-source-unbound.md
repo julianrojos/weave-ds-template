@@ -17,7 +17,7 @@ This library is unstyled. It ships no palette, no scale and no visual opinion; a
 their own token system to what it generates.
 
 `component.schema.json` did not permit that. `$defs.tokenPolicyAtom` required every paint channel to
-name a token namespace prefix (`--ds-color-fill-`), or the enum `component-property`, or `literal`.
+name a token namespace prefix (`--juro-color-fill-`), or the enum `component-property`, or `literal`.
 There was no way to say _this part paints a background, and the library does not say from where_.
 
 [Report 0001](../research/0001-contract-schema-smoke-test.md) measured the cost. Four contracts —
@@ -38,11 +38,11 @@ reverse-engineer a stylesheet to find out — which is the failure this library 
    channel simply absent is _not described yet_. This is the repo's standing rule — a gap is a
    finding, not a blank to fill — applied to styling, and the two facts get two notations so neither
    can be mistaken for the other.
-3. **Contracts in `@ds/contracts` use `null`.** A named token policy stays legal in the schema,
+3. **Contracts in `@juro/contracts` use `null`.** A named token policy stays legal in the schema,
    because a consumer's own wiring and a reference implementation both need to express one, but a
    contract this library ships does not name one.
-4. **`@ds/tokens` is a reference implementation, not a dependency.** It is one worked example of
-   wiring a token system to an unbound surface. Nothing in `@ds/contracts` or the emitters requires
+4. **`@juro/tokens` is a reference implementation, not a dependency.** It is one worked example of
+   wiring a token system to an unbound surface. Nothing in `@juro/contracts` or the emitters requires
    it, and a consumer may ignore it entirely.
 5. **The emitter produces two stylesheets, not one.** _This decision is the WEB BACKEND's, not the
    contract's_ — see the note under Consequences. A stylesheet is one delivery mechanism for an
@@ -85,13 +85,13 @@ reverse-engineer a stylesheet to find out — which is the failure this library 
 
    Measured across the fifteen contracts: **24 distinct channels, every one of them a CSS property**
    — `box-shadow`, `outline-offset`, `padding-inline`, `border-block-end`, `transition-duration`.
-   That sits awkwardly beside `@ds/contracts`' own admission test, _if it would still be true in
+   That sits awkwardly beside `@juro/contracts`' own admission test, _if it would still be true in
    React Native, it belongs here_, because `outline-offset` would not be.
 
    It is recorded as a decision anyway, for three reasons.
 
    **It is cheap to reverse.** The mapping lives in a platform profile either way —
-   `@ds/platform-web` established that shape — so keeping CSS names forecloses nothing. A neutral
+   `@juro/platform-web` established that shape — so keeping CSS names forecloses nothing. A neutral
    vocabulary can be introduced later without any contract changing meaning.
 
    **CSS logical properties are ALREADY the more agnostic vocabulary, and this is the strongest

@@ -21,5 +21,5 @@
 - **No `type`.** Password, email and search are different keyboards on a phone, which is a real
   difference and not a styling one. Each would need its own contract or a prop this one lacks.
 - The emitter had to be taught that a free-form value must NOT reach the DOM as a data attribute:
-  the first version mirrored whatever was typed into `data-ds-state-value`. A boolean or an
+  the first version mirrored whatever was typed into `data-juro-state-value`. A boolean or an
   enumerated state is a styling hook; free text is content.

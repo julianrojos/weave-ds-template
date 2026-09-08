@@ -1,10 +1,10 @@
 # Token → Figma variable
 
-How a `--ds-*` token in a component's CSS module becomes a binding in Figma, and what has no binding
+How a `--juro-*` token in a component's CSS module becomes a binding in Figma, and what has no binding
 at all.
 
 Read `<Name>.module.css`. By the authoring contract it contains **tokens only** — every value
-carrying design intent is `var(--ds-*)` — which is what makes this mapping mechanical rather than a
+carrying design intent is `var(--juro-*)` — which is what makes this mapping mechanical rather than a
 judgement call. A raw `#5146e6` or `12px` in there is a defect `pnpm report:paints` exists to find,
 not a value for you to translate.
 
@@ -14,7 +14,7 @@ Three spellings of one path:
 
 ```
 Figma variable        surface/primary
-CSS custom property   --ds-surface-primary
+CSS custom property   --juro-surface-primary
 DTCG token            surface.primary
 ```
 
@@ -76,9 +76,9 @@ the collection → token-file mapping — is **empty**. So the middle column of 
 does not exist yet.
 
 Practically: you can bind a component to `surface/primary` today and it will work, but you cannot yet
-say which `--ds-*` property that is, because nothing has generated one. Until the token set has been
+say which `--juro-*` property that is, because nothing has generated one. Until the token set has been
 measured, decided and built, **write the Figma variable name into the report and leave the
-CSS column blank.** A blank is honest; a guessed `--ds-surface-primary` becomes the name everyone
+CSS column blank.** A blank is honest; a guessed `--juro-surface-primary` becomes the name everyone
 copies.
 
 ## Traps this file has not hit yet, but the family is prone to
@@ -86,13 +86,13 @@ copies.
 Recorded so they are recognised on sight rather than debugged from scratch.
 
 **The bare-name trap.** In a mature DTCG set, a token with no suffix is the group's _default_, and
-Figma spells that `/default` while CSS writes the bare group name — `--ds-border-radius` →
+Figma spells that `/default` while CSS writes the bare group name — `--juro-border-radius` →
 `border/radius/default`. Three spellings of one concept, and the most common cause of a lookup that
 returns `undefined` for a token you can plainly see in the CSS. This file has no `/default` leaves
 today; it will the moment the token set is generated.
 
 **Compound group names keep their hyphen.** `max-width` is one group, not two levels:
-`--ds-size-max-width-2xs` → `size/max-width/2xs`, never `size/max/width/2xs`. The swap-dashes-for-
+`--juro-size-max-width-2xs` → `size/max-width/2xs`, never `size/max/width/2xs`. The swap-dashes-for-
 slashes rule is a good default, not a law.
 
 **A group can be split across collections.** A fully transparent colour is the same value in every

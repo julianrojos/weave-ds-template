@@ -12,20 +12,20 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='TabItem'] {
+[data-juro-component='TabItem'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
 /* Hiding is a contract claim, not a style. See the note in the emitter. */
-[data-ds-component='TabItem'][hidden],
-[data-ds-component='TabItem'] [hidden] {
+[data-juro-component='TabItem'][hidden],
+[data-juro-component='TabItem'] [hidden] {
   display: none !important;
 }
 
-[data-ds-component='TabItem'] [data-ds-part='label'] {
+[data-juro-component='TabItem'] [data-juro-part='label'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='TabItem'] [data-ds-part='indicator'] {
+[data-juro-component='TabItem'] [data-juro-part='indicator'] {
   /* no declared layout for this part */
 }

@@ -41,19 +41,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   return (
     <button
       ref={ref}
-      data-ds-part="root"
-      data-ds-state={loading ? 'loading' : undefined}
+      data-juro-part="root"
+      data-juro-state={loading ? 'loading' : undefined}
       aria-busy={loading || undefined}
-      // INVARIANT 1 — data-ds-part and styles.<same name> travel together.
+      // INVARIANT 1 — data-juro-part and styles.<same name> travel together.
       className={clsx(buttonVariants({ hierarchy, size }), className)}
       {...rest}
     >
       {iconStart && (
-        <span data-ds-part="icon-start" className={styles.iconStart}>
+        <span data-juro-part="icon-start" className={styles.iconStart}>
           {iconStart}
         </span>
       )}
-      <span data-ds-part="label" className={styles.label}>
+      <span data-juro-part="label" className={styles.label}>
         {children}
       </span>
     </button>
@@ -67,10 +67,10 @@ Points worth noticing:
   assignment.
 - **`className` merges last**, so a consumer can override. The contract records _which_ node it
   lands on, because that node's every declaration becomes overridable from outside.
-- **`{...rest}` after the managed props**, so a consumer cannot accidentally clobber `data-ds-part`.
+- **`{...rest}` after the managed props**, so a consumer cannot accidentally clobber `data-juro-part`.
 - **JSDoc on every prop that is not a variant.** Variant props get their documentation from the
   axis registry; local props get it here, and it is what shows up in `pnpm contract`.
-- **`data-ds-state` for a state that is not a native pseudo-class.** `:hover` and `:disabled` need
+- **`data-juro-state` for a state that is not a native pseudo-class.** `:hover` and `:disabled` need
   nothing — the browser already owns them.
 
 ## `Button.module.css`
@@ -79,24 +79,24 @@ Points worth noticing:
 .root {
   display: inline-flex;
   align-items: center;
-  gap: var(--ds-space-2);
+  gap: var(--juro-space-2);
 
-  background-color: var(--ds-color-fill-loud);
-  color: var(--ds-color-on-loud);
-  border: var(--ds-border-width-s) solid transparent;
-  border-radius: var(--ds-radius-m);
-  padding-inline: var(--ds-space-4);
-  font-family: var(--ds-font-family-ui);
-  transition-duration: var(--ds-motion-duration-fast);
+  background-color: var(--juro-color-fill-loud);
+  color: var(--juro-color-on-loud);
+  border: var(--juro-border-width-s) solid transparent;
+  border-radius: var(--juro-radius-m);
+  padding-inline: var(--juro-space-4);
+  font-family: var(--juro-font-family-ui);
+  transition-duration: var(--juro-motion-duration-fast);
 }
 
 .root:hover {
-  background-color: var(--ds-color-fill-loud-hover);
+  background-color: var(--juro-color-fill-loud-hover);
 }
 .root:focus-visible {
-  outline-color: var(--ds-color-focus-ring);
+  outline-color: var(--juro-color-focus-ring);
 }
-.root[data-ds-state='loading'] {
+.root[data-juro-state='loading'] {
   cursor: progress;
 }
 
@@ -110,8 +110,8 @@ Points worth noticing:
 
 - **Every value that carries design intent is a token.** A raw `#5146e6` here is what
   `report:paints` exists to find.
-- **A class per named node**, matching its `data-ds-part`. `icon-start` → `.iconStart`.
-- **States as pseudo-classes where the browser has one**, `[data-ds-state]` where it does not.
+- **A class per named node**, matching its `data-juro-part`. `icon-start` → `.iconStart`.
+- **States as pseudo-classes where the browser has one**, `[data-juro-state]` where it does not.
 
 ## `index.ts`
 

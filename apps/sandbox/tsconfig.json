@@ -6,8 +6,8 @@
     "types": ["vite/client"],
     "baseUrl": ".",
     "paths": {
-      "@ds/react/behavior": ["../../packages/react/src/behavior/index.ts"],
-      "@ds/react": ["../../packages/react/src/index.ts"]
+      "@juro/react/behavior": ["../../packages/react/src/behavior/index.ts"],
+      "@juro/react": ["../../packages/react/src/index.ts"]
     }
   },
   "include": ["src"]

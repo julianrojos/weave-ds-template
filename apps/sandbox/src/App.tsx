@@ -5,7 +5,7 @@
  *
  *   node packages/react/src/emit/emit.mjs <Name> --out apps/sandbox/src/components
  *
- * Nothing is imported from @ds/react, which exports no components and never will. The components
+ * Nothing is imported from @juro/react, which exports no components and never will. The components
  * live here, in the consumer's own tree, which is the architecture in one import path.
  *
  * Fifteen contracts went in. They did NOT come out equal, and the page says so per specimen — the
@@ -242,7 +242,7 @@ export function App() {
       <Specimen
         name="Slider"
         of={['Slider']}
-        note="A number in a range — valueType: number with min, max and step. It now steps and drags: all four arrows move by one step whatever the orientation, Page Up and Page Down by the jump the contract declares, Home and End to the ends, and a press anywhere on the track jumps the value there and follows the pointer. The fill and the thumb are positioned from --ds-fraction, which the component publishes on its own root, so the page no longer computes geometry and hands it back. What is still the consumer&rsquo;s: the 44px hit area, and aria-valuetext for a range where a bare number means nothing."
+        note="A number in a range — valueType: number with min, max and step. It now steps and drags: all four arrows move by one step whatever the orientation, Page Up and Page Down by the jump the contract declares, Home and End to the ends, and a press anywhere on the track jumps the value there and follows the pointer. The fill and the thumb are positioned from --juro-fraction, which the component publishes on its own root, so the page no longer computes geometry and hands it back. What is still the consumer&rsquo;s: the 44px hit area, and aria-valuetext for a range where a bare number means nothing."
       >
         <Slider value={volume} onValueChange={setVolume} aria-label="Volume" />
         <span className="readout">value: {volume}</span>

@@ -18,7 +18,7 @@ encode four unrelated kinds of thing in one variant axis, and only one of them i
 | In Figma                 | Really is                     | Belongs in                                     |
 | ------------------------ | ----------------------------- | ---------------------------------------------- |
 | `Hover`, `Pressed`       | **Runtime interaction state** | `:hover` / `:active` — _never_ a prop          |
-| `Selected`, `Current`    | **Author-declared state**     | a boolean prop + `data-ds-state`               |
+| `Selected`, `Current`    | **Author-declared state**     | a boolean prop + `data-juro-state`             |
 | `Icon=Mic`, `Label=Save` | **Content**                   | children or a slot prop — not a variant at all |
 | `Size=Large`             | **An actual prop**            | the `size` axis                                |
 

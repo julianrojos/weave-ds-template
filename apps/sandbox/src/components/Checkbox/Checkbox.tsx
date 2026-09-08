@@ -81,15 +81,15 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         rest.onClick?.(event);
         activate(event);
       }}
-      data-ds-component="Checkbox"
-      data-ds-part="root"
+      data-juro-component="Checkbox"
+      data-juro-part="root"
       className={className}
     >
-      <div data-ds-part="box">
-        <div hidden={!(checkedValue === 'checked')} data-ds-part="tick" />
-        <div hidden={!(checkedValue === 'mixed')} data-ds-part="dash" />
+      <div data-juro-part="box">
+        <div hidden={!(checkedValue === 'checked')} data-juro-part="tick" />
+        <div hidden={!(checkedValue === 'mixed')} data-juro-part="dash" />
       </div>
-      <div data-ds-part="label">{label}</div>
+      <div data-juro-part="label">{label}</div>
       {children}
     </button>
   );

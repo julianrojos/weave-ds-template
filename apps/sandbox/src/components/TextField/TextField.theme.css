@@ -1,13 +1,13 @@
 /* TextField — THE CONSUMER'S FILE. Emitted once, empty, never regenerated. */
 
 /* --- structure, in the wrong file -------------------------------------------------------- */
-[data-ds-component='TextField'] {
+[data-juro-component='TextField'] {
   display: block;
   box-sizing: border-box;
 }
 /* --- end of misplaced structure ---------------------------------------------------------- */
 
-[data-ds-component='TextField'] {
+[data-juro-component='TextField'] {
   inline-size: 26ch;
   border: 1px solid #3a3a3f;
   border-radius: 0.35rem;
@@ -15,37 +15,37 @@
   color: #e8e8ea;
   font-family: inherit;
 }
-[data-ds-component='TextField']::placeholder {
+[data-juro-component='TextField']::placeholder {
   color: #6b6b74;
 }
-[data-ds-component='TextField'][data-ds-size='s'] {
+[data-juro-component='TextField'][data-juro-size='s'] {
   padding-inline: 0.5rem;
   min-block-size: 28px;
   font-size: 0.8rem;
 }
-[data-ds-component='TextField'][data-ds-size='m'] {
+[data-juro-component='TextField'][data-juro-size='m'] {
   padding-inline: 0.65rem;
   min-block-size: 34px;
   font-size: 0.875rem;
 }
-[data-ds-component='TextField'][data-ds-size='l'] {
+[data-juro-component='TextField'][data-juro-size='l'] {
   padding-inline: 0.85rem;
   min-block-size: 42px;
   font-size: 0.95rem;
 }
-[data-ds-component='TextField']:hover:not(:disabled) {
+[data-juro-component='TextField']:hover:not(:disabled) {
   border-color: #55555f;
 }
-[data-ds-component='TextField'][aria-invalid='true'] {
+[data-juro-component='TextField'][aria-invalid='true'] {
   border-color: #c4342b;
 }
-[data-ds-component='TextField']:disabled {
+[data-juro-component='TextField']:disabled {
   opacity: 0.5;
 }
-[data-ds-component='TextField'][aria-readonly='true'] {
+[data-juro-component='TextField'][aria-readonly='true'] {
   background: #202024;
 }
-[data-ds-component='TextField']:focus-visible {
+[data-juro-component='TextField']:focus-visible {
   outline: 2px solid #8b83f0;
   outline-offset: 1px;
 }

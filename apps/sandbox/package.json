@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ds/react": "workspace:*",
-    "@ds/tokens": "workspace:*",
+    "@juro/react": "workspace:*",
+    "@juro/tokens": "workspace:*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },

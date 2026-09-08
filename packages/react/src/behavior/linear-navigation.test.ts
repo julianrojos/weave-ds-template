@@ -1,4 +1,4 @@
-// Drives the conformance cases in @ds/contracts against this backend's implementation.
+// Drives the conformance cases in @juro/contracts against this backend's implementation.
 //
 // The cases are DATA, transcribed from the W3C ARIA APG and owned by the contracts package. This
 // file is the React adapter for them: it reads the same JSON a Vue backend would read and asserts

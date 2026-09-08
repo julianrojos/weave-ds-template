@@ -9,12 +9,12 @@ import {
   useLinearNavigation,
   type MemberRegistration,
   type NavigationOptions,
-} from '@ds/react/behavior';
+} from '@juro/react/behavior';
 import './RadioGroup.structure.css';
 import './RadioGroup.theme.css';
 
 // Transcribed field for field from RadioGroup.contract.json > collection.navigation.
-// The cases this commits us to are in @ds/contracts/conformance/linear-navigation.json.
+// The cases this commits us to are in @juro/contracts/conformance/linear-navigation.json.
 const NAVIGATION: NavigationOptions = {
   orientation: 'both',
   wrap: true,
@@ -106,8 +106,8 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(function R
         rest.onKeyDown?.(event);
         nav.onKeyDown(event);
       }}
-      data-ds-component="RadioGroup"
-      data-ds-part="root"
+      data-juro-component="RadioGroup"
+      data-juro-part="root"
       className={className}
     >
       <RadioGroupContext.Provider value={contextValue}>{children}</RadioGroupContext.Provider>

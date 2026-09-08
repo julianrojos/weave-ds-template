@@ -12,18 +12,18 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Slider'] {
+[data-juro-component='Slider'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
-[data-ds-component='Slider'] [data-ds-part='track'] {
+[data-juro-component='Slider'] [data-juro-part='track'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Slider'] [data-ds-part='fill'] {
+[data-juro-component='Slider'] [data-juro-part='fill'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Slider'] [data-ds-part='thumb'] {
+[data-juro-component='Slider'] [data-juro-part='thumb'] {
   /* no declared layout for this part */
 }

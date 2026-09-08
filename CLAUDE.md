@@ -32,9 +32,9 @@ a record. The build step is mid-migration: the library is moving to contract-dri
 `ds-component` describes a retired flow and carries a banner saying so.
 
 ```
-packages/contracts/ @ds/contracts — THE PRODUCT. Agnostic component contracts + their schema
-packages/tokens/   @ds/tokens — DTCG JSON -> CSS custom properties + TS constants
-packages/react/    @ds/react  — one backend: React bindings, emitter, behaviour primitives
+packages/contracts/ @juro/contracts — THE PRODUCT. Agnostic component contracts + their schema
+packages/tokens/   @juro/tokens — DTCG JSON -> CSS custom properties + TS constants
+packages/react/    @juro/react  — one backend: React bindings, emitter, behaviour primitives
 apps/sandbox/      fast Vite harness, in the workspace
 apps/storybook/    complete on disk, deliberately OUT of the install graph
 docs/research/     pre-decision: what is measurably true
@@ -50,7 +50,7 @@ governance.
 
 ## Brand it before anything else
 
-The repo ships generic (`@ds/*`, `--ds-*`, `data-ds-*`). Run **once**, before writing components:
+The repo ships generic (`@juro/*`, `--juro-*`, `data-juro-*`). Run **once**, before writing components:
 
 ```bash
 pnpm init-ds weave --dry   # inspect

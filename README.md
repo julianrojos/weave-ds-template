@@ -24,7 +24,7 @@ A template that shipped a Button would skip all four steps and teach the opposit
 
 ```bash
 pnpm install
-pnpm init-ds <yourname>    # brand it: @ds/* -> @yourname/*, --ds-* -> --yourname-*
+pnpm init-ds <yourname>    # brand it: @juro/* -> @yourname/*, --juro-* -> --yourname-*
 pnpm install               # workspace links move with the scope
 pnpm verify                # every gate, green, on an empty repo
 pnpm dev                   # sandbox at localhost:4300

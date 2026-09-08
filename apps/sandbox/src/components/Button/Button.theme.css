@@ -7,7 +7,7 @@
  */
 
 /* --- structure, in the wrong file: the contract has no `layout` block -------------------- */
-[data-ds-component='Button'] {
+[data-juro-component='Button'] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -16,19 +16,19 @@
   font-family: inherit;
   white-space: nowrap;
 }
-[data-ds-component='Button']:disabled {
+[data-juro-component='Button']:disabled {
   cursor: not-allowed;
 }
-[data-ds-component='Button'] [data-ds-part='label'] {
+[data-juro-component='Button'] [data-juro-part='label'] {
   white-space: nowrap;
 }
-[data-ds-component='Button'] [data-ds-part='icon-start']:empty,
-[data-ds-component='Button'] [data-ds-part='icon-end']:empty {
+[data-juro-component='Button'] [data-juro-part='icon-start']:empty,
+[data-juro-component='Button'] [data-juro-part='icon-end']:empty {
   display: none;
 }
 /* --- end of misplaced structure ---------------------------------------------------------- */
 
-[data-ds-component='Button'] {
+[data-juro-component='Button'] {
   border-radius: 0.4rem;
   font-weight: 500;
   gap: 0.45rem;
@@ -38,90 +38,90 @@
 }
 
 /* hierarchy = primary */
-[data-ds-component='Button'][data-ds-hierarchy='primary'] {
+[data-juro-component='Button'][data-juro-hierarchy='primary'] {
   background: #5146e6;
   color: #ffffff;
   border-color: #5146e6;
 }
 
 /* hierarchy = secondary */
-[data-ds-component='Button'][data-ds-hierarchy='secondary'] {
+[data-juro-component='Button'][data-juro-hierarchy='secondary'] {
   background: #26262b;
   color: #e8e8ea;
   border-color: #3f3f47;
 }
 
 /* hierarchy = tertiary */
-[data-ds-component='Button'][data-ds-hierarchy='tertiary'] {
+[data-juro-component='Button'][data-juro-hierarchy='tertiary'] {
   background: transparent;
   color: #b9b9c2;
   border-color: transparent;
 }
 
 /* variant = danger, crossed with hierarchy — the pair the two axes exist to express */
-[data-ds-component='Button'][data-ds-variant='danger'][data-ds-hierarchy='primary'] {
+[data-juro-component='Button'][data-juro-variant='danger'][data-juro-hierarchy='primary'] {
   background: #c4342b;
   border-color: #c4342b;
 }
-[data-ds-component='Button'][data-ds-variant='danger'][data-ds-hierarchy='secondary'] {
+[data-juro-component='Button'][data-juro-variant='danger'][data-juro-hierarchy='secondary'] {
   color: #f0736a;
   border-color: #5e2c28;
 }
-[data-ds-component='Button'][data-ds-variant='danger'][data-ds-hierarchy='tertiary'] {
+[data-juro-component='Button'][data-juro-variant='danger'][data-juro-hierarchy='tertiary'] {
   color: #f0736a;
 }
-[data-ds-component='Button'][data-ds-variant='brand'][data-ds-hierarchy='secondary'] {
+[data-juro-component='Button'][data-juro-variant='brand'][data-juro-hierarchy='secondary'] {
   color: #a99fff;
   border-color: #3b3480;
 }
 
 /* size = s */
-[data-ds-component='Button'][data-ds-size='s'] {
+[data-juro-component='Button'][data-juro-size='s'] {
   padding-inline: 0.6rem;
   min-block-size: 28px;
   font-size: 0.8rem;
 }
 
 /* size = m */
-[data-ds-component='Button'][data-ds-size='m'] {
+[data-juro-component='Button'][data-juro-size='m'] {
   padding-inline: 0.85rem;
   min-block-size: 34px;
   font-size: 0.875rem;
 }
 
 /* size = l */
-[data-ds-component='Button'][data-ds-size='l'] {
+[data-juro-component='Button'][data-juro-size='l'] {
   padding-inline: 1.15rem;
   min-block-size: 42px;
   font-size: 0.95rem;
 }
 
 /* state: hover */
-[data-ds-component='Button']:hover:not(:disabled) {
+[data-juro-component='Button']:hover:not(:disabled) {
   filter: brightness(1.14);
 }
 
 /* state: active */
-[data-ds-component='Button']:active:not(:disabled) {
+[data-juro-component='Button']:active:not(:disabled) {
   filter: brightness(0.92);
 }
 
 /* state: disabled */
-[data-ds-component='Button']:disabled {
+[data-juro-component='Button']:disabled {
   opacity: 0.45;
 }
 
 /* state: focus-visible */
-[data-ds-component='Button']:focus-visible {
+[data-juro-component='Button']:focus-visible {
   outline: 2px solid #8b83f0;
   outline-offset: 2px;
 }
 
 /* state: loading — the contract says the label must not move, so the spinner takes the icon slot */
-[data-ds-component='Button'][data-ds-state-loading] {
+[data-juro-component='Button'][data-juro-state-loading] {
   cursor: progress;
 }
-[data-ds-component='Button'][data-ds-state-loading] [data-ds-part='icon-start'] {
+[data-juro-component='Button'][data-juro-state-loading] [data-juro-part='icon-start'] {
   display: inline-flex;
   inline-size: 0.85em;
   block-size: 0.85em;
@@ -137,8 +137,8 @@
   }
 }
 
-[data-ds-component='Button'] [data-ds-part='icon-start'],
-[data-ds-component='Button'] [data-ds-part='icon-end'] {
+[data-juro-component='Button'] [data-juro-part='icon-start'],
+[data-juro-component='Button'] [data-juro-part='icon-end'] {
   inline-size: 1em;
   block-size: 1em;
 }

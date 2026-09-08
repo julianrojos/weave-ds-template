@@ -31,11 +31,11 @@ constraints and token policy are stated once, because there is nothing to compar
 
 Still never write these — derived, and nothing would check them:
 
-| Fact                             | Comes from                |
-| -------------------------------- | ------------------------- |
-| prop names, types, required-ness | the props interface       |
-| descriptions                     | JSDoc                     |
-| which parts actually render      | `data-ds-part` in the TSX |
+| Fact                             | Comes from                  |
+| -------------------------------- | --------------------------- |
+| prop names, types, required-ness | the props interface         |
+| descriptions                     | JSDoc                       |
+| which parts actually render      | `data-juro-part` in the TSX |
 
 ## The contract, field by field
 

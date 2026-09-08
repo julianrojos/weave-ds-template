@@ -77,6 +77,6 @@ a shipped bug went through. A press on a dialog's own padding closed it while ev
 passed, because whether a point falls inside an element's box is not answerable from plain values.
 
 There is a sibling of this directory for the WEB PLATFORM mapping — which ARIA attribute a state
-reaches the DOM through — in [`@ds/platform-web/conformance`](../../platform-web/conformance/). It
+reaches the DOM through — in [`@juro/platform-web/conformance`](../../platform-web/conformance/). It
 is separate because these cases are agnostic and those are not: `ArrowRight` means something on any
 platform, and `aria-checked` does not.

@@ -30,7 +30,7 @@ node packages/react/src/emit/emit.mjs Switch --out apps/sandbox/src/components
 That produced `Switch/`, and the same command produced `Field/`, `Accordion/`, `AccordionItem/`,
 `RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`, `Tabs/`, `TabItem/` and `TabPanel/` — each one a TSX, its structural CSS, an empty theme file
 and a barrel, from the matching contract in `packages/contracts/components/`. Note what the imports in `src/App.tsx` do
-**not** say: nothing comes from `@ds/react`, because that package exports no components. The
+**not** say: nothing comes from `@juro/react`, because that package exports no components. The
 components live here, in the consumer's own tree, which is the whole architecture in one import path.
 
 The page labels each specimen `works`, `partial` or `shell`, because the four contracts did not
@@ -48,7 +48,7 @@ not derive.
 
 ## Adding a component to it
 
-`vite.config.ts` aliases `@ds/react` to `packages/react/src/index.ts` for hot reload against source
+`vite.config.ts` aliases `@juro/react` to `packages/react/src/index.ts` for hot reload against source
 with no build step in between. That alias is for the behaviour runtime; components are generated
 into `src/components/` and imported from there.
 

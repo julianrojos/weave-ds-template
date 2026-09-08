@@ -82,7 +82,7 @@
       ]
     },
     "size": {
-      "concept": "One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap.",
+      "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
       "canonicalValues": [
         "xs",
         "s",

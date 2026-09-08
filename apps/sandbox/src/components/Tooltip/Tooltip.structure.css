@@ -12,20 +12,20 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Tooltip'] {
+[data-juro-component='Tooltip'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
 /* Hiding is a contract claim, not a style. See the note in the emitter. */
-[data-ds-component='Tooltip'][hidden],
-[data-ds-component='Tooltip'] [hidden] {
+[data-juro-component='Tooltip'][hidden],
+[data-juro-component='Tooltip'] [hidden] {
   display: none !important;
 }
 
-[data-ds-component='Tooltip'] [data-ds-part='trigger'] {
+[data-juro-component='Tooltip'] [data-juro-part='trigger'] {
   /* no declared layout for this part */
 }
 
-[data-ds-component='Tooltip'] [data-ds-part='popup'] {
+[data-juro-component='Tooltip'] [data-juro-part='popup'] {
   /* no declared layout for this part */
 }

@@ -20,7 +20,7 @@ export interface Dismissal {
  * Closing a region with a key or a press that is not activation.
  *
  * The decision logic is in ./dismissal.ts as pure functions, so the cases in
- * `@ds/contracts/conformance/dismissal.json` execute against it. This hook is the React binding:
+ * `@juro/contracts/conformance/dismissal.json` execute against it. This hook is the React binding:
  * reading the event, and calling the state writer.
  *
  * NOTE WHAT THIS DOES NOT DO, AND WHAT THAT COSTS. There is no document-level listener and no

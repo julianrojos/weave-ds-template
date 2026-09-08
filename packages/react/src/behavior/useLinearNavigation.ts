@@ -45,7 +45,7 @@ export interface LinearNavigation {
  * the contract says so — selection following focus.
  *
  * The decision logic lives in ./linear-navigation.ts as pure functions, so it can be executed
- * against the conformance cases in `@ds/contracts/conformance/linear-navigation.json`. This hook is
+ * against the conformance cases in `@juro/contracts/conformance/linear-navigation.json`. This hook is
  * the React binding around it: registration, document order, and moving focus.
  *
  * @param options  the contract's `collection.navigation` block, one field for one

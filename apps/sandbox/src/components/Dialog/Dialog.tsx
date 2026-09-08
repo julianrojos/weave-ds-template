@@ -5,15 +5,15 @@
 
 import { forwardRef, useId, useState, useCallback, useEffect, useRef } from 'react';
 import type { DialogHTMLAttributes, ReactNode } from 'react';
-import { useDismissal, type DismissalOptions } from '@ds/react/behavior';
+import { useDismissal, type DismissalOptions } from '@juro/react/behavior';
 import './Dialog.structure.css';
 import './Dialog.theme.css';
 
 // Transcribed from Dialog.contract.json > dismisses. The cases this commits us to
-// are in @ds/contracts/conformance/dismissal.json.
+// are in @juro/contracts/conformance/dismissal.json.
 //
 // The contract also declares escape, which is NOT generated: the
-// platform supplies it for a <dialog>. See @ds/platform-web > visibility.supplies.
+// platform supplies it for a <dialog>. See @juro/platform-web > visibility.supplies.
 const DISMISSAL: DismissalOptions = {
   on: ['outside-press'],
 };
@@ -126,8 +126,8 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
       {...rest}
       ref={setDialogRef}
       id={baseId}
-      data-ds-state-open={openValue || undefined}
-      data-ds-size={size}
+      data-juro-state-open={openValue || undefined}
+      data-juro-size={size}
       aria-labelledby={`${baseId}-title`}
       onPointerDown={(event) => {
         rest.onPointerDown?.(event);
@@ -141,15 +141,15 @@ export const Dialog = forwardRef<HTMLDialogElement, DialogProps>(function Dialog
         rest.onClick?.(event);
         dismissal.onClick(event);
       }}
-      data-ds-component="Dialog"
-      data-ds-part="root"
+      data-juro-component="Dialog"
+      data-juro-part="root"
       className={className}
     >
-      <div id={`${baseId}-title`} data-ds-part="title">
+      <div id={`${baseId}-title`} data-juro-part="title">
         {title}
       </div>
-      <div data-ds-part="body">{body}</div>
-      <div data-ds-part="actions">{actions}</div>
+      <div data-juro-part="body">{body}</div>
+      <div data-juro-part="actions">{actions}</div>
       {children}
     </dialog>
   );
