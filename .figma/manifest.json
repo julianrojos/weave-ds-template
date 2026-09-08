@@ -1,7 +1,7 @@
 {
   "_schema": "1.0",
   "_doc": "Project anchor for this design system's Figma integration. Single source of truth for which Figma file we read from, and for the identity that generation needs. Maps in maps/*.json resolve their `source` keys against this file. Never hard-code a file key in a script or a skill — read it from here, so pointing the system at a different file is one edit.",
-  "lastUpdated": "2026-08-28",
+  "lastUpdated": "2026-09-08",
 
   "bridges": {
     "_doc": "TWO bridges, recorded separately. The READ bridge is the only one anything depends on: the explore -> report -> decide -> build arc completes without the write bridge, and `pnpm verify` is green on a machine with neither Figma Desktop nor a plugin installed — which is what keeps the template's fresh-clone promise intact. The WRITE bridge is opt-in and unwired: no pnpm script, no gate and no CI job invokes it. Code stays canonical for token values in both directions; a difference is drift in Figma, never a change to adopt back.",
@@ -44,9 +44,9 @@
 
   "sources": {
     "weave": {
-      "key": "eUO2kF0A3tJXdVTcvEPQjW",
+      "key": "CAZybLope1cikvLyECBQnD",
       "name": "weave — Mokkap masterclass",
-      "url": "https://www.figma.com/design/eUO2kF0A3tJXdVTcvEPQjW/weave---Mokkap-masterclass-29-08-2026",
+      "url": "https://www.figma.com/design/CAZybLope1cikvLyECBQnD/weave-DS---Mokkap-masterclass-29-08-2026--Copy-?node-id=4025-801&t=Lmvfmu89OZv4E7JQ-1",
       "purpose": "The design source. A dark screen-recorder UI. Variables, text styles and component sets live here.",
       "published": false,
       "libraryKey": null,
