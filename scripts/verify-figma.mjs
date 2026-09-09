@@ -11,8 +11,10 @@
  *   2  every map's `source` names a real key in manifest.json -> sources
  *   3  every collection's `codeSource` points at a file that exists
  *   4  a variable whose collection is unmapped must have `code: null` (drift, not a lie)
+ *   5  every variable's `collection` names a real key in that map's `collections`
+ *   6  a collection's `variableCount` matches how many variables actually declare it
  *
- * An empty map passes all four. That is the point — the template ships empty, and an unchecked
+ * An empty map passes all six. That is the point — the template ships empty, and an unchecked
  * empty state is not the same as a checked one.
  */
 
@@ -72,11 +74,30 @@ function main() {
       }
     }
 
+    const collectionsMap = data.collections ?? {};
+    const declaredCounts = new Map();
     for (const [name, v] of Object.entries(data.variables ?? {})) {
-      const mapped = data.collections?.[v.collection]?.codeSource;
+      const mapped = collectionsMap[v.collection]?.codeSource;
       if (!mapped && v.code !== null) {
         problems.push(
           `${map}: variable "${name}" claims code "${v.code}" but its collection "${v.collection}" has no codeSource. An unmapped collection must report drift (code: null), not a path.`,
+        );
+      }
+
+      if (!Object.hasOwn(collectionsMap, v.collection)) {
+        problems.push(
+          `${map}: variable "${name}" names collection "${v.collection}", which is not a key in this map's collections.`,
+        );
+        continue;
+      }
+      declaredCounts.set(v.collection, (declaredCounts.get(v.collection) ?? 0) + 1);
+    }
+
+    for (const [name, col] of Object.entries(collectionsMap)) {
+      const actual = declaredCounts.get(name) ?? 0;
+      if (col.variableCount !== actual) {
+        problems.push(
+          `${map}: collection "${name}" declares variableCount ${col.variableCount}, but ${actual} variable(s) actually name it.`,
         );
       }
     }
