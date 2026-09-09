@@ -8,9 +8,9 @@ The scripts themselves live in [`scripts/`](../../scripts/README.md) and
 
 ## What is here
 
-| Workflow                     | Jobs                | What it protects                                                        |
-| ---------------------------- | ------------------- | ----------------------------------------------------------------------- |
-| [`verify.yml`](./verify.yml) | `verify`, `init-ds` | Every gate on every push and PR, plus the branding codemod's own health |
+| Workflow                     | Jobs     | What it protects                |
+| ---------------------------- | -------- | ------------------------------- |
+| [`verify.yml`](./verify.yml) | `verify` | Every gate on every push and PR |
 
 ### `verify`
 
@@ -22,20 +22,8 @@ Steps are separate rather than one `pnpm verify` call on purpose: a failure name
 GitHub UI without anyone reading a log.
 
 **The same set, not the same order** — and the difference matters. This job builds tokens early;
-`pnpm verify` builds late. So a gate that accidentally depends on build output passes here and fails
-there. That is not hypothetical: `verify:docs` shipped requiring generated token files to exist,
-this job went green, and the `init-ds` job below caught it by running the real `pnpm verify` on a
-clean checkout. **A gate must not depend on anything produced later in its own chain.**
-
-### `init-ds`
-
-A matrix that runs `pnpm init-ds <name>` on a clean checkout, then asserts the **renamed** repo is
-still green and that no stragglers of the old prefix survive.
-
-The branding codemod rewrites the package scope, the CSS custom-property prefix and the
-data-attribute prefix together. It runs once per project, which means in normal use it is never
-exercised again — exactly the shape of thing that rots silently. This job is the only reason it
-stays correct.
+`pnpm verify` builds late. A gate must not depend on output produced earlier only in CI, or local and
+remote verification can disagree.
 
 ## Why gates live here and not only in `pnpm verify`
 
@@ -48,6 +36,5 @@ else. When you add one, add it in both places, with a comment here saying what i
 
 ## What is deliberately absent
 
-No deploy, no release, no publish workflow. The template ships no components, so there is nothing to
-release yet — and an unused publish pipeline is a thing that breaks quietly and is discovered on the
-day it is first needed.
+No deploy, release or publish workflow exists yet. This instance has no accepted release decision,
+and an unused publishing pipeline would break quietly before the day it was first needed.

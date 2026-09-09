@@ -18,11 +18,9 @@ territory. This file and every doc it points to is written to be reached that wa
 
 ## What this is
 
-A **design-system starter template**. It ships the machinery — token pipeline, component contract
-system, prop glossary, Figma wiring, ADR governance, agent skills, CI — and **no components**.
-
-That emptiness is the design, not an unfinished state. Components are built against an accepted
-decision; the arc that produces one is:
+The **Juro design-system instance**. It contains the token pipeline, component contract system, prop
+glossary, Figma wiring, ADR governance, agent skills and CI, together with the project decisions and
+components built through them. Components are built against an accepted decision; the arc is:
 
 > **explore → report → decide (ADR) → build**
 
@@ -48,18 +46,11 @@ internals** — component anatomy, the contract system, extraction, the gates. R
 authoring or modifying a component. This file covers the monorepo, the token pipeline and
 governance.
 
-## Brand it before anything else
+## Identity
 
-The repo ships generic (`@juro/*`, `--juro-*`, `data-juro-*`). Run **once**, before writing components:
-
-```bash
-pnpm init-ds weave --dry   # inspect
-pnpm init-ds weave         # apply, then pnpm install
-```
-
-The scope, the token prefix and the data-attribute prefix are one decision in three syntaxes and
-must move together — renaming one by hand leaves a repo that builds green and is wrong. `/ds.config.json`
-is the single source of truth; never hard-code a prefix anywhere else.
+This repository is already branded (`@juro/*`, `--juro-*`, `data-juro-*`). `/ds.config.json` is the
+single source of truth; never hard-code a second prefix. Rebranding is an established-system
+migration and has no repository command. See ADR 0011.
 
 ## Commands
 
@@ -76,9 +67,8 @@ pnpm verify:docs         # every link, path and command in the docs resolves
 pnpm report:paints       # token policy vs stylesheet — a REPORT, never a gate
 ```
 
-`pnpm verify` chains: `format:check → typecheck → verify:contract → prop-map:check →
-adr-index:check → verify:docs → verify:figma → build → test`. All of it is green on a fresh clone
-with zero components — that is the template's acceptance test.
+`pnpm verify` chains every local gate, then builds and tests. It must be green from a clean checkout
+without requiring Figma Desktop or its write bridge.
 
 ## Governance lives in the ADRs — consult the one your task touches
 

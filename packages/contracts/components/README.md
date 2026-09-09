@@ -135,7 +135,7 @@ attribute families instead, and between them they are the entire styling contrac
 [data-juro-component='Button'][data-juro-hierarchy='primary']  /* an axis value */
 ```
 
-The prefix comes from `/ds.config.json` and moves with `pnpm init-ds`. Never hard-code it.
+The established prefix comes from `/ds.config.json`. Never maintain a second hard-coded identity.
 
 A **state** deliberately does not get a fourth family. Where the platform already carries the state
 it is used as-is — `:hover`, `:disabled`, `[aria-checked='true']` — because a second copy could

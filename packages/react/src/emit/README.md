@@ -52,8 +52,8 @@ and not a preference:
    part → class → declarations → `var()` → declared channel. Break the pairing and the check
    silently degrades into a comment.
 
-Read the prefix from `/ds.config.json`. Never hard-code `ds` — `pnpm init-ds` renames it, and a
-hard-coded prefix in emitted code survives the rename and breaks silently.
+Read the established prefix from `/ds.config.json`. Never maintain a second hard-coded identity in
+the emitter; it can disagree with config and break generated styling silently.
 
 ### 1b. Three attribute families, not one
 

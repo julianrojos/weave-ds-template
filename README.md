@@ -1,16 +1,14 @@
-# Design system starter template
+# Juro design system
 
-A React design-system monorepo that ships **the machinery, and no components**.
+A contract-first design-system workspace with DTCG tokens, agnostic component contracts, a React
+backend, generated sandbox implementations, Figma reconciliation and CI-enforced governance.
 
-Token pipeline, component contract system, prop glossary, Figma wiring, ADR governance, agent
-skills and CI — all working, all empty. You add the components.
-
-## Why it is empty
+## How it is built
 
 Because a component is the _last_ step, not the first.
 
-Most design systems get built by drawing a button, then arguing about what it should have been. The
-arc this template is built for runs the other way:
+Most design systems get built by drawing a button, then arguing about what it should have been. Juro
+runs the other way:
 
 > **explore → report → decide → build**
 
@@ -18,31 +16,31 @@ You read the design source and write down what is measurably there. That report 
 The questions become decisions with their reasoning attached. The component is built against a
 decision that already exists — and the machinery checks that it was.
 
-A template that shipped a Button would skip all four steps and teach the opposite lesson.
+The repository now contains the decisions, tokens and contracts produced by that process.
 
 ## Quick start
 
 ```bash
 pnpm install
-pnpm init-ds <yourname>    # brand it: @juro/* -> @yourname/*, --juro-* -> --yourname-*
-pnpm install               # workspace links move with the scope
-pnpm verify                # every gate, green, on an empty repo
+pnpm verify                # every local gate
 pnpm dev                   # sandbox at localhost:4300
 ```
 
-`pnpm init-ds` runs **once**, before any components exist. Try `--dry` first to see what moves.
+This is the branded Juro instance, not a rebrandable starter. Its identity lives in `ds.config.json`;
+changing it is a migration, not a setup command. See
+[ADR 0011](./docs/ADR/0011-this-repository-is-the-juro-instance-not-a-rebrandable-template.md).
 
 ## What is in the box
 
 |                   |                                                                                |
 | ----------------- | ------------------------------------------------------------------------------ |
 | `packages/tokens` | DTCG JSON → CSS custom properties + typed constants, via Style Dictionary      |
-| `packages/react`  | The library. React 19, CSS Modules, CVA. Empty.                                |
+| `packages/react`  | React backend: bindings, emitter and shared behavior                           |
 | `apps/sandbox`    | A one-page Vite harness pointed at component source. Boots in ~1s.             |
 | `apps/storybook`  | Complete on disk, deliberately **not installed** — one line to switch on       |
-| `docs/ADR`        | Decision records. One — how the repo is organised. The rest are yours          |
+| `docs/ADR`        | Accepted and proposed architecture decisions for this system                   |
 | `docs/research`   | Pre-decision space: what is measurably true, ending in open questions          |
-| `.ai/maps`        | The prop glossary. Generated, descriptive, CI-gated. Useful while still empty. |
+| `.ai/maps`        | The generated, descriptive and CI-gated prop glossary                          |
 | `.figma`          | Which design file we read, how names map, what has been reconciled             |
 | `.claude/skills`  | `ds-decide`, `ds-component`, and three that write to Figma. Exploring is yours |
 

@@ -1,11 +1,11 @@
 {
-  "_doc": "Single source of truth for this design system's identity. Set ONCE per project via `pnpm init-ds <name>`, which rewrites this file and every reference to it. Never rename by find-and-replace: the codemod also moves the package scope, the CSS custom-property prefix and the data-attribute prefix, and missing one of them leaves the repo half-renamed in a way no build error catches.",
+  "_doc": "Single source of truth for the established Juro design-system identity. The package scope, CSS custom-property prefix and data-attribute prefix are one coordinated contract. Rebranding is an explicit migration, not a setup command; see ADR 0011.",
   "name": "juro",
   "scope": "@juro",
   "tokenPrefix": "juro",
   "dataPrefix": "juro",
   "_names": {
-    "_note": "These descriptions avoid spelling out the current prefix, so they stay accurate after `pnpm init-ds` renames it. Read them against the values above.",
+    "_note": "Read these descriptions against the configured values above. Verification keeps their projections aligned where the identity is repeated.",
     "name": "Human/short name of the system. Used in generated headings.",
     "scope": "npm scope for the workspace packages — the library resolves as <scope>/react and <scope>/tokens.",
     "tokenPrefix": "CSS custom-property namespace: every property is --<tokenPrefix>-*. Every custom property the system declares or reads must carry it, so a bare --spacing cannot inherit into a consumer's markup and collide with a property of theirs by the same name.",

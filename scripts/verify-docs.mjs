@@ -85,8 +85,8 @@ const isPlaceholder = (s) =>
 //
 // This gate checks AUTHORED pointers. Requiring generated ones to exist would make `pnpm verify`
 // depend on having already run `pnpm build` — which it does not, because `build` comes later in the
-// chain. That is exactly how this was caught: CI's verify job runs `build:tokens` early and passed,
-// while the init-ds job runs the real `pnpm verify` on a clean checkout and failed.
+// chain. A clean checkout running the local chain must behave the same as CI even though CI builds
+// tokens earlier for clearer step reporting.
 const GENERATED_DIRS = ['build', 'dist', 'node_modules', 'storybook-static'];
 const isGenerated = (s) => s.split('/').some((seg) => GENERATED_DIRS.includes(seg));
 

@@ -1,5 +1,5 @@
 {
-  "name": "ds-template",
+  "name": "juro-design-system",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,6 @@
     "node": ">=20"
   },
   "scripts": {
-    "init-ds": "node scripts/init-ds.mjs",
     "dev": "pnpm --filter sandbox dev",
     "dev:storybook": "pnpm --filter storybook dev",
     "build": "pnpm build:tokens && pnpm build:react",

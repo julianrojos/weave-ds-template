@@ -118,7 +118,7 @@ These come from the root `CLAUDE.md` and apply to every skill here.
   say what it blocks. Never write a plausible placeholder that reads as decided.
 - **Never hard-code a Figma file key.** Read it from `.figma/manifest.json` → `sources.*.key`. The
   same goes for the token, scope and data prefixes: `/ds.config.json` is the single source of truth,
-  and `pnpm init-ds` rewrites every reference to it.
+  and verification rejects disagreement with its recorded projections.
 - **Date what you measured.** A snapshot without a date is indistinguishable from a claim about the
   present. `ds-figma-component/references/figma-file.md` is the worked example.
 - **Say which checks did not run.** A skipped check and a passing check must never look the same in
