@@ -45,6 +45,26 @@ above before trusting either file's current count without looking.
 
 All six collections still have exactly one mode. No light/dark axis exists anywhere in the file.
 
+### Color Primitives — full list, resolved
+
+Grouped by ramp. Every value below is a literal — none of these are aliases.
+
+| Ramp           | Steps and resolved values                                                                                                                                                                            |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `color/base`   | `black`=`#000000` `white`=`#ffffff` `transparent`=`#00000000`                                                                                                                                        |
+| `color/dark`   | `50`=`#505050` `100`=`#4c4c4c` `200`=`#464646` `300`=`#3f3f3f` `400`=`#373737` `500`=`#2e2e2e` `600`=`#262626` `700`=`#1e1e1e` `800`=`#151515` `900`=`#0d0d0d` `1000`=`#050505`                      |
+| `color/gray`   | `50`=`#f7f7f7` `100`=`#eaeaea` `200`=`#d1d1d1` `300`=`#b5b5b5` `400`=`#959595` `500`=`#737373` `600`=`#545454` `700`=`#363636` `800`=`#232323` `800-90`=`#1e1e1ee5` `900`=`#111111` `1000`=`#020202` |
+| `color/green`  | `50`=`#e7fdee` `100`=`#cff9dc` `200`=`#a0eebb` `300`=`#26e589` `400`=`#07c573` `500`=`#00a15d` `600`=`#008149` `700`=`#006035` `800`=`#003f21` `900`=`#00200e` `1000`=`#000401`                      |
+| `color/light`  | `50`=`#ffffff` `100`=`#f9f9f9` `200`=`#ececec` `300`=`#dddddd` `400`=`#cccccc` `500`=`#bababa` `600`=`#a9a9a9` `700`=`#979797` `800`=`#848484` `900`=`#727272` `1000`=`#5d5d5d`                      |
+| `color/purple` | `50`=`#f5f6ff` `100`=`#e3e7ff` `200`=`#c1c9ff` `300`=`#9ba6ff` `400`=`#7379ff` `500`=`#5146e6` `500-40`=`#5146e666` `600`=`#401aca` `700`=`#2e00a4` `800`=`#1d0072` `900`=`#0d0042` `1000`=`#020014` |
+| `color/red`    | `50`=`#fff4f2` `100`=`#ffe5e0` `200`=`#ffc5bc` `300`=`#ff9e90` `400`=`#ff6858` `500`=`#ef1313` `600`=`#c20006` `700`=`#930003` `800`=`#630001` `900`=`#360000` `1000`=`#0b0000`                      |
+
+`3 + 11 + 12 + 11 + 11 + 12 + 11 = 71`, matching the collection's `variableCount`.
+
+`color/light/50` and `color/base/white` both resolve to `#ffffff`, and `color/gray/900` and
+`color/dark/1000` are both very dark but distinct grays (`#111111` vs. `#050505`) — worth knowing
+before assuming two primitives that resolve identically, or nearly so, encode the same intent.
+
 ### Color Tokens — full list, resolved
 
 | Variable                 | Resolves to | Aliases               | codeSyntax.WEB                    |
@@ -78,17 +98,63 @@ of the element's own size. Record it as that, not as a length to reproduce liter
 
 ### Type Primitives and Type Tokens — confirms the earlier text-style reading
 
-`font/fontFamily/primary = "Lexend Deca"`, sizes `12/14/16/18/20/24`, weights `light=300`,
-`regular=400`, `medium=500`. Every `Type Tokens` entry (Display/Heading, Display/Time, Display/Title,
-UI/Button, UI/Caption, UI/Description, UI/Label, UI/Label-emphasis) aliases fontFamily, size and
-weight from these primitives — consistent with `figma-file.md`'s finding that all eight text styles
-bind every facet to a variable.
+All 10, resolved:
+
+```
+font/fontFamily/primary = "Lexend Deca"
+font/size:   xs=12  sm=14  base=16  lg=18  xl=20  2xl=24
+font/weight: light=300  regular=400  medium=500
+```
+
+Every `Type Tokens` entry aliases fontFamily, size and weight from these primitives — consistent with
+`figma-file.md`'s finding that all eight text styles bind every facet to a variable.
+
+Full list, resolved — all 24:
+
+| Variable                       | Resolves to   | Aliases                   |
+| ------------------------------ | ------------- | ------------------------- |
+| `Display/Heading/fontFamily`   | `Lexend Deca` | `font/fontFamily/primary` |
+| `Display/Heading/size`         | `20`          | `font/size/xl`            |
+| `Display/Heading/weight`       | `500`         | `font/weight/medium`      |
+| `Display/Time/fontFamily`      | `Lexend Deca` | `font/fontFamily/primary` |
+| `Display/Time/size`            | `16`          | `font/size/base`          |
+| `Display/Time/weight`          | `500`         | `font/weight/medium`      |
+| `Display/Title/fontFamily`     | `Lexend Deca` | `font/fontFamily/primary` |
+| `Display/Title/size`           | `24`          | `font/size/2xl`           |
+| `Display/Title/weight`         | `500`         | `font/weight/medium`      |
+| `UI/Button/fontFamily`         | `Lexend Deca` | `font/fontFamily/primary` |
+| `UI/Button/size`               | `16`          | `font/size/base`          |
+| `UI/Button/weight`             | `500`         | `font/weight/medium`      |
+| `UI/Caption/fontFamily`        | `Lexend Deca` | `font/fontFamily/primary` |
+| `UI/Caption/size`              | `12`          | `font/size/xs`            |
+| `UI/Caption/weight`            | `300`         | `font/weight/light`       |
+| `UI/Description/fontFamily`    | `Lexend Deca` | `font/fontFamily/primary` |
+| `UI/Description/size`          | `14`          | `font/size/sm`            |
+| `UI/Description/weight`        | `300`         | `font/weight/light`       |
+| `UI/Label-emphasis/fontFamily` | `Lexend Deca` | `font/fontFamily/primary` |
+| `UI/Label-emphasis/size`       | `16`          | `font/size/base`          |
+| `UI/Label-emphasis/weight`     | `500`         | `font/weight/medium`      |
+| `UI/Label/fontFamily`          | `Lexend Deca` | `font/fontFamily/primary` |
+| `UI/Label/size`                | `16`          | `font/size/base`          |
+| `UI/Label/weight`              | `300`         | `font/weight/light`       |
+
+That is all 24 — three facets (fontFamily, size, weight) × eight styles. **`line-height` is
+deliberately not in this table.** It is not one of these 24 variables; it is a property of the
+`UI/Button` _text style_ (see `.figma/manifest.json → identity.font`), a different Figma primitive
+that this report's method explicitly did not cover (see "Method" above). Mixing it into this table
+would misrepresent it as part of the 154-variable inventory, which it is not.
 
 ### Opacity Primitives — the collection nobody recorded
 
-Eleven steps, `50` through `1000`, each an integer **0–100** (Figma's own opacity unit), each
-carrying a description translating it to the 0–1 fraction code would use (`opacity/400` →
-_"In code this is 0.4"_). Five `Color Tokens` entries (`surface/ghost`, `surface/overlay`,
+Eleven steps, `50` through `1000`, each an integer **0–100** (Figma's own opacity unit). All 11,
+resolved:
+
+```
+opacity: 50=5  100=10  200=20  300=30  400=40  500=50  600=60  700=70  800=80  900=90  1000=100
+```
+
+Each also carries a description translating it to the 0–1 fraction code would use — e.g. `opacity/400`
+→ _"In code this is 0.4"_. Five `Color Tokens` entries (`surface/ghost`, `surface/overlay`,
 `surface/subtle`, `text/disabled`, `text/secondary`) carry a description pointing at one of these —
 e.g. `surface/overlay`: _"Bind layer opacity to opacity/400 where this is used. Previously baked as
 #111111 @40%."_ That is a live instruction to compose two tokens (a solid color + a separate opacity
