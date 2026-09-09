@@ -2,28 +2,27 @@
 /**
  * `pnpm verify:contract` — the contract gate.
  *
- * Everything it checks is something whose breach produces NO build error and NO failing test: a
- * contract can promise an axis the code does not expose, name a part that never renders, or style
- * a state nothing can enter, and every other tool stays green.
+ * Everything it checks is a structural claim whose breach produces no build error by itself: a
+ * binding can point at the wrong contract, a member can name an ancestor that does not admit it, or
+ * a contract can call a state intrinsic when the selected platform does not provide it.
  *
- * WHY PARITY IS THE HEART OF IT — see contracts/README.md.
- * The contract SPECIFIES the axes and their values, because a file that omits them cannot be built
- * from. That duplication is safe only because of what this script does: it asserts the two are
- * equal. Remove these parity checks and the contract silently becomes a stale second opinion —
- * one that still looks authoritative.
+ * There is deliberately no contract-to-generated-code parity check. Code is emitted from the
+ * contract, so comparing the output with its own input is circular. This gate checks the authored
+ * graph before emission; regeneration checks belong where generated output is committed.
  *
  * FAILS
  *   shape      contract or binding does not validate against its schema
- *   identity   name vs directory vs export vs barrel vs binding
- *   parity     contract and implementation disagree about axes, values or defaults
- *   invented   contract names a part / state / slot / axis value the implementation lacks
- *   phantom    contract declares a part the TSX never renders
+ *   identity   contract or binding identity disagrees with its directory/name
+ *   pointer    a React binding does not resolve to its own contract
+ *   member     collection membership is missing or contradictory
+ *   reference  a cross-component anatomy reference cannot resolve
+ *   invented   a state or dismissal claim cannot be implemented
  *   status     a `deprecated` level whose replacedBy does not exist
+ *   conformance a declared behaviour has no shared conformance cases
  *
  * REPORTS, NEVER FAILS
- *   a component with no contract          (uncontracted is a reportable state, not a failure)
- *   a rendered part the contract omits
- *   extraction warnings
+ *   a contract with no React binding
+ *   a contract with no changelog
  *
  * That split is not softness: a gate that failed on every uncontracted component on day one would
  * be switched off within the week, and a switched-off gate protects nothing.

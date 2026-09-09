@@ -27,16 +27,15 @@ rather than prose_ does change the decision, so it belongs in the record.
 
 ## Worked example
 
-Illustrative — this repo ships no records, so there is nothing to quote. A record deciding how
-component contracts work would split like this:
+ADR 0002's contract-package decision demonstrates the split:
 
-| Belongs in the **record**                                                        | Belongs in the **contract table**                           |
-| -------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| "Every component may carry exactly one contract file, colocated with its source" | `packages/react/src/components/<Name>/<Name>.contract.json` |
-| "Machine-readable, not prose"                                                    | `packages/contracts/schema/component.schema.json`           |
-| "Restating a derivable fact is a defect, not redundancy"                         | `packages/react/scripts/verify-contract.mjs`                |
-| "The contract states token policy, not token values"                             | the `tokenPolicy` definition inside the schema              |
-| "Absence is a reportable state, not a failure"                                   | the coverage output of the gate                             |
+| Belongs in the **record**                                | Belongs in the **contract table**                           |
+| -------------------------------------------------------- | ----------------------------------------------------------- |
+| "Agnostic contracts live in their own package"           | `packages/contracts/components/<Name>/<Name>.contract.json` |
+| "Machine-readable, not prose"                            | `packages/contracts/schema/component.schema.json`           |
+| "Restating a derivable fact is a defect, not redundancy" | `packages/react/scripts/verify-contract.mjs`                |
+| "The contract states token policy, not token values"     | the `tokenPolicy` definition inside the schema              |
+| "Absence is a reportable state, not a failure"           | the coverage output of the gate                             |
 
 Notice the shape: the left column is **rules**, the right column is **files**. If your left column
 has a file path in it, or your right column has a sentence in it, the line is in the wrong place.

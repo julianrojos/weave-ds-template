@@ -2,14 +2,12 @@
 /**
  * `pnpm contract <Name>` — compose one component's merged view.
  *
- * A component's description lives in two halves and NEITHER IS COMPLETE ALONE. The source owns
- * everything derivable: prop names, types, value sets, defaults, required-ness, JSDoc, and the
- * inventory of parts and states it renders. The contract owns only what the source cannot state:
- * the rendered element, where the ref lands, what a slot accepts, accessibility commitments,
- * lifecycle status, and the token policy for each part.
+ * A component's description has an agnostic contract and a framework binding. The contract owns
+ * intent, states, axes, anatomy and policy; the React binding owns platform-specific choices. The
+ * prop surface is derived from the contract with the same helper used by the emitter.
  *
- * Read them merged. Reading either in isolation is misleading, which is why this composer is
- * load-bearing rather than a convenience.
+ * Read them merged when asking what the React backend exposes. Neither authored file is a complete
+ * React-facing view on its own.
  *
  * Usage:
  *   pnpm contract Button            merged view as JSON

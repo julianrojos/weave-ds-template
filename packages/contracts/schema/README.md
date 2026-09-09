@@ -30,59 +30,31 @@ A binding that grows past a handful of fields is usually a sign something agnost
 
 ## Why the contract specifies rather than merely describes
 
-Worth reading, because the reasoning is sound and its conclusion is about to invert.
-
 The earliest version of this schema held only what code could not state, and forbade restating
 anything derivable — because two copies of one fact drift. That rule bought safety and cost
 buildability: a file that deliberately omits the axes and their values cannot be the thing you build
 _from_, only a thing that annotates something already built.
 
-So the rule became:
-
-> **The contract may specify anything. Anything it specifies that the implementation also expresses
-> must be asserted equal by a gate.**
-
-Duplication is not dangerous because it is duplication. It is dangerous when nothing checks it.
-
-### What that costs, and it is not small
-
-**The safety rests entirely on the gate.** The original rule was self-enforcing: a contract
-forbidden from restating derivable facts could not drift from the code, because it never claimed
-anything the code claimed.
-
-That is no longer true. If the parity checks are skipped, disabled or removed, the contract degrades
-into precisely the stale second opinion the original rule existed to prevent — and **it will look
-authoritative while doing it.** A file that specifies the axes is more useful than one that does not,
-and more dangerous when unchecked.
-
-### Why this is now unfinished business
-
-Both versions above assume the same direction of travel: **hand-written code is primary, and the
-contract is checked against it.** `verify:contract` compares the contract's declared axes with the
-`cva` axes it reads out of the TSX.
-
-This library inverts that. The contract is primary and the code is emitted from it. Under inversion:
+The library therefore inverted the relationship: the contract is primary and code is emitted from
+it. Under that model:
 
 - **The contract must state the rules a component is compiled from** — but not its props. A prop name
   is a framework's spelling, so the contract states that a state is `shared` and each binding
   compiles that into `checked`/`defaultChecked`/`onCheckedChange`, or into `modelValue` +
   `update:modelValue`, or into an attribute and an event. See `states.*.control` and
   [ADR 0004](../../../docs/ADR/0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md).
-- **The existing parity check becomes circular.** It compares a contract's declared axes against the
-  `cva` axes read out of a TSX; once that TSX is emitted from the contract, the comparison checks
-  generated output against its own input and proves nothing. It has to become a **regeneration
-  check**: re-emit, compare, fail on a difference. The pattern already exists here —
-  `prop-map:check` works exactly that way.
+- **Generated code cannot be an independent second opinion.** Comparing it with the contract that
+  produced it is circular. A repository that commits generated output needs a regeneration check:
+  re-emit to the chosen destination, compare and fail on a difference. That is an integration
+  concern because `theme.css` becomes consumer-owned after its first emission.
 
-The first half is done: `control` landed with ADR 0004, and `$id` is now
-`component-contract-3.json`. The second is not. `verify:contract` still runs the parity comparison
-against a `packages/react/src/components/` directory that no longer exists, which is harmless only
-because there are zero components for it to compare — and stops being harmless the day an emitter
-produces one.
+`control` landed with ADR 0004 and `$id` is `component-contract-3.json`. `verify:contract` now checks
+the authored graph directly: schemas, binding pointers, collection membership, cross-component
+references, platform state claims and conformance commitments. It intentionally makes no parity
+claim against generated TSX.
 
 ## Reading a schema
 
 Both files are JSON Schema draft 2020-12 with `additionalProperties: false` at every level, so an
 unrecognised key is an error rather than a silent no-op. `pnpm verify:contract` compiles them on
-every run; that compile is the one check that can fail with zero components in the repo, which makes
-it the cheapest proof the wiring is intact.
+every run before validating every contract and React binding in the repository.

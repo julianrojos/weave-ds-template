@@ -6,21 +6,12 @@ Where the two disagree, this one wins for anything under `packages/react/`.
 
 > [!IMPORTANT]
 >
-> **Mid-migration. This file describes machinery that still works and a flow that has been
-> reversed.** Read it for how the scripts behave today; do not read it as the plan.
+> **Contract-first backend.** This package no longer authors components under `src/components/`.
+> Contracts in `packages/contracts/components/` are the source; React bindings complete the
+> backend-specific choices, and the emitter generates component code into a consumer repository.
 >
-> This package no longer holds components — `src/components/` is gone, and the barrel exports
-> nothing. The library is becoming contract-driven: a contract in `packages/contracts/components/`
-> is the source, and component code is generated from it into a consumer's own repository.
->
-> What is still accurate below: every command, the build-output reasoning, and the gate/report
-> split. Those describe code that exists and runs. The extraction readers do not — they were
-> deleted, and the section on them now records why.
->
-> What has reversed: **"the source owns everything derivable"**. With no source to derive from, the
-> contract must carry the props, and the parity check that compares a contract's axes against `cva`
-> axes in a TSX becomes circular. It is harmless today only because there are zero components for
-> it to compare. `packages/contracts/schema/README.md` carries the full argument.
+> The old source-extraction readers are gone. `verify:contract` validates the authored contract
+> graph and bindings; it does not claim that generated output is an independent second opinion.
 >
 > New territory has its own docs: [`README.md`](./README.md) routes to the emitter rules, the
 > behaviour primitives and the bindings.
@@ -40,40 +31,22 @@ pnpm typecheck
 
 Which of those are gates and which are reports is not a detail — see [Enforcement](#enforcement).
 
-## A component is described in two halves, and neither is complete alone
+## A React component is described by a contract and a binding
 
-**The source owns everything derivable** — prop names, types, value sets, defaults, required-ness,
-JSDoc, and the inventory of parts and states rendered. It is read on demand; nothing is committed,
-and nothing needs building first.
+**The contract (`<Name>.contract.json`) is agnostic and authoritative.** It owns intent, states,
+axes, anatomy, accessibility commitments, slots, lifecycle status and paint channels.
 
-**The contract (`<Name>.contract.json`, agnostic) plus its React binding (`<Name>.react.json`) owns
-what the source cannot state** — the rendered element, ARIA role, where the ref lands, which node
-absorbs `className`, accessibility commitments, what a slot accepts, lifecycle status, and the token
-policy per node. The full reasoning, and the line between the two files, is in `packages/contracts/schema/README.md`.
+**The React binding (`<Name>.react.json`) supplies backend choices** such as the rendered element,
+ref target, `className` target and prop-name overrides. The prop surface is derived from these
+authored inputs with the same helper used by the emitter. The full boundary is in
+`packages/contracts/schema/README.md`.
 
 **Read them merged:** `pnpm contract Button`. Reading either alone is misleading.
 
-**Restating a derivable fact in a contract is a defect, not redundancy — _except where a gate
-asserts equality._** That exception is not a loophole; it is the whole reason the contract is
-buildable-from:
-
-- **The contract DOES specify the axes it exposes**, with their value subsets and defaults, in
-  canonical vocabulary from the prop map. Those are derivable facts, deliberately duplicated.
-- **`verify:contract` asserts they match the implementation** — every declared axis exists, the
-  value sets agree, the defaults agree, and no axis exists in code that the contract failed to
-  declare. A disagreement fails the build.
-- **Everywhere a check is impossible, the no-restating rule still holds in full:** purpose,
-  accessibility commitments and token policy are stated once and reviewed by a person, because
-  there is nothing to compare them against.
-
-So the test is not "is this derivable?" but **"is this checked?"** A file that omitted the axes
-could only ever annotate something that already exists, which is backwards for a system whose
-premise is that a component is produced _from_ contracts.
-
-`pnpm verify:contract` also enforces the plain half: a contract cannot name a part the TSX never
-renders, a state nothing can enter, or a prop value that was never in the axis.
-
-Components without a contract are **reported, not failed**. Backfilling is deliberate work.
+`pnpm verify:contract` validates schemas, binding pointers, collection membership, cross-component
+references, platform state claims and conformance commitments. It cannot use generated code to
+prove its own input correct; output drift must be checked through regeneration where that output is
+committed.
 
 ## Before adding a prop, read the prop map
 

@@ -33,7 +33,7 @@
         "source": { "type": "string", "description": "A key in manifest.json -> sources." },
         "codePath": {
           "type": ["string", "null"],
-          "description": "Repo-relative path to the component directory, e.g. packages/react/src/components/Button."
+          "description": "Repo-relative path to the authoritative component contract directory, e.g. packages/contracts/components/Button."
         },
         "pageId": {
           "type": ["string", "null"],

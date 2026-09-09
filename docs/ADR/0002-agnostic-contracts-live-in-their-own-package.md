@@ -167,19 +167,14 @@ nor the web profile had to change to accommodate it.
 - **It forecloses reading a contract beside its implementation.** The two are now in different
   packages, and `pnpm contract <Name>` composes a view across a package boundary. Diffing a contract
   against the code it governs is a directory further apart than it was.
-- **How this will fail quietly, and it already can:**
-  - `verify-contract.mjs` reads a binding's `contract` field but never checks that it resolves.
-    While the two files were siblings that was tolerable; now that they are in different packages
-    that field is the only link between them, and a binding pointing at a contract that moved or was
-    deleted leaves every gate green.
-  - `lib.mjs` still counts a directory as a component only when it holds `<Name>.tsx`. A contract
-    with no TSX beside it — which is now every contract that will ever be written — is invisible to
-    every script. `pnpm contract --coverage` will report `0/0 components contracted` and look
-    perfectly healthy while the contracts package fills up.
-  - The parity check that gives the whole contract system its safety compares a contract's axes
-    against `cva` axes in a TSX. With component source generated rather than written, that
-    comparison is circular. It is harmless today only because there are zero components, and the
-    schema README says so out loud precisely so it is not discovered later as a surprise.
+- **The package split requires explicit graph checks:**
+  - `verify-contract.mjs` resolves every binding's `contract` field and rejects missing, orphaned or
+    cross-wired files. The path is the only link between the packages, so it is a gated contract.
+  - `lib.mjs` treats contracts, not hand-written TSX directories, as the population.
+    `pnpm contract --coverage` reports which contracts have a React binding.
+  - A parity check against generated TSX would compare output with its own input and prove nothing.
+    `verify:contract` therefore validates the authored graph; a consumer that commits generated
+    output needs a regeneration check around its chosen destination.
   - **The package boundary catches an import, not an assumption.** "Would this compile without React
     installed?" is the test the decision names, and a contract can pass it while still assuming a
     DOM, a cascade, or a stylesheet. Nothing in this repo detects that, and the emitter's own printed
@@ -196,7 +191,6 @@ agnosticism it protected is better protected by a package boundary than by a dir
 weakened: a contract inside `packages/react/` is a React artifact no matter what its README claims,
 and the second backend would have to either duplicate it or reach across into a sibling package.
 
-**Name the package for the brand — `packages/weave`.** Rejected on mechanics. `pnpm init-ds` rewrites
-the `@juro/` scope, the `--juro-` token prefix and the `data-juro-` attribute prefix, but it cannot rewrite
-a directory name, and the CI straggler grep that catches a half-renamed repo would not catch it
-either. The brand arrives through the scope; the directory stays generic.
+**Name the package directory for the brand — `packages/juro`.** Rejected because the directory
+describes the artifact's role while project identity already arrives through the `@juro/` package
+scope. A branded directory would make imports and tooling less portable without adding information.

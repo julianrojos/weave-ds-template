@@ -8,18 +8,14 @@ from that moment. This package holds the things that make that generation possib
 
 ## What is here
 
-| Path                                        | Holds                                                             | State     |
-| ------------------------------------------- | ----------------------------------------------------------------- | --------- |
-| [`bindings/`](./bindings/README.md)         | one React binding per contract, plus the schema governing them    | **empty** |
-| [`src/emit/`](./src/emit/README.md)         | the emitter: contract + binding → component source                | **empty** |
-| [`src/behavior/`](./src/behavior/README.md) | interaction primitives emitted components import                  | **empty** |
-| `prop-bindings.json`                        | where React's idiom differs from the agnostic vocabulary          | **built** |
-| [`scripts/`](./scripts/README.md)           | the machinery: contract composer, gates, generators, reports      | **built** |
-| `src/index.ts`                              | the barrel — will export the behaviour runtime, currently nothing | stub      |
-
-Three of those are empty. They hold their rules and their reasoning so that building them is
-implementation rather than rediscovery, and each README says plainly what is decided versus what
-works.
+| Path                                        | Holds                                                          | State     |
+| ------------------------------------------- | -------------------------------------------------------------- | --------- |
+| [`bindings/`](./bindings/README.md)         | one React binding per contract, plus the schema governing them | **built** |
+| [`src/emit/`](./src/emit/README.md)         | the emitter: contract + binding → component source             | spike     |
+| [`src/behavior/`](./src/behavior/README.md) | interaction primitives emitted components import               | **built** |
+| `prop-bindings.json`                        | where React's idiom differs from the agnostic vocabulary       | **built** |
+| [`scripts/`](./scripts/README.md)           | contract composer, gates, generators and reports               | **built** |
+| `src/index.ts`                              | package root; behavior is exported through `./behavior`        | **built** |
 
 ## The one place the "no runtime" rule bends
 
@@ -40,12 +36,15 @@ that does not exist is a runtime failure that nothing in this repo would catch.
 
 ## Consuming it
 
-Not yet possible. There is no CLI, no emitter and no primitive, so there is nothing to install and
-nothing to generate. The intended shape:
+The emitter is still an explicitly named spike rather than a supported package CLI. It can generate
+a component into a consumer directory directly:
 
 ```bash
-npx @juro/react add Switch      # emits into the consumer's repo. Does not exist yet.
+node packages/react/src/emit/emit.mjs Switch --out <dir>
 ```
+
+The sandbox components were produced through that path. Packaging it as an installable command and
+adding consumer-repository regeneration checks remain separate work.
 
 ## Styling what it emits
 
@@ -75,10 +74,9 @@ stopped holding components:
 | Implement a behaviour primitive | [`src/behavior/README.md`](./src/behavior/README.md) |
 | Write a React binding           | [`bindings/README.md`](./bindings/README.md)         |
 
-## Known stale machinery
+## Current verification boundary
 
-`scripts/` still assumes the old layout: `lib.mjs` treats a directory as a component only when it
-holds `<Name>.tsx`, and `verify-contract.mjs` compares a contract's axes against `cva` axes in that
-TSX. Both are harmless right now — there are zero components, so `verify:contract` falls through to
-its one zero-component check, compiling the schemas — but neither will survive contact with a
-generated component. Inverting them belongs with the emitter work.
+`verify:contract` now treats contracts as the population and validates all fifteen against their
+React bindings, cross-contract relationships and platform claims. It does not compare generated TSX
+with its source contract: that would check an output against the input that produced it. A consumer
+that commits generated components still needs a regeneration check around its chosen output path.

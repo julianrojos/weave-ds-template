@@ -29,7 +29,7 @@
  * `--check` asserts two things: the committed files byte-match a fresh run, and every recorded
  * disposition still names a component and prop that exist.
  *
- * Runs, and is USEFUL, with zero components. In that state it emits the declared canon and says
+ * Runs, and is USEFUL, with zero contracts. In that state it emits the declared canon and says
  * so — which is exactly the vocabulary a design proposal has to be written in before anything
  * is built.
  */
@@ -289,9 +289,9 @@ function buildJson(canon, m, flags) {
           _stateNote:
             'No contracts exist yet, so there is nothing to measure. The axis registry and value ' +
             'glossary below are the DECLARED canon, carried over from prop-canon.json — the ' +
-            'vocabulary a proposal must be written in. This IS the intended starting state: the ' +
-            'template ships with no contracts, and a contract is written against an accepted ' +
-            'decision rather than scaffolded in advance.',
+            'vocabulary a proposal must be written in. An empty contract set is a valid checked ' +
+            'state: a contract is written against an accepted decision rather than scaffolded in ' +
+            'advance.',
         }
       : {}),
     generatedFrom: {
@@ -348,8 +348,8 @@ function buildMd(json, canon) {
   if (empty) {
     L.push('> **State: canon-only.** No contracts exist yet, so §3 and §4 are empty by');
     L.push('> construction rather than by omission. §1 and §2 are the *declared* canon — the');
-    L.push('> vocabulary a proposal must be written in. This is the template&rsquo;s intended');
-    L.push('> starting state: a contract is written against an accepted decision, never');
+    L.push('> vocabulary a proposal must be written in. This is the repository&rsquo;s supported');
+    L.push('> empty-contract state: a contract is written against an accepted decision, never');
     L.push('> scaffolded in advance.');
     L.push('');
   }
