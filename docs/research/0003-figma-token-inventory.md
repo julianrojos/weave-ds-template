@@ -15,51 +15,57 @@
 
 ### The file has drifted from its last recorded snapshot
 
-| | Last recorded (2026-08-28) | Measured now (2026-09-09) |
-| --- | --- | --- |
-| Collections | 5 | **6** |
-| Total variables | 87 | **154** |
+|                 | Last recorded (2026-08-28) | Measured now (2026-09-09) |
+| --------------- | -------------------------- | ------------------------- |
+| Collections     | 5                          | **6**                     |
+| Total variables | 87                         | **154**                   |
 
-The extra collection is **`Opacity Primitives`** (11 variables) — present in the file, absent from
-`.figma/manifest.json` and from `figma-file.md`. `Color Primitives` also grew substantially (full
-`red` and `green` ramps are present; the prior `observed` sample in the manifest names neither).
-**Every document referencing "87 variables" is now describing a file that no longer exists in that
-shape.**
+The extra collection is **`Opacity Primitives`** (11 variables) — present in the Figma file, but
+absent from `.figma/manifest.json` and `figma-file.md` **at the time of this read**. `Color
+Primitives` had also grown substantially (full `red` and `green` ramps present; the prior `observed`
+sample in the manifest named neither). At that point every document in this repo referencing "87
+variables" was describing a file that no longer existed in that shape.
+
+**Since fixed.** `.figma/manifest.json` was corrected in `3fcd1e2` and now records 154 variables in
+6 collections, `Opacity Primitives` included. `figma-file.md` was given an explicit
+superseded-for-variables notice pointing back here. This report is left in the past tense
+deliberately — it is the record of what the drift was, not a live status check; re-run the read
+above before trusting either file's current count without looking.
 
 ### The six collections, measured
 
-| Collection | Mode(s) | Variables | Types | Tier |
-| --- | --- | --- | --- | --- |
-| `Color Primitives` | `Mode 1` | 71 | COLOR | primitive |
-| `Color Tokens` | `Mode 1` | 15 | COLOR | token (aliases into primitives) |
-| `Type Primitives` | `Default` | 10 | FLOAT, STRING | primitive |
-| `Type Tokens` | `Mode 1` | 24 | STRING, FLOAT | token (aliases into primitives) |
-| `Spacing Tokens` | `Mode 1` | 23 | FLOAT | token (literals, not aliased) |
-| `Opacity Primitives` | `Mode 1` | 11 | FLOAT | primitive — **undocumented until now** |
+| Collection           | Mode(s)   | Variables | Types         | Tier                                   |
+| -------------------- | --------- | --------- | ------------- | -------------------------------------- |
+| `Color Primitives`   | `Mode 1`  | 71        | COLOR         | primitive                              |
+| `Color Tokens`       | `Mode 1`  | 15        | COLOR         | token (aliases into primitives)        |
+| `Type Primitives`    | `Default` | 10        | FLOAT, STRING | primitive                              |
+| `Type Tokens`        | `Mode 1`  | 24        | STRING, FLOAT | token (aliases into primitives)        |
+| `Spacing Tokens`     | `Mode 1`  | 23        | FLOAT         | token (literals, not aliased)          |
+| `Opacity Primitives` | `Mode 1`  | 11        | FLOAT         | primitive — **undocumented until now** |
 
 All six collections still have exactly one mode. No light/dark axis exists anywhere in the file.
 
 ### Color Tokens — full list, resolved
 
-| Variable | Resolves to | Aliases | codeSyntax.WEB |
-| --- | --- | --- | --- |
-| `border/primary` | `#363636` | `color/gray/700` | `weave-ds-border-primary` |
-| `brand/hover` | `#401aca` | `color/purple/600` | `weave-ds-brand-hover` |
-| `brand/primary` | `#5146e6` | `color/purple/500` | `weave-ds-brand-primary` |
-| `control/off` | `#ef1313` | `color/red/500` | `weave-ds-control-off` |
-| `control/waveform` | `#26e589` | `color/green/300` | `weave-ds-control-waveform` |
-| `interactive/hover` | `#111111` | `color/gray/900` | `weave-ds-interactive-hover` |
+| Variable                 | Resolves to | Aliases               | codeSyntax.WEB                    |
+| ------------------------ | ----------- | --------------------- | --------------------------------- |
+| `border/primary`         | `#363636`   | `color/gray/700`      | `weave-ds-border-primary`         |
+| `brand/hover`            | `#401aca`   | `color/purple/600`    | `weave-ds-brand-hover`            |
+| `brand/primary`          | `#5146e6`   | `color/purple/500`    | `weave-ds-brand-primary`          |
+| `control/off`            | `#ef1313`   | `color/red/500`       | `weave-ds-control-off`            |
+| `control/waveform`       | `#26e589`   | `color/green/300`     | `weave-ds-control-waveform`       |
+| `interactive/hover`      | `#111111`   | `color/gray/900`      | `weave-ds-interactive-hover`      |
 | `interactive/selectedBg` | `#5146e666` | `color/purple/500-40` | `weave-ds-interactive-selectedbg` |
-| `surface/ghost` | `#111111` | `color/gray/900` | `weave-ds-surface-ghost` |
-| `surface/overlay` | `#111111` | `color/gray/900` | `weave-ds-surface-overlay` |
-| `surface/primary` | `#1e1e1ee5` | `color/gray/800-90` | `weave-ds-surface-primary` |
-| `surface/subtle` | `#ffffff` | `color/base/white` | `weave-ds-surface-subtle` |
-| `text/disabled` | `#ffffff` | `color/base/white` | `weave-ds-text-disabled` |
-| `text/inverted` | `#111111` | `color/gray/900` | `weave-ds-text-inverted` |
-| `text/primary` | `#ffffff` | `color/base/white` | `weave-ds-text-primary` |
-| `text/secondary` | `#ffffff` | `color/base/white` | `weave-ds-text-secondary` |
+| `surface/ghost`          | `#111111`   | `color/gray/900`      | `weave-ds-surface-ghost`          |
+| `surface/overlay`        | `#111111`   | `color/gray/900`      | `weave-ds-surface-overlay`        |
+| `surface/primary`        | `#1e1e1ee5` | `color/gray/800-90`   | `weave-ds-surface-primary`        |
+| `surface/subtle`         | `#ffffff`   | `color/base/white`    | `weave-ds-surface-subtle`         |
+| `text/disabled`          | `#ffffff`   | `color/base/white`    | `weave-ds-text-disabled`          |
+| `text/inverted`          | `#111111`   | `color/gray/900`      | `weave-ds-text-inverted`          |
+| `text/primary`           | `#ffffff`   | `color/base/white`    | `weave-ds-text-primary`           |
+| `text/secondary`         | `#ffffff`   | `color/base/white`    | `weave-ds-text-secondary`         |
 
-### Spacing Tokens — two scale vocabularies confirmed, with real values
+### Spacing Tokens — three scale vocabularies confirmed, with real values
 
 ```
 border:  none=0  thin=1  regular=2  medium=3  thick=4        (numeric index, GAP-less step names)
@@ -82,10 +88,10 @@ bind every facet to a variable.
 
 Eleven steps, `50` through `1000`, each an integer **0–100** (Figma's own opacity unit), each
 carrying a description translating it to the 0–1 fraction code would use (`opacity/400` →
-*"In code this is 0.4"*). Four `Color Tokens` entries (`surface/ghost`, `surface/overlay`,
+_"In code this is 0.4"_). Five `Color Tokens` entries (`surface/ghost`, `surface/overlay`,
 `surface/subtle`, `text/disabled`, `text/secondary`) carry a description pointing at one of these —
-e.g. `surface/overlay`: *"Bind layer opacity to opacity/400 where this is used. Previously baked as
-#111111 @40%."* That is a live instruction to compose two tokens (a solid color + a separate opacity
+e.g. `surface/overlay`: _"Bind layer opacity to opacity/400 where this is used. Previously baked as
+#111111 @40%."_ That is a live instruction to compose two tokens (a solid color + a separate opacity
 step), not to bake alpha into the color.
 
 ## What it appears to mean (inferred)
@@ -106,15 +112,16 @@ step), not to bake alpha into the color.
 
 ## Problems found
 
-1. **Every prior variable count in this repo is stale.** `.figma/manifest.json` says 87; the file has
-   154. `Opacity Primitives` does not appear in `.figma/manifest.json` anywhere — not in
-   `identity.variableNaming.observed`, not in `identity.variableCollections` (empty regardless), not
-   in `figma-file.md`'s collection table. Any decision made by reading only those documents was made
-   against a smaller, older file.
-2. **Two naming vocabularies for a "step", confirmed with real values, still unresolved.**
+1. **Every prior variable count in this repo was stale.** `.figma/manifest.json` said 87; the file
+   had 154. `Opacity Primitives` appeared in neither `identity.variableNaming.observed` nor
+   `identity.variableCollections` (empty regardless), nor in `figma-file.md`'s collection table. Any
+   decision made by reading only those documents before this read would have been made against a
+   smaller, older file. `.figma/manifest.json` has since been corrected (`3fcd1e2`);
+   `identity.variableCollections` and `figma-file.md`'s table have not — see the superseded notice
+   added to the latter.
+2. **Three naming vocabularies for a "step", confirmed with real values, still unresolved.**
    `space/0..9` is a numeric index; `radius/none..full` is a t-shirt scale; `border/none..thick` is a
-   third vocabulary (`none/thin/regular/medium/thick`) that is neither. Three scale vocabularies in
-   one collection, not two.
+   third vocabulary (`none/thin/regular/medium/thick`) that is neither.
 3. **`interactive/selectedBg` is camelCase**; every other path in the file is lowercase-with-slashes.
 4. **`control/waveform` and `control/off`** sit in the same global `Color Tokens` collection as
    `brand/*`, `surface/*`, `text/*` — component-specific names in a namespace otherwise reserved for
@@ -124,7 +131,7 @@ step), not to bake alpha into the color.
    opacity-composition notes did not exist there (`Opacity Primitives` did not exist there).
 6. **The prefix conflict from the manifest is unaffected by this read and still open**:
    `codeSyntax.WEB` carries `weave-ds-*`; `ds.config.json` now says `juro`; `.figma/manifest.json →
-   identity.prefix` still says `ds`. All three still disagree.
+identity.prefix` still says `ds`. All three still disagree.
 
 ## Open questions
 
