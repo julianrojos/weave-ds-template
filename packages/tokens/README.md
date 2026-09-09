@@ -1,10 +1,12 @@
 # @juro/tokens
 
-DTCG JSON in, CSS custom properties and TypeScript constants out.
+DTCG JSON in, CSS custom properties and TypeScript constants out. Homonymous semantic color and
+opacity tokens also produce derived web paint properties; the source relationship and consumption
+rule are documented in [`tokens/README.md`](./tokens/README.md#5-consuming-translucent-paints-on-web).
 
-**This package ships with no tokens.** That is the intended starting state — the token set is
-measured from the design source by hand, reviewed, and committed as JSON. Until then the build
-emits an empty `:root {}` and says so.
+This reference package now contains the token set measured in report 0003 and accepted in ADRs
+0005-0009. An unmeasured downstream system may still start empty: in that state the build emits an
+empty `:root {}` and says so instead of inventing values.
 
 ## Where things are documented
 
@@ -27,10 +29,10 @@ pnpm tokens:watch     # same, in watch mode, while editing token JSON
 
 ## Outputs
 
-| File                               | What it is                                                                                |
-| ---------------------------------- | ----------------------------------------------------------------------------------------- |
-| `build/css/variables.css`          | Every token as a CSS custom property on `:root`. **This is the file a consumer imports.** |
-| `build/ts/index.js` + `index.d.ts` | The same tokens as a typed constant map, for the cases where JS needs a token name.       |
+| File                               | What it is                                                                                              |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `build/css/variables.css`          | Every token and derived paint as a custom property on `:root`. **This is the file a consumer imports.** |
+| `build/ts/index.js` + `index.d.ts` | The same token and paint properties as a typed constant map, for cases where JS needs a name.           |
 
 Everything under `build/` is **generated and gitignored**. Never hand-edit it; edit the JSON and
 rebuild. A generated file that someone has edited is worse than no generated file, because the
@@ -42,5 +44,5 @@ next build silently discards the edit.
 import '@juro/tokens/css'; // once, at the app root — @juro/react's barrel already does this
 ```
 
-The prefix comes from `/ds.config.json`, so after `pnpm init-ds weave` the properties are
-`--weave-*` and this package is `@weave/tokens`.
+The established `juro` prefix comes from `/ds.config.json`; this compiler reads it rather than
+maintaining a second copy. Rebranding is outside this repository's supported commands.

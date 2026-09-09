@@ -6,17 +6,20 @@
  * gitignored — never hand-edit it, and never import from it in a way that assumes a token
  * exists. Edit the JSON and rebuild.
  *
- * The CSS custom-property prefix comes from /ds.config.json, so `pnpm init-ds <name>` moves
- * the whole token surface in one place rather than by find-and-replace across the repo.
+ * The CSS custom-property prefix comes from /ds.config.json. Rebranding is an explicit migration;
+ * this compiler never carries a second hard-coded identity.
  *
- * Runs green on an empty token directory. That is deliberate: this template ships with no
- * tokens, and a build that errors on `pnpm install` would be the first thing a student saw.
+ * Runs green on an empty token directory. That remains deliberate: an unmeasured downstream
+ * system may legitimately start empty even though this reference repository now has tokens.
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
 import StyleDictionary from 'style-dictionary';
+import { propertyFormatNames } from 'style-dictionary/enums';
+import { fileHeader, formattedVariables } from 'style-dictionary/utils';
+import { composeHexOpacity } from './paint.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '../..');
@@ -43,7 +46,7 @@ const BUILD = posix(join(here, 'build'));
 const byCodePoint = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
 /**
- * A JS constants file, so tokens are reachable from script without parsing CSS.
+ * A JS constants file, so tokens and derived paints are reachable from script without parsing CSS.
  *
  * Keyed by the **CSS custom-property name** — the same string the stylesheet uses — because the
  * thing callers actually want is `var(...)`, and a second casing convention (DsColorBrandPrimary)
@@ -53,7 +56,7 @@ const byCodePoint = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 StyleDictionary.registerFormat({
   name: 'ds/js-constants',
   format: ({ dictionary, file }) => {
-    const body = tokenEntries(dictionary)
+    const body = outputEntries(dictionary)
       .map(([name, value]) => `  ${JSON.stringify(name)}: ${JSON.stringify(value)},`)
       .join('\n');
     return [
@@ -69,11 +72,62 @@ StyleDictionary.registerFormat({
 });
 
 /** `[["--juro-color-brand-primary", "#5146e6"], ...]`, sorted deterministically. */
-function tokenEntries(dictionary) {
+function sourceTokenEntries(dictionary) {
   return [...dictionary.allTokens]
     .map((t) => [`--${t.name}`, String(t.$value ?? t.value)])
     .sort((a, b) => byCodePoint(a[0], b[0]));
 }
+
+/** Semantic `opacity.<role>` owns a generated web paint paired with `color.<role>`. */
+function paintEntries(dictionary) {
+  const byPath = new Map(dictionary.allTokens.map((token) => [token.path.join('.'), token]));
+  return dictionary.allTokens
+    .filter((token) => {
+      const [group, step] = token.path;
+      return group === 'opacity' && token.path.length > 2 && !/^\d+$/.test(step);
+    })
+    .map((opacity) => {
+      const suffix = opacity.path.slice(1);
+      const colorPath = ['color', ...suffix].join('.');
+      const color = byPath.get(colorPath);
+      if (!color) throw new Error(`${opacity.path.join('.')} has no paired ${colorPath}.`);
+
+      let value;
+      try {
+        value = composeHexOpacity(color.$value ?? color.value, opacity.$value ?? opacity.value);
+      } catch (error) {
+        throw new Error(
+          `Cannot compile ${colorPath} + ${opacity.path.join('.')}: ${error.message}`,
+        );
+      }
+      return [`--${PREFIX}-paint-${suffix.join('-')}`, value];
+    })
+    .sort((a, b) => byCodePoint(a[0], b[0]));
+}
+
+function outputEntries(dictionary) {
+  return [...sourceTokenEntries(dictionary), ...paintEntries(dictionary)].sort((a, b) =>
+    byCodePoint(a[0], b[0]),
+  );
+}
+
+StyleDictionary.registerFormat({
+  name: 'ds/css-variables',
+  format: async ({ dictionary, file, options = {} }) => {
+    const header = await fileHeader({ file, options });
+    const variables = formattedVariables({
+      format: propertyFormatNames.css,
+      dictionary,
+      outputReferences: options.outputReferences,
+      usesDtcg: true,
+      formatting: { indentation: '  ' },
+    });
+    const paints = paintEntries(dictionary)
+      .map(([name, value]) => `  ${name}: ${value};`)
+      .join('\n');
+    return `${header}:root {\n${variables}${paints ? `\n${paints}` : ''}\n}\n`;
+  },
+});
 
 const config = {
   source: [SOURCE],
@@ -89,7 +143,7 @@ const config = {
       files: [
         {
           destination: 'variables.css',
-          format: 'css/variables',
+          format: 'ds/css-variables',
           options: { outputReferences: true },
         },
       ],
@@ -120,7 +174,7 @@ function writeEmptyOutputs(reason) {
   );
 }
 
-/** The .d.ts beside index.js. Names each token so a typo is a type error, not a silent undefined. */
+/** The .d.ts beside index.js. Names each property so a typo is a type error, not silent undefined. */
 function writeTypes(names) {
   const lines = [
     `// GENERATED by packages/tokens/style-dictionary.config.mjs. Do not edit.`,
@@ -131,6 +185,24 @@ function writeTypes(names) {
     ``,
   ];
   writeFileSync(join(BUILD, 'ts/index.d.ts'), lines.join('\n'));
+}
+
+/** A formatter regression must not silently omit the public properties the ADR promises. */
+function verifyPaintOutputs(paints) {
+  const css = readFileSync(join(BUILD, 'css/variables.css'), 'utf8');
+  const js = readFileSync(join(BUILD, 'ts/index.js'), 'utf8');
+  const types = readFileSync(join(BUILD, 'ts/index.d.ts'), 'utf8');
+  for (const [name, value] of paints) {
+    if (!css.includes(`${name}: ${value};`)) {
+      throw new Error(`Generated CSS is missing derived paint ${name}.`);
+    }
+    if (!js.includes(`${JSON.stringify(name)}: ${JSON.stringify(value)}`)) {
+      throw new Error(`Generated JavaScript is missing derived paint ${name}.`);
+    }
+    if (!types.includes(`${JSON.stringify(name)}: string;`)) {
+      throw new Error(`Generated declarations are missing derived paint ${name}.`);
+    }
+  }
 }
 
 async function build() {
@@ -149,11 +221,13 @@ async function build() {
   await sd.buildAllPlatforms();
 
   const dict = await sd.getPlatformTokens('ts');
-  const names = tokenEntries(dict).map(([name]) => name);
+  const sourceCount = dict.allTokens.length;
+  const paints = paintEntries(dict);
+  const names = outputEntries(dict).map(([name]) => name);
 
   // Style Dictionary skips a file with zero tokens rather than writing an empty one, so a
   // token directory holding only non-token JSON would leave stale or missing output. Cover it.
-  if (names.length === 0) {
+  if (sourceCount === 0) {
     writeEmptyOutputs('Token files were found, but none contained a token.');
     writeTypes([]);
     console.log('tokens: source files present but no tokens in them — emitted empty CSS + TS.');
@@ -161,7 +235,8 @@ async function build() {
   }
 
   writeTypes(names);
-  console.log(`tokens: built ${names.length} token(s).`);
+  verifyPaintOutputs(paints);
+  console.log(`tokens: built ${sourceCount} token(s) + ${paints.length} derived paint(s).`);
 }
 
 build().catch((err) => {

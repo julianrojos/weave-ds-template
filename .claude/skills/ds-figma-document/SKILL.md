@@ -29,13 +29,11 @@ admits the gap.
 
 ## What is not ready here yet
 
-This skill was ported from a mature design system into a **starter template**. Two things it leans
-on do not exist yet:
+Two limitations remain in this instance:
 
-- **No components.** `packages/contracts/components/` is empty by design, and
-  `.figma/maps/components.json` has no entries. There is also no working skill that builds one —
-  `ds-component` is superseded — so this skill can only document sets that already exist in the
-  Figma file on their own terms.
+- **No reconciled component map.** Contracts exist, but `.figma/maps/components.json` has no entries
+  and `ds-figma-component` remains blocked. This skill can document sets already in Figma, but it
+  must not claim a verified code counterpart until the map records one.
 - **No theme axis.** `.figma/manifest.json` → `identity.themes` records `modes: ["dark"]` with
   `decided: false` — dark-only, and not yet decided to be dark-only. **The mode-flip verification in
   step 5 is the strongest check on this page and it cannot run.** Report that it did not run. Do not

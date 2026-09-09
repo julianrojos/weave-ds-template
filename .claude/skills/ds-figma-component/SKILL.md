@@ -30,16 +30,16 @@ generated set binds to a Figma variable or style that mirrors a `--juro-*` token
 the repo has one obvious counterpart in the file. Anything that cannot bind is reported, never
 silently baked in.
 
-## Read this before your first run — the template is not ready for this skill
+## Read this before your first run — this skill remains blocked
 
-This skill was ported from a mature design system into a **starter template**, and two of its
-preconditions do not hold yet. Neither is a bug in the skill; each is a decision this repo has not
-taken. Do not paper over them.
+This skill predates the contract-driven emitter and still expects source that no longer lives in
+this repository. The token precondition has now been satisfied; the component-input precondition has
+not. Do not paper over it.
 
-| Precondition                        | State here                                                                                                          | What to do                                                                                                          |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Semantic tokens exist to bind to    | `identity.variableCollections` in the manifest is **empty**; `packages/tokens/tokens/` holds no generated token set | Measure the source and decide the token set first. Binding cannot be checked against a mapping that does not exist. |
-| A component exists to generate from | `packages/react/src/components/` is **empty by design**                                                             | Build one with `ds-component` first. This skill reads a component; it does not invent one.                          |
+| Precondition                     | State here                                                                                   | What to do                                                                                  |
+| -------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Semantic tokens exist to bind to | Satisfied: the manifest maps the measured collections to `packages/tokens/tokens/`           | Read the manifest and token map; never infer a Figma variable from a token name.            |
+| Component input exists           | Blocked: `packages/react/src/components/` was removed; implementations are generated outside | Rewrite this skill against the agnostic contract before using it to create a component set. |
 
 The bridge question is **settled**: `.figma/manifest.json` → `bridges` records a `read` bridge and a
 `write` bridge separately, and this skill runs on the write one. It is opt-in and unwired by design

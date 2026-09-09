@@ -12,7 +12,7 @@
     "_doc": { "type": "string" },
     "lastScanned": {
       "type": ["string", "null"],
-      "description": "ISO date of the last read, or null if never scanned. Null is an honest state and is what this template ships with."
+      "description": "ISO date of the last read, or null if never scanned. Null is an honest pre-scan state."
     },
     "source": {
       "type": "string",
@@ -24,14 +24,16 @@
       "additionalProperties": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["variableCount"],
+        "required": ["variableCount", "codeSources"],
         "properties": {
           "collectionId": { "type": ["string", "null"] },
           "modes": { "type": "array", "items": { "type": "string" } },
           "variableCount": { "type": "integer", "minimum": 0 },
-          "codeSource": {
-            "type": ["string", "null"],
-            "description": "The DTCG file under packages/tokens/tokens/ this collection maps to. Null means unmapped — every variable in it will report as drift."
+          "codeSources": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true,
+            "description": "The DTCG files under packages/tokens/tokens/ this collection maps to. Empty means unmapped. A collection may split across files because Figma and code ownership boundaries differ."
           }
         }
       }
@@ -56,7 +58,7 @@
           "resolvedType": { "enum": ["COLOR", "FLOAT", "STRING", "BOOLEAN"] },
           "code": {
             "type": ["string", "null"],
-            "description": "Verified dotted DTCG path into the collection's codeSource, e.g. `space.3`. NULL = drift: a Figma variable with no code token. Do not invent a path to clear a null — the null is the finding."
+            "description": "Verified dotted DTCG path into one of the collection's codeSources, e.g. `space.3`. NULL = drift: a Figma variable with no token behind it. Do not invent a path to clear a null — the null is the finding."
           },
           "note": { "type": "string" }
         }

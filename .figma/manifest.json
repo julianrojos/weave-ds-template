@@ -4,7 +4,7 @@
   "lastUpdated": "2026-09-09",
 
   "bridges": {
-    "_doc": "TWO bridges, recorded separately. The READ bridge is the only one anything depends on: the explore -> report -> decide -> build arc completes without the write bridge, and `pnpm verify` is green on a machine with neither Figma Desktop nor a plugin installed — which is what keeps the template's fresh-clone promise intact. The WRITE bridge is opt-in and unwired: no pnpm script, no gate and no CI job invokes it. Code stays canonical for token values in both directions; a difference is drift in Figma, never a change to adopt back.",
+    "_doc": "TWO bridges, recorded separately. The READ bridge is the only one anything depends on: the explore -> report -> decide -> build arc completes without the write bridge, and a clean checkout stays green without Figma Desktop or a plugin. The WRITE bridge is opt-in and unwired: no pnpm script, gate or CI job invokes it. Code stays canonical for token values in both directions; a difference is drift in Figma, never a change to adopt back.",
 
     "read": {
       "_doc": "The OFFICIAL Figma MCP connector. No daemon, no plugin, no Figma Desktop. Chosen because everything the arc needs is a READ, and every other bridge adds a local install and a background process that can fail.",
@@ -38,7 +38,7 @@
         ".claude/skills/ds-figma-explain"
       ],
       "gated": false,
-      "_gatedNote": "NO gate exercises this bridge, so a generated Figma set can drift from its component with nothing failing anywhere. maps/components.json is a record, not a check. This is a known hole and it contradicts the repo's own enforcement rule — a contract whose breach produces no build error has to be gated in CI, or it is enforced on whichever machine happens to run it. Accepted at template stage because nothing has been generated yet; it should not survive contact with a real component library. The related quiet failure: every collection in this source has ONE mode, so a bound value and a baked literal render identically and a mis-bound component passes visual review. Read boundVariables back rather than trusting the render."
+      "_gatedNote": "NO gate exercises this bridge, so a generated Figma set can drift from its component with nothing failing anywhere. maps/components.json is a record, not a check. This remains a known infrastructure gap: every write must be treated as unverified until structure and boundVariables are read back. The related quiet failure is that every collection in this source has ONE mode, so a bound value and a baked literal render identically and a mis-bound component passes visual review. Read boundVariables back rather than trusting the render."
     }
   },
 
@@ -57,11 +57,11 @@
 
   "identity": {
     "prefix": {
-      "_doc": "Set once in /ds.config.json via `pnpm init-ds <name>`. Repeated here only so a Figma script has one file to read; ds.config.json is authoritative and init-ds rewrites both.",
-      "name": "ds",
-      "scope": "@ds",
-      "token": "--ds",
-      "data": "data-ds"
+      "_doc": "Established in /ds.config.json. Repeated here only so Figma tooling has one manifest to read; ds.config.json is authoritative and verify:figma rejects disagreement.",
+      "name": "juro",
+      "scope": "@juro",
+      "token": "--juro",
+      "data": "data-juro"
     },
 
     "variableNaming": {
@@ -104,16 +104,10 @@
       "examples": [
         "space/3          -> --juro-space-3          -> space.3",
         "radius/m         -> --juro-radius-m         -> radius.m",
-        "surface/primary  -> --juro-surface-primary  -> surface.primary"
+        "surface/primary  -> --juro-color-surface-primary  -> color.surface.primary"
       ],
       "knownProblems": [
-        "PREFIX CONFLICT, UNDECIDED. `codeSyntax.WEB` carries a `weave-ds-` prefix while /ds.config.json declares tokenPrefix `ds`, i.e. `--juro-*`. Running `pnpm init-ds weave` would make it `--weave-*`, which still does not equal `weave-ds-*`. Three candidate prefixes, no decision. Settle which is canonical before generating tokens, and settle it in ds.config.json — never by hand-editing one side.",
-        "`space/0..9` is a numeric index while `radius/m` is a t-shirt scale — two naming systems in one file. Decide which one wins before generating; do not reproduce both.",
-        "`interactive/selectedBg` is camelCase; every other token path is lowercase.",
-        "`control/waveform` and `control/off` are component-specific but sit in the global namespace.",
-        "Primitive variables have `scopes: []` while token variables carry `ALL_SCOPES`. Unscoped primitives are still offered everywhere in the picker, so nothing stops a designer binding straight to `color/purple/500`.",
-        "THIRD SCALE VOCABULARY, found 2026-09-09: `border/none|thin|regular|medium|thick` is neither the numeric index `space/0..9` nor the t-shirt scale `radius/none..full` — a third naming system for a step, in the same `Spacing Tokens` collection as the other two.",
-        "ALPHA-BAKING MIGRATION IS HALF DONE, found 2026-09-09: `surface/ghost`, `surface/overlay`, `surface/subtle`, `text/disabled` and `text/secondary` each carry a description instructing composition of a solid color + a separate `opacity/*` step (e.g. \"Bind layer opacity to opacity/400... Previously baked as #111111 @40%\"). `interactive/selectedBg` and `surface/primary` still resolve to a primitive with alpha baked in (`color/purple/500-40`, `color/gray/800-90`) and carry no such note. Not yet a settled convention either way."
+        "FIGMA SCOPE DRIFT, measured 2026-09-09: Color Primitives is mixed (15 variables with `scopes: []`, 56 with `ALL_SCOPES`); Type Primitives has 10 with `scopes: []`; Opacity Primitives has 11 with `ALL_SCOPES`. Color Tokens is entirely `ALL_SCOPES`, while Type Tokens and Spacing Tokens use property-specific scopes. The mixed primitive policy still lets designers bind directly to palette values and needs a separate Figma migration decision."
       ]
     },
 
@@ -145,7 +139,20 @@
     },
 
     "variableCollections": {
-      "_doc": "Figma collection -> canonical DTCG source file under packages/tokens/tokens/. EMPTY: filled by hand from a live read, once the token set is decided. A Figma variable whose collection has no entry here resolves to `code: null` in maps/tokens.json and is reported as drift — that is the signal, not a silent gap."
+      "_doc": "Figma collection -> canonical DTCG source files under packages/tokens/tokens/. A collection may split across files because Figma and code ownership boundaries differ. An empty array means the collection is intentionally unmapped.",
+      "Color Primitives": ["packages/tokens/tokens/color.palette.json"],
+      "Color Tokens": [
+        "packages/tokens/tokens/color.semantic.json",
+        "packages/tokens/tokens/opacity.json"
+      ],
+      "Type Primitives": ["packages/tokens/tokens/typography.json"],
+      "Type Tokens": ["packages/tokens/tokens/typography.json"],
+      "Spacing Tokens": [
+        "packages/tokens/tokens/border.json",
+        "packages/tokens/tokens/radius.json",
+        "packages/tokens/tokens/space.json"
+      ],
+      "Opacity Primitives": ["packages/tokens/tokens/opacity.json"]
     },
 
     "variantConventions": {

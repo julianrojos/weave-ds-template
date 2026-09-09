@@ -1,0 +1,49 @@
+{
+  "color": {
+    "border": {
+      "primary": { "$value": "{color.gray.700}", "$type": "color" }
+    },
+    "brand": {
+      "primary": { "$value": "{color.purple.500}", "$type": "color" },
+      "hover": { "$value": "{color.purple.600}", "$type": "color" }
+    },
+    "interactive": {
+      "hover": { "$value": "{color.gray.900}", "$type": "color" },
+      "selected-bg": {
+        "$value": "{color.purple.500}",
+        "$type": "color"
+      }
+    },
+    "surface": {
+      "primary": {
+        "$value": "{color.dark.700}",
+        "$type": "color",
+        "$description": "Opaque RGB matches the value beneath Figma's legacy gray/800-90 name."
+      },
+      "overlay": {
+        "$value": "{color.gray.900}",
+        "$type": "color"
+      },
+      "subtle": {
+        "$value": "{color.base.white}",
+        "$type": "color"
+      },
+      "ghost": {
+        "$value": "{color.gray.900}",
+        "$type": "color"
+      }
+    },
+    "text": {
+      "primary": { "$value": "{color.base.white}", "$type": "color" },
+      "secondary": {
+        "$value": "{color.base.white}",
+        "$type": "color"
+      },
+      "disabled": {
+        "$value": "{color.base.white}",
+        "$type": "color"
+      },
+      "inverted": { "$value": "{color.gray.900}", "$type": "color" }
+    }
+  }
+}

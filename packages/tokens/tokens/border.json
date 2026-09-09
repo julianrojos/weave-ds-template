@@ -1,0 +1,9 @@
+{
+  "border": {
+    "none": { "$value": "0px", "$type": "dimension" },
+    "thin": { "$value": "1px", "$type": "dimension" },
+    "regular": { "$value": "2px", "$type": "dimension" },
+    "medium": { "$value": "3px", "$type": "dimension" },
+    "thick": { "$value": "4px", "$type": "dimension" }
+  }
+}

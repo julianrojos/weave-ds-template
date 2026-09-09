@@ -61,14 +61,13 @@ the orientation.
 for — explore, report, decide, build — is a read, and it completes with the read bridge alone.
 
 **The write bridge is opt-in and unwired.** No `pnpm` script, no gate and no CI job invokes it, so
-`pnpm verify` is green on a machine with neither Figma Desktop nor the plugin installed. That is not
-an accident: green on a fresh clone with nothing installed is this template's one acceptance test,
-and a bridge that needs a local process running must never sit on that path.
+`pnpm verify` is green on a machine with neither Figma Desktop nor the plugin installed. That is
+intentional: a clean checkout of this instance must not depend on a local GUI process.
 
 The cost is worth stating plainly: **nothing gates the write side.** A generated Figma set can drift
-from its component and no build fails — `maps/components.json` is a record, not a check. That
-contradicts the repo's own enforcement rule, and it is accepted only because nothing has been
-generated yet. It should not survive contact with a real component library.
+from its component and no build fails — `maps/components.json` is a record, not a check. Treat every
+write as unverified until its bindings and structure have been read back; automating that check
+without introducing a GUI dependency remains an open infrastructure problem.
 
 The quiet failure to know about: every collection in the source file has **one mode**, so a bound
 value and a baked literal render identically. A mis-bound component passes visual review. Read
@@ -164,8 +163,8 @@ than papering over.
 | [`maps/tokens.json`](./maps/tokens.json)         | Figma variable → DTCG token path. `code: null` means drift.     |
 | [`maps/components.json`](./maps/components.json) | Code component → Figma node, plus the variant axes found there. |
 
-Both ship **empty and schema-valid**. `pnpm verify:figma` validates them in CI, so an empty map is
-a checked state rather than an unchecked one.
+Both schemas permit an **empty and valid** initial state. This reference repository's token map is
+now populated from report 0003; `pnpm verify:figma` validates both populated and empty states in CI.
 
 ## Conventions
 
@@ -176,10 +175,11 @@ a checked state rather than an unchecked one.
   which, and it matters: joining on an ephemeral id produces a map that silently rots.
 - **Add an entry when the work is done, not before.** The map's value as a record comes from it
   being empty where the work has not happened. A speculative entry destroys that.
-- **A null is a finding.** `code: null`, `componentKey: null` — these say "not measured yet", and
-  that is more useful than a confident guess, because a guess never gets revisited. The mechanism
-  works: `separatorUnknown` was one of these, it was resolved to `/` by a live read on 2026-08-28,
-  and the flag is now `false`. Had it been guessed, nobody would have gone back.
+- **A null is a finding.** `code: null`, `componentKey: null` — these mean either "not measured yet"
+  or an intentional exclusion explained by `note`. Both are more useful than a confident guess,
+  because a guess never gets revisited. The mechanism works: `separatorUnknown` was one of these,
+  it was resolved to `/` by a live read on 2026-08-28, and the flag is now `false`. Had it been
+  guessed, nobody would have gone back.
 - **Correct a measurement in place, and say that you did.** `identity.variableNaming` and
   `identity.font` both carry a note naming what the previous reading got wrong. A silently corrected
   fact teaches nobody which readings are safe to trust.

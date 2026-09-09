@@ -1,0 +1,66 @@
+{
+  "font": {
+    "family": {
+      "primary": { "$value": "Lexend Deca", "$type": "fontFamily" }
+    },
+    "size": {
+      "xs": { "$value": "12px", "$type": "dimension" },
+      "sm": { "$value": "14px", "$type": "dimension" },
+      "base": { "$value": "16px", "$type": "dimension" },
+      "lg": { "$value": "18px", "$type": "dimension" },
+      "xl": { "$value": "20px", "$type": "dimension" },
+      "2xl": { "$value": "24px", "$type": "dimension" }
+    },
+    "weight": {
+      "light": { "$value": 300, "$type": "fontWeight" },
+      "regular": { "$value": 400, "$type": "fontWeight" },
+      "medium": { "$value": 500, "$type": "fontWeight" }
+    }
+  },
+  "typography": {
+    "display": {
+      "heading": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.xl}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" }
+      },
+      "time": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.base}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" }
+      },
+      "title": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.2xl}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" }
+      }
+    },
+    "ui": {
+      "button": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.base}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" }
+      },
+      "caption": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.xs}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.light}", "$type": "fontWeight" }
+      },
+      "description": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.sm}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.light}", "$type": "fontWeight" }
+      },
+      "label-emphasis": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.base}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.medium}", "$type": "fontWeight" }
+      },
+      "label": {
+        "font-family": { "$value": "{font.family.primary}", "$type": "fontFamily" },
+        "font-size": { "$value": "{font.size.base}", "$type": "dimension" },
+        "font-weight": { "$value": "{font.weight.light}", "$type": "fontWeight" }
+      }
+    }
+  }
+}

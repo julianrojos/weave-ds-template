@@ -1,0 +1,54 @@
+{
+  "space": {
+    "0": {
+      "$value": "0px",
+      "$type": "dimension",
+      "$description": "Scale index 0; resolves to 0px."
+    },
+    "1": {
+      "$value": "2px",
+      "$type": "dimension",
+      "$description": "Scale index 1; resolves to 2px."
+    },
+    "2": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Scale index 2; resolves to 4px."
+    },
+    "3": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Scale index 3; resolves to 8px."
+    },
+    "4": {
+      "$value": "12px",
+      "$type": "dimension",
+      "$description": "Scale index 4; resolves to 12px."
+    },
+    "5": {
+      "$value": "16px",
+      "$type": "dimension",
+      "$description": "Scale index 5; resolves to 16px."
+    },
+    "6": {
+      "$value": "24px",
+      "$type": "dimension",
+      "$description": "Scale index 6; resolves to 24px."
+    },
+    "7": {
+      "$value": "32px",
+      "$type": "dimension",
+      "$description": "Scale index 7; resolves to 32px."
+    },
+    "8": {
+      "$value": "48px",
+      "$type": "dimension",
+      "$description": "Scale index 8; resolves to 48px."
+    },
+    "9": {
+      "$value": "56px",
+      "$type": "dimension",
+      "$description": "Scale index 9; resolves to 56px."
+    }
+  }
+}

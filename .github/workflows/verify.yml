@@ -55,6 +55,10 @@ jobs:
       # explicitly and exits non-zero on a real failure.
       - run: pnpm build:tokens
 
+      # Style Dictionary checks transformability; this checks the architectural rules it cannot
+      # know: path syntax, resolvable aliases, semantic indirection and separate opacity.
+      - run: pnpm verify:tokens
+
       # A contract can name a part that never renders, a state nothing can enter, or a prop
       # value that was never in the axis — and the app still compiles, the tests still pass,
       # and the component still works. Nothing but this step notices.
