@@ -11,6 +11,13 @@ file is a snapshot, and the source is a working design file, not a frozen librar
 > The file is **not published as a library** (`sources.weave.published: false`), so nothing here has
 > a durable `componentKey`. Every id is file-local and refreshable.
 
+> **SUPERSEDED, variables section only.** The counts below (5 collections, 87 variables) are the
+> 2026-08-28 snapshot and are now wrong: a full rescan on 2026-09-09 found **6 collections, 154
+> variables** — see [`docs/research/0003-figma-token-inventory.md`](../../../../docs/research/0003-figma-token-inventory.md)
+> for the measured values and [`.figma/maps/tokens.json`](../../../../.figma/maps/tokens.json) for
+> the per-variable record. Everything else on this page (text styles, effect/paint styles, pages,
+> components) has not been rechecked and may or may not still hold.
+
 ## Variable collections — 5, and every one has a single mode
 
 | Collection         | Modes     | Variables | Types         | Tier      |
