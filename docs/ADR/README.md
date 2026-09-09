@@ -25,18 +25,14 @@ decision nobody has implemented is a Draft, however confident it sounds._
 
 ## The records
 
-**This directory ships almost empty**, like `docs/research/`, `.ai/maps/proposals/` and
-`packages/contracts/components/`. You get the machinery, not somebody else's conclusions.
+The base template starts almost empty, like `docs/research/`, `.ai/maps/proposals/` and
+`packages/contracts/components/`: it provides decision machinery, not an inherited token strategy.
+This working repository now also contains the project decisions derived from its measured design
+source.
 
-That is worth being explicit about, because an ADR folder is exactly where inherited decisions do
-the most damage. A record you did not make, about a system you have not built yet, still reads as
-binding — and the first thing it binds is the reasoning you were about to do yourself. A template's
-own construction decisions are not architecture decisions for the system built with it.
-
-The one record that ships is the exception that proves it: **0001 describes how this repository is
-organised**, which is a property of the template itself and therefore genuinely inherited when you
-adopt it. Anything the template settled _mechanically_ is documented next to the code that enforces
-it, not here:
+**0001 describes how the repository is organised** and is inherited with the template. Later records
+belong to the system being built here; each points to the local contract that makes the decision
+real. Details settled mechanically remain documented next to the code that enforces them:
 
 | What                                                  | Where                                     |
 | ----------------------------------------------------- | ----------------------------------------- |
@@ -58,6 +54,13 @@ it, not here:
 | [0002](./0002-agnostic-contracts-live-in-their-own-package.md)                      | Agnostic contracts live in their own package, not at the repo root       | Draft    |
 | [0003](./0003-paints-name-the-channel-and-leave-the-source-unbound.md)              | A paint names the channel and leaves its source unbound                  | Draft    |
 | [0004](./0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md) | A state declares who may set it, and prop names are generated from that  | Draft    |
+| [0005](./0005-code-identity-owns-token-naming.md)                                   | Code identity owns token naming                                          | Accepted |
+| [0006](./0006-dimension-families-keep-their-measured-scale-vocabularies.md)         | Dimension families keep their measured scale vocabularies                | Accepted |
+| [0007](./0007-opacity-is-composed-separately-from-color.md)                         | Opacity is composed separately from color                                | Accepted |
+| [0008](./0008-global-color-roles-preserve-the-measured-semantic-families.md)        | Global color roles preserve the measured semantic families               | Accepted |
+| [0009](./0009-component-specific-values-stay-out-of-the-global-token-package.md)    | Component-specific values stay out of the global token package           | Accepted |
+| [0010](./0010-web-compiles-color-and-opacity-roles-into-derived-paints.md)          | Web compiles color and opacity roles into derived paints                 | Accepted |
+| [0011](./0011-this-repository-is-the-juro-instance-not-a-rebrandable-template.md)   | This repository is the Juro instance, not a rebrandable template         | Accepted |
 
 <!-- adr-index:end -->
 

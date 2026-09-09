@@ -169,23 +169,22 @@ step), not to bake alpha into the color.
   fix applied to some tokens and not yet to others — not a decided convention either way.
 - **`surface/ghost` and `surface/overlay` both resolve to the exact same primitive** (`gray/900`,
   `#111111`) and differ only by which opacity step their description points at. If that is
-  intentional, the DTCG semantic layer should express it as one color token composed at two different
-  opacities, not two separately-named color tokens that happen to collide.
+  intentional, the DTCG semantic layer should preserve both role names while composing the shared
+  primitive with different opacity roles.
 - **`border/primary` is the only entry under `Color Tokens` that is not a `surface`/`text`/`brand`/
   `interactive`/`control` role** — it may belong to a `border` sub-namespace that does not exist yet
   in this collection, or the collection may simply be a flat bag with no intended sub-grouping. Not
   resolved by this read.
 
-## Problems found
+## Problems found at read time
 
 1. **Every prior variable count in this repo was stale.** `.figma/manifest.json` said 87; the file
    had 154. `Opacity Primitives` appeared in neither `identity.variableNaming.observed` nor
    `identity.variableCollections` (empty regardless), nor in `figma-file.md`'s collection table. Any
    decision made by reading only those documents before this read would have been made against a
-   smaller, older file. `.figma/manifest.json` has since been corrected (`3fcd1e2`);
-   `identity.variableCollections` and `figma-file.md`'s table have not — see the superseded notice
-   added to the latter.
-2. **Three naming vocabularies for a "step", confirmed with real values, still unresolved.**
+   smaller, older file. `.figma/manifest.json` and its `identity.variableCollections` projection
+   have since been corrected; see the superseded notice added to `figma-file.md`.
+2. **Three naming vocabularies for a "step", confirmed with real values, were unresolved.**
    `space/0..9` is a numeric index; `radius/none..full` is a t-shirt scale; `border/none..thick` is a
    third vocabulary (`none/thin/regular/medium/thick`) that is neither.
 3. **`interactive/selectedBg` is camelCase**; every other path in the file is lowercase-with-slashes.
@@ -195,11 +194,11 @@ step), not to bake alpha into the color.
 5. **Alpha-baking convention is inconsistent** — see "What it appears to mean" above. This is a new
    finding this read surfaced; it was not visible in the prior 87-variable snapshot because the
    opacity-composition notes did not exist there (`Opacity Primitives` did not exist there).
-6. **The prefix conflict from the manifest is unaffected by this read and still open**:
-   `codeSyntax.WEB` carries `weave-ds-*`; `ds.config.json` now says `juro`; `.figma/manifest.json →
-identity.prefix` still says `ds`. All three still disagree.
+6. **The prefix conflict was unaffected by this read and was still open**: `codeSyntax.WEB` carried
+   `weave-ds-*`; `ds.config.json` said `juro`; `.figma/manifest.json → identity.prefix` still said
+   `ds`. All three disagreed.
 
-## Open questions
+## Questions raised by the measurement
 
 - Is `Opacity Primitives` new, or did the manifest simply never capture it? No way to tell from this
   file alone — worth asking whoever last edited the Figma source.
@@ -210,3 +209,23 @@ identity.prefix` still says `ds`. All three still disagree.
   tokens are generated, or does the DTCG set encode today's inconsistency and flag it for later?
 - Should `control/waveform` and `control/off` move to a component-scoped token file, or a `control.*`
   semantic group of their own within `color.semantic.json`?
+
+## Decision follow-up (2026-09-09)
+
+The architectural questions above are now resolved and mechanized:
+
+- [ADR 0005](../ADR/0005-code-identity-owns-token-naming.md) makes `ds.config.json` canonical for
+  identity and normalizes public token paths to lowercase kebab-case segments.
+- [ADR 0006](../ADR/0006-dimension-families-keep-their-measured-scale-vocabularies.md) preserves a
+  separate measured vocabulary for spacing, radius and border width.
+- [ADR 0007](../ADR/0007-opacity-is-composed-separately-from-color.md) finishes the move from baked
+  alpha to solid color plus a separate opacity role.
+- [ADR 0008](../ADR/0008-global-color-roles-preserve-the-measured-semantic-families.md) preserves the
+  measured global role families without leaking source-file names into public paths.
+- [ADR 0009](../ADR/0009-component-specific-values-stay-out-of-the-global-token-package.md) keeps
+  `control/off` and `control/waveform` out of the global package until they have a measured owner.
+- [ADR 0010](../ADR/0010-web-compiles-color-and-opacity-roles-into-derived-paints.md) defines how the
+  web build turns each semantic color/opacity pair into one consumable CSS paint.
+
+The provenance question about when `Opacity Primitives` first appeared remains unknowable from the
+file alone. It does not block the token contract.
