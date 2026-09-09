@@ -1,7 +1,7 @@
 {
   "_schema": "1.0",
   "_doc": "Project anchor for this design system's Figma integration. Single source of truth for which Figma file we read from, and for the identity that generation needs. Maps in maps/*.json resolve their `source` keys against this file. Never hard-code a file key in a script or a skill — read it from here, so pointing the system at a different file is one edit.",
-  "lastUpdated": "2026-09-08",
+  "lastUpdated": "2026-09-09",
 
   "bridges": {
     "_doc": "TWO bridges, recorded separately. The READ bridge is the only one anything depends on: the explore -> report -> decide -> build arc completes without the write bridge, and `pnpm verify` is green on a machine with neither Figma Desktop nor a plugin installed — which is what keeps the template's fresh-clone promise intact. The WRITE bridge is opt-in and unwired: no pnpm script, no gate and no CI job invokes it. Code stays canonical for token values in both directions; a difference is drift in Figma, never a change to adopt back.",
@@ -65,7 +65,7 @@
     },
 
     "variableNaming": {
-      "_doc": "RE-MEASURED 2026-08-28 through the write bridge, correcting an earlier reading. A Figma variable carries TWO names and the previous entry conflated them: `name` is the slash path the API returns and the one you must look variables up by; `codeSyntax.WEB` is a separate author-set string that Figma emits in Dev Mode. The earlier `observed` list recorded codeSyntax values and labelled them names — which is where the phantom `weave-ds-` prefix came from. Both fields are real. All 87 variables carry both.",
+      "_doc": "RE-MEASURED 2026-09-09 through the write bridge, correcting the variable count below. A live full enumeration (figma.variables.getLocalVariableCollectionsAsync + getLocalVariablesAsync, every variable — not a node sample) found 154 variables in 6 collections, not the 87 in 5 recorded on 2026-08-28. The extra collection is `Opacity Primitives` (11 variables), previously undocumented anywhere in this repo. Full detail, including resolved values and new problems this surfaced (an unfinished alpha-baking migration; a third step vocabulary under `border/*`), is in docs/research/0003-figma-token-inventory.md. The per-variable correspondence lives in maps/tokens.json, rescanned the same day. RE-MEASURED 2026-08-28 through the write bridge, correcting an earlier reading before that: a Figma variable carries TWO names, and an even earlier entry conflated them — `name` is the slash path the API returns and the one you must look variables up by; `codeSyntax.WEB` is a separate author-set string that Figma emits in Dev Mode. The `observed` list below predates both re-measurements and is a sample, not a count — see the research doc and maps/tokens.json for the full list.",
       "figmaNamePattern": "{path}",
       "figmaCodeSyntaxPattern": "weave-ds-{path-flattened-to-dashes}",
       "cssPattern": "--{tokenPrefix}-{path}",
@@ -111,7 +111,9 @@
         "`space/0..9` is a numeric index while `radius/m` is a t-shirt scale — two naming systems in one file. Decide which one wins before generating; do not reproduce both.",
         "`interactive/selectedBg` is camelCase; every other token path is lowercase.",
         "`control/waveform` and `control/off` are component-specific but sit in the global namespace.",
-        "Primitive variables have `scopes: []` while token variables carry `ALL_SCOPES`. Unscoped primitives are still offered everywhere in the picker, so nothing stops a designer binding straight to `color/purple/500`."
+        "Primitive variables have `scopes: []` while token variables carry `ALL_SCOPES`. Unscoped primitives are still offered everywhere in the picker, so nothing stops a designer binding straight to `color/purple/500`.",
+        "THIRD SCALE VOCABULARY, found 2026-09-09: `border/none|thin|regular|medium|thick` is neither the numeric index `space/0..9` nor the t-shirt scale `radius/none..full` — a third naming system for a step, in the same `Spacing Tokens` collection as the other two.",
+        "ALPHA-BAKING MIGRATION IS HALF DONE, found 2026-09-09: `surface/ghost`, `surface/overlay`, `surface/subtle`, `text/disabled` and `text/secondary` each carry a description instructing composition of a solid color + a separate `opacity/*` step (e.g. \"Bind layer opacity to opacity/400... Previously baked as #111111 @40%\"). `interactive/selectedBg` and `surface/primary` still resolve to a primitive with alpha baked in (`color/purple/500-40`, `color/gray/800-90`) and carry no such note. Not yet a settled convention either way."
       ]
     },
 
