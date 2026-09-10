@@ -1,6 +1,6 @@
 ---
 name: ds-figma-component
-description: BLOCKED, DO NOT USE — reads component TSX from packages/react/src/components/, a directory that no longer exists; component source is now generated into consumers' repositories. Needs rewriting against the contract. Originally: generate a Figma component set from a component in that directory, through the figma-console MCP. Reads the component's TSX, CSS module and contract, then creates variants bound to the source file's Figma variables and text styles. Historically triggered by requests like "generate the Figma component for Button", "push a component to Figma", "build the Figma card/badge/dialog" — do NOT trigger on these while blocked; say so and point to packages/contracts/components/README.md instead.
+description: BLOCKED, DO NOT USE — reads component TSX from packages/react/src/components/, a directory that no longer exists; component source is now generated into consumers' repositories. Needs rewriting against the contract. Originally: generate a Figma component set from a component in that directory, through the figma-console MCP. Reads the component's TSX, CSS module and contract, then creates variants bound to the source file's Figma variables and text styles. Use when asked to "generate the Figma component for Button", "push a component to Figma", "build the Figma card/badge/dialog", or when given a Figma page plus a component name.
 ---
 
 > [!CAUTION]
@@ -21,12 +21,6 @@ description: BLOCKED, DO NOT USE — reads component TSX from packages/react/src
 
 # ds-figma-component
 
-> [!CAUTION]
-> Everything below this point describes a flow that **does not run against this repo today** — its
-> input directory is gone (see the banner above). Read it as design reasoning to carry into a
-> contract-driven rewrite, not as steps to execute. Do not paste code from this file into
-> `figma_execute` until it has been rewritten against `packages/contracts/components/`.
-
 Generates a Figma **component set** from a component's source of truth: the TSX, its CSS module,
 and its contract pair (`<Name>.contract.json` + `<Name>.react.json`). Runs through the
 **figma-console MCP** — there is no CLI step.
@@ -42,10 +36,10 @@ This skill was ported from a mature design system into a **starter template**, a
 preconditions do not hold yet. Neither is a bug in the skill; each is a decision this repo has not
 taken. Do not paper over them.
 
-| Precondition                        | State here                                                                                                                                   | What to do                                                                                                                                          |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Semantic tokens exist to bind to    | `identity.variableCollections` in the manifest is **empty**; `packages/tokens/tokens/` holds no generated token set                          | Measure the source and decide the token set first. Binding cannot be checked against a mapping that does not exist.                                 |
-| A component exists to generate from | `packages/react/src/components/` is **empty by design**, and `ds-component` is **superseded** — it targets a directory that no longer exists | There is no working skill that builds one yet. See `packages/contracts/components/README.md`; this skill reads a component, it does not invent one. |
+| Precondition                        | State here                                                                                                          | What to do                                                                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Semantic tokens exist to bind to    | `identity.variableCollections` in the manifest is **empty**; `packages/tokens/tokens/` holds no generated token set | Measure the source and decide the token set first. Binding cannot be checked against a mapping that does not exist. |
+| A component exists to generate from | `packages/react/src/components/` is **empty by design**                                                             | Build one with `ds-component` first. This skill reads a component; it does not invent one.                          |
 
 The bridge question is **settled**: `.figma/manifest.json` → `bridges` records a `read` bridge and a
 `write` bridge separately, and this skill runs on the write one. It is opt-in and unwired by design
@@ -125,11 +119,9 @@ it, or every set you generate inherits the same inconsistency.
 
 ### 1. Resolve inputs
 
-**Cannot execute today: `packages/react/src/components/<Name>/` does not exist.** Historically this
-step needed a component under that path plus a target Figma page — ask for whichever was missing,
-prefer an existing page over creating one, check before creating, and never leave a blank page
-behind from a failed attempt. That reasoning still applies once this skill is rewritten to resolve a
-component from its contract instead.
+You need a component under `packages/react/src/components/<Name>/` and a target Figma page. Ask for
+whichever is missing. Prefer an existing page over creating one; check before creating, and never
+leave a blank page behind from a failed attempt.
 
 ### 2. Read the source — all four faces
 
