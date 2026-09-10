@@ -25,18 +25,20 @@ decision nobody has implemented is a Draft, however confident it sounds._
 
 ## The records
 
-**This directory ships almost empty**, like `docs/research/`, `.ai/maps/proposals/` and
-`packages/contracts/components/`. You get the machinery, not somebody else's conclusions.
+**This directory starts almost empty in the template**, like `docs/research/`,
+`.ai/maps/proposals/` and `packages/contracts/components/`. You get the machinery, not somebody
+else's conclusions; records added after source work are decisions for this repo, not inherited
+template conclusions.
 
 That is worth being explicit about, because an ADR folder is exactly where inherited decisions do
 the most damage. A record you did not make, about a system you have not built yet, still reads as
 binding — and the first thing it binds is the reasoning you were about to do yourself. A template's
 own construction decisions are not architecture decisions for the system built with it.
 
-The one record that ships is the exception that proves it: **0001 describes how this repository is
-organised**, which is a property of the template itself and therefore genuinely inherited when you
-adopt it. Anything the template settled _mechanically_ is documented next to the code that enforces
-it, not here:
+The one record that ships with the untouched template is the exception that proves it:
+**0001 describes how this repository is organised**, which is a property of the template itself and
+therefore genuinely inherited when you adopt it. Anything the template settled _mechanically_ is
+documented next to the code that enforces it, not here:
 
 | What                                                  | Where                                     |
 | ----------------------------------------------------- | ----------------------------------------- |
@@ -52,12 +54,13 @@ it, not here:
 
 <!-- adr-index:start -->
 
-| #                                                                                   | Title                                                                    | Status   |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------- |
-| [0001](./0001-every-layer-is-self-describing.md)                                    | Every layer is self-describing, and context is pulled rather than pushed | Accepted |
-| [0002](./0002-agnostic-contracts-live-in-their-own-package.md)                      | Agnostic contracts live in their own package, not at the repo root       | Draft    |
-| [0003](./0003-paints-name-the-channel-and-leave-the-source-unbound.md)              | A paint names the channel and leaves its source unbound                  | Draft    |
-| [0004](./0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md) | A state declares who may set it, and prop names are generated from that  | Draft    |
+| #                                                                                            | Title                                                                      | Status   |
+| -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | -------- |
+| [0001](./0001-every-layer-is-self-describing.md)                                             | Every layer is self-describing, and context is pulled rather than pushed   | Accepted |
+| [0002](./0002-agnostic-contracts-live-in-their-own-package.md)                               | Agnostic contracts live in their own package, not at the repo root         | Draft    |
+| [0003](./0003-paints-name-the-channel-and-leave-the-source-unbound.md)                       | A paint names the channel and leaves its source unbound                    | Draft    |
+| [0004](./0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md)          | A state declares who may set it, and prop names are generated from that    | Draft    |
+| [0005](./0005-measured-figma-tokens-enter-code-verbatim-as-a-provisional-source-snapshot.md) | Measured Figma tokens enter code verbatim as a provisional source snapshot | Accepted |
 
 <!-- adr-index:end -->
 
