@@ -52,12 +52,12 @@ stops matching the system it documents the first time a token moves.
 an unscoped `find()` can bind a board to a raw primitive that carries no role. The kit's `tokens()`
 does this for you; do not bypass it.
 
-### The kit is not mapped to this file yet — and it will tell you so
+### The kit has measured collections, not final policy
 
 `tokens()` carries a **`CONFIG` block** at the top: the collection names, and the role → variable-name
-map that gives the board its visual language. In this repo that map is **unfilled**, because the
-token set it should point at has not been decided
-(`.figma/manifest.json` → `identity.variableCollections` is empty).
+map that gives the board its visual language. The current Figma source was measured on
+**2026-09-10**: `.figma/manifest.json` maps all six variable collections to DTCG source files, and
+`.figma/maps/tokens.json` records 154 variable → token correspondences.
 
 So the kit degrades on purpose:
 
@@ -68,13 +68,14 @@ So the kit degrades on purpose:
 - Fallback numbers exist so a board can be built at all. They are last-resort, not defaults to
   settle for.
 
-Filling `CONFIG` is a one-time job that belongs after the token set is decided and built. Do it
-there, not inline in a board script.
+Changing `CONFIG` is a token-policy job. Do it at the kit level after a decision, not inline in a
+board script.
 
 The collections measured in the source file on 2026-09-10 — `Color Tokens`, `Type Tokens`,
 `Spacing Tokens` for the token tier, `Color Primitives`, `Type Primitives` and
-`Opacity Primitives` for the primitive tier — are already in `CONFIG` as a starting point.
-Re-measure before trusting them; they were observed, not decided.
+`Opacity Primitives` for the primitive tier — are already in `CONFIG` as a starting point. Treat
+their existence as measured source data; naming, scope and role choices still need decisions where
+the manifest records problems.
 
 ## Before writing any Figma code
 

@@ -69,17 +69,16 @@ const SP = scoped('Spacing Tokens');
 const TY = scoped('Type Tokens');
 ```
 
-## There is no token set on the code side yet
+## The measured token set now exists on the code side
 
-`packages/tokens/tokens/` holds no DTCG source, and `identity.variableCollections` in the manifest —
-the collection → token-file mapping — is **empty**. So the middle column of the naming chain above
-does not exist yet.
+`packages/tokens/tokens/` holds the DTCG source measured from the current Figma file on
+**2026-09-10**, and `identity.variableCollections` in the manifest maps every measured collection
+to its token file. `.figma/maps/tokens.json` records the 154 variable → token correspondences.
 
-Practically: you can bind a component to `surface/primary` today and it will work, but you cannot yet
-say which `--ds-*` property that is, because nothing has generated one. Until the token set has been
-measured, decided and built, **write the Figma variable name into the report and leave the
-CSS column blank.** A blank is honest; a guessed `--ds-surface-primary` becomes the name everyone
-copies.
+Practically: you can resolve `surface/primary` to `surface.primary` and, after the token build,
+to `--ds-surface-primary`. If a variable is missing from the map, leave the CSS column blank and
+report drift rather than guessing a path. Source correspondence is measured; token policy still
+belongs in ADRs, not in one-off component scripts.
 
 ## Traps this file has not hit yet, but the family is prone to
 
@@ -89,7 +88,7 @@ Recorded so they are recognised on sight rather than debugged from scratch.
 Figma spells that `/default` while CSS writes the bare group name — `--ds-border-radius` →
 `border/radius/default`. Three spellings of one concept, and the most common cause of a lookup that
 returns `undefined` for a token you can plainly see in the CSS. This file has no `/default` leaves
-today; it will the moment the token set is generated.
+today.
 
 **Compound group names keep their hyphen.** `max-width` is one group, not two levels:
 `--ds-size-max-width-2xs` → `size/max-width/2xs`, never `size/max/width/2xs`. The swap-dashes-for-

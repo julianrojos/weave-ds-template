@@ -29,9 +29,9 @@ binding one produces a component that silently opts out of every axis the token 
 Scope every lookup by collection id — names repeat across the two tiers.
 
 **The tier split above is observed, not decided.** `.figma/manifest.json` →
-`identity.variableCollections` is the place where collection → DTCG source file becomes canonical,
-and it is **empty**. Until it is filled, a variable's collection tells you which tier it is in and
-nothing about which token file it should become.
+`identity.variableCollections` now records the collection → DTCG source-file mapping measured on
+2026-09-10. Treat that as source correspondence, not as a policy decision that settles the naming,
+scope or role issues recorded in the manifest.
 
 ### Single mode is the fact that shapes everything
 

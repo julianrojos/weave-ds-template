@@ -63,9 +63,9 @@ _read_, it is `ds-figma-explain`.
 ## Readiness — one is blocked, one is partial
 
 `ds-figma-component`, `ds-figma-document` and `ds-figma-explain` were ported on **2026-08-28** from a
-mature design system into a repo that ships **no tokens and no components by design**. That gap is
-recorded inside each skill rather than smoothed over, because a skill that assumes a token set it
-cannot find will invent one.
+mature design system into a repo that initially shipped **no tokens and no components by design**.
+The token side was measured from the current Figma source on **2026-09-10** and now exists as DTCG
+source under `packages/tokens/tokens/`; component source is still absent by design.
 
 `ds-decide` and `ds-component` are ready in the sense that matters — they refuse to start without
 their input, which is a working state, not a blocked one.
@@ -76,12 +76,14 @@ their input, which is a working state, not a blocked one.
 | `ds-component`       | ready          | an accepted ADR to build against                                                                |
 | `ds-figma-explain`   | **usable now** | nothing — it needs a file and something true to explain                                         |
 | `ds-figma-document`  | partial        | works on the 44 hand-built sets already in the file; the code-side description needs components |
-| `ds-figma-component` | **blocked**    | a component to generate from, and a decided token set to bind to                                |
+| `ds-figma-component` | **blocked**    | a component to generate from; token-policy decisions still need ADR coverage                    |
 
 Three preconditions are unmet across them. Each is a decision, not a bug:
 
-1. **No token set exists.** `identity.variableCollections` is empty and `packages/tokens/tokens/`
-   holds no DTCG source. Bindings cannot be checked against a mapping that is not there.
+1. **The measured token set exists, but it is not policy.** `identity.variableCollections` maps the
+   six measured Figma collections to DTCG source files, and `packages/tokens/tokens/` holds 154
+   source tokens. The recorded naming and scope problems are still decisions, not things a Figma
+   generation skill should settle inline.
 2. **No components exist.** `packages/contracts/components/` is empty on purpose, and component
    source is no longer held in this repo at all — it is generated into a consumer's repository.
 3. **The source file has one mode.** Every collection has a single mode, so the **mode-flip

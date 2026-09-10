@@ -29,9 +29,9 @@
 // yourself typing a hex, you are working around the kit.
 //
 // ─── READ THIS BEFORE YOUR FIRST BOARD ──────────────────────────────────────
-// The CONFIG block below is only PARTLY mapped, because this repo has not yet
-// decided its token set (.figma/manifest.json -> identity.variableCollections is
-// empty). Collection names are measured; ROLE names are placeholders.
+// The CONFIG block below has measured collections from the current source, but
+// it is still token-policy data rather than a place to make token-policy
+// decisions. Collection names are measured; ROLE names are placeholders.
 //
 // The kit therefore degrades on purpose rather than lying:
 //   - every failed lookup is pushed to T.unresolved
@@ -43,7 +43,7 @@
 // kit's clothes. Saying so is the difference between a known-provisional
 // artefact and a misleading one.
 //
-// Fill CONFIG once, after the token set has been decided and built.
+// Change CONFIG only after a token-policy decision.
 // Do not patch role names inline in a board script.
 //
 // Measured against "weave DS - Mokkap masterclass 29-08-2026 (Copy)"
@@ -54,7 +54,7 @@
 // ─── tokens ─────────────────────────────────────────────────────────────────
 
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
-// The only block you edit when the token set lands. Everything below it is
+// The only block you edit when the token policy changes. Everything below it is
 // mechanism.
 //
 // COLLECTIONS: measured 2026-09-10. The token/primitive split is what the
@@ -72,7 +72,7 @@ const COLLECTIONS = {
 
 // ROLES: the board's visual language. PLACEHOLDER NAMES — these point at the
 // role tokens that exist in the file today, which were authored for a product
-// UI and not for documentation boards. Revisit once the token set is decided.
+// UI and not for documentation boards. Revisit once token policy is decided.
 const ROLES = {
   accent: 'brand/primary',
   onAccent: 'text/primary',

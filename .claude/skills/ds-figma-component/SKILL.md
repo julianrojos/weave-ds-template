@@ -32,14 +32,15 @@ silently baked in.
 
 ## Read this before your first run — the template is not ready for this skill
 
-This skill was ported from a mature design system into a **starter template**, and two of its
-preconditions do not hold yet. Neither is a bug in the skill; each is a decision this repo has not
-taken. Do not paper over them.
+This skill was ported from a mature design system into a **starter template**, and one hard
+precondition still does not hold: there is no component source to generate from. Token source now
+exists, but the naming, scope and role decisions recorded in the manifest still need ADR coverage.
+Do not paper over them.
 
-| Precondition                        | State here                                                                                                          | What to do                                                                                                          |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Semantic tokens exist to bind to    | `identity.variableCollections` in the manifest is **empty**; `packages/tokens/tokens/` holds no generated token set | Measure the source and decide the token set first. Binding cannot be checked against a mapping that does not exist. |
-| A component exists to generate from | `packages/react/src/components/` is **empty by design**                                                             | Build one with `ds-component` first. This skill reads a component; it does not invent one.                          |
+| Precondition                        | State here                                                                                                                      | What to do                                                                                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Semantic tokens exist to bind to    | 154 measured source tokens exist under `packages/tokens/tokens/`; `identity.variableCollections` maps all six Figma collections | Use the measured mapping for lookups, but do not settle naming, scope or role-policy defects inside this skill. |
+| A component exists to generate from | `packages/react/src/components/` is **empty by design**                                                                         | Build one with `ds-component` first. This skill reads a component; it does not invent one.                      |
 
 The bridge question is **settled**: `.figma/manifest.json` → `bridges` records a `read` bridge and a
 `write` bridge separately, and this skill runs on the write one. It is opt-in and unwired by design
@@ -104,9 +105,9 @@ component writing `--ds-color-purple-500` instead of `--ds-color-fill-brand`.
 `find()` can bind you to the wrong tier without any error.
 
 **This tier split is measured, not decided.** `identity.variableCollections` in the manifest is the
-place where collection → token-source mapping becomes canonical, and it is empty. Until it is
-filled, treat the table above as an observation with a date on it, and re-measure before you rely
-on it.
+place where collection → token-source mapping becomes canonical, and it now points at the DTCG
+source measured on 2026-09-10. Treat that mapping as source correspondence, not as a decision that
+settles the known naming, scope and role-policy problems.
 
 Type binds to a **text style**, never a hand-set `fontName` + `fontSize`. The file has eight, all
 Lexend Deca, all binding `fontSize`/`fontFamily`/`fontWeight` to variables — the full table is in
