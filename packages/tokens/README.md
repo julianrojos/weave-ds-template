@@ -2,9 +2,11 @@
 
 DTCG JSON in, CSS custom properties and TypeScript constants out.
 
-**This package ships with no tokens.** That is the intended starting state — the token set is
-measured from the design source by hand, reviewed, and committed as JSON. Until then the build
-emits an empty `:root {}` and says so.
+This package supports the starter's empty state, but the current repo now contains the token set
+measured from Figma on **2026-09-10**: 154 DTCG source tokens across six collections. If the source
+directory is empty in a fresh template, the build emits an empty `:root {}` and says so. ADR 0005
+records why this first source import preserves the measured Figma names even where they are not
+final token policy.
 
 ## Where things are documented
 

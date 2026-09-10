@@ -1,0 +1,56 @@
+{
+  "font": {
+    "size": {
+      "xs": {
+        "$value": "12px",
+        "$type": "dimension",
+        "$description": "Extra small text - captions, timestamps"
+      },
+      "sm": {
+        "$value": "14px",
+        "$type": "dimension",
+        "$description": "Small text - descriptions, helper text"
+      },
+      "base": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Base text size - body, labels, buttons"
+      },
+      "lg": {
+        "$value": "18px",
+        "$type": "dimension",
+        "$description": "Large text - reserved for future use"
+      },
+      "xl": {
+        "$value": "20px",
+        "$type": "dimension",
+        "$description": "Extra large - section headings"
+      },
+      "2xl": {
+        "$value": "24px",
+        "$type": "dimension",
+        "$description": "Double XL - main titles"
+      }
+    },
+    "weight": {
+      "light": {
+        "$value": 300,
+        "$type": "fontWeight"
+      },
+      "regular": {
+        "$value": 400,
+        "$type": "fontWeight"
+      },
+      "medium": {
+        "$value": 500,
+        "$type": "fontWeight"
+      }
+    },
+    "fontFamily": {
+      "primary": {
+        "$value": "Lexend Deca",
+        "$type": "fontFamily"
+      }
+    }
+  }
+}

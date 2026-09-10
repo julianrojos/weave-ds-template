@@ -1,0 +1,59 @@
+{
+  "opacity": {
+    "50": {
+      "$value": 0.05,
+      "$type": "number",
+      "$description": "Figma source value is 5 on its 0-100 opacity scale. In code this is 0.05."
+    },
+    "100": {
+      "$value": 0.1,
+      "$type": "number",
+      "$description": "Figma source value is 10 on its 0-100 opacity scale. In code this is 0.1."
+    },
+    "200": {
+      "$value": 0.2,
+      "$type": "number",
+      "$description": "Figma source value is 20 on its 0-100 opacity scale. In code this is 0.2."
+    },
+    "300": {
+      "$value": 0.3,
+      "$type": "number",
+      "$description": "Figma source value is 30 on its 0-100 opacity scale. In code this is 0.3."
+    },
+    "400": {
+      "$value": 0.4,
+      "$type": "number",
+      "$description": "Figma source value is 40 on its 0-100 opacity scale. In code this is 0.4."
+    },
+    "500": {
+      "$value": 0.5,
+      "$type": "number",
+      "$description": "Figma source value is 50 on its 0-100 opacity scale. In code this is 0.5."
+    },
+    "600": {
+      "$value": 0.6,
+      "$type": "number",
+      "$description": "Figma source value is 60 on its 0-100 opacity scale. In code this is 0.6."
+    },
+    "700": {
+      "$value": 0.7,
+      "$type": "number",
+      "$description": "Figma source value is 70 on its 0-100 opacity scale. In code this is 0.7."
+    },
+    "800": {
+      "$value": 0.8,
+      "$type": "number",
+      "$description": "Figma source value is 80 on its 0-100 opacity scale. In code this is 0.8."
+    },
+    "900": {
+      "$value": 0.9,
+      "$type": "number",
+      "$description": "Figma source value is 90 on its 0-100 opacity scale. In code this is 0.9."
+    },
+    "1000": {
+      "$value": 1,
+      "$type": "number",
+      "$description": "Figma source value is 100 on its 0-100 opacity scale. In code this is 1."
+    }
+  }
+}

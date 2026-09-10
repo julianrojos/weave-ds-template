@@ -164,8 +164,12 @@ than papering over.
 | [`maps/tokens.json`](./maps/tokens.json)         | Figma variable → DTCG token path. `code: null` means drift.     |
 | [`maps/components.json`](./maps/components.json) | Code component → Figma node, plus the variant axes found there. |
 
-Both ship **empty and schema-valid**. `pnpm verify:figma` validates them in CI, so an empty map is
-a checked state rather than an unchecked one.
+`maps/tokens.json` is now populated from the current Figma source measured on **2026-09-10**:
+154 variable → DTCG token correspondences across six collections. `maps/components.json` still
+ships empty and schema-valid until component reconciliation work happens. `pnpm verify:figma`
+validates both in CI, so either an empty or populated map is a checked state rather than an
+unchecked one. ADR 0005 records the decision to preserve the measured token names and values
+verbatim as a provisional source snapshot.
 
 ## Conventions
 

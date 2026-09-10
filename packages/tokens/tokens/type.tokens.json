@@ -1,0 +1,118 @@
+{
+  "UI": {
+    "Button": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.base}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.medium}",
+        "$type": "fontWeight"
+      }
+    },
+    "Label": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.base}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.light}",
+        "$type": "fontWeight"
+      }
+    },
+    "Label-emphasis": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.base}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.medium}",
+        "$type": "fontWeight"
+      }
+    },
+    "Description": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.sm}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.light}",
+        "$type": "fontWeight"
+      }
+    },
+    "Caption": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.xs}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.light}",
+        "$type": "fontWeight"
+      }
+    }
+  },
+  "Display": {
+    "Heading": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.xl}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.medium}",
+        "$type": "fontWeight"
+      }
+    },
+    "Time": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.base}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.medium}",
+        "$type": "fontWeight"
+      }
+    },
+    "Title": {
+      "fontFamily": {
+        "$value": "{font.fontFamily.primary}",
+        "$type": "fontFamily"
+      },
+      "size": {
+        "$value": "{font.size.2xl}",
+        "$type": "dimension"
+      },
+      "weight": {
+        "$value": "{font.weight.medium}",
+        "$type": "fontWeight"
+      }
+    }
+  }
+}

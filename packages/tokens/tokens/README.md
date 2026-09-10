@@ -3,10 +3,12 @@
 **Authoring format: [DTCG](https://tr.designtokens.org/format/)** — every token is `$value` +
 `$type`, and a token that references another uses `{dot.path}`.
 
-This directory is **empty on purpose.** The token set is measured from the design source by hand,
-reviewed, then committed here — see [`../../../.figma/README.md`](../../../.figma/README.md) for
-how to read the file and what it can and cannot tell you. An invented token set is worse than none:
-it looks authoritative and nobody re-checks it.
+This directory contains the token set measured from the current Figma source on **2026-09-10**:
+154 variables across six local collections. See [`../../../.figma/README.md`](../../../.figma/README.md)
+for how to read the file and what it can and cannot tell you. The source measurement is recorded
+in [`../../../.figma/maps/tokens.json`](../../../.figma/maps/tokens.json). ADR 0005 records the
+decision to import this first token source verbatim as a provisional measured snapshot; code remains
+canonical for token values once committed here.
 
 ## 1. File naming
 
@@ -36,18 +38,25 @@ Naming a branded family in a component pins it to one colour and is almost alway
 ## 3. From a Figma variable to a token
 
 The mapping rule is **data, not an assumption baked into a script** — it lives in
-`.figma/manifest.json → identity.variableNaming`, and until it has been measured against the real
-file it is flagged `separatorUnknown: true`. Read it before writing a token.
+`.figma/manifest.json → identity.variableNaming`. If a future source has not been measured against
+the real file, it should be flagged `separatorUnknown: true`. Read the manifest before writing a
+token.
 
-The trap it records: the observed Figma variables carry a `-ds` infix (`weave-ds-space-3`) that is
-part of the **Figma** name and must **not** survive into the CSS custom property.
+The trap it records: a Figma variable carries two spellings. The Plugin API `name` is the bare slash
+path (`space/3`), while `codeSyntax.WEB` may carry the `weave-ds-` prefix (`weave-ds-space-3`).
+Do not conflate them.
 
 ```
-weave-ds-surface-primary   ->  --ds-surface-primary   ->  surface.primary   (DTCG path)
-weave-ds-space-3           ->  --ds-space-3           ->  space.3
+surface/primary   ->  --ds-surface-primary   ->  surface.primary   (DTCG path)
+space/3           ->  --ds-space-3           ->  space.3
 ```
 
 ## 4. Naming rules
+
+The measured Figma import preserves source spellings exactly, including known defects like
+`interactive.selectedBg` and `font.fontFamily`. Those defects are recorded in
+`.figma/manifest.json → identity.variableNaming.knownProblems`; do not treat them as precedent for
+new authored tokens.
 
 - **kebab-case** for every segment. `interactive-selected-bg`, never `interactiveSelectedBg` and
   never the run-on `interactiveselectedbg`.

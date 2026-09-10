@@ -1,0 +1,79 @@
+{
+  "brand": {
+    "primary": {
+      "$value": "{color.purple.500}",
+      "$type": "color"
+    },
+    "hover": {
+      "$value": "{color.purple.600}",
+      "$type": "color"
+    }
+  },
+  "interactive": {
+    "selectedBg": {
+      "$value": "{color.purple.500-40}",
+      "$type": "color"
+    },
+    "hover": {
+      "$value": "{color.gray.900}",
+      "$type": "color"
+    }
+  },
+  "text": {
+    "primary": {
+      "$value": "{color.base.white}",
+      "$type": "color"
+    },
+    "secondary": {
+      "$value": "{color.base.white}",
+      "$type": "color",
+      "$description": "Solid fill. Bind layer opacity to opacity/600 where this is used. Previously baked as #ffffff @60%."
+    },
+    "disabled": {
+      "$value": "{color.base.white}",
+      "$type": "color",
+      "$description": "Solid fill. Bind layer opacity to opacity/400 where this is used. Previously baked as #ffffff @40%."
+    },
+    "inverted": {
+      "$value": "{color.gray.900}",
+      "$type": "color"
+    }
+  },
+  "surface": {
+    "primary": {
+      "$value": "{color.gray.800-90}",
+      "$type": "color"
+    },
+    "overlay": {
+      "$value": "{color.gray.900}",
+      "$type": "color",
+      "$description": "Solid fill. Bind layer opacity to opacity/400 where this is used. Previously baked as #111111 @40%."
+    },
+    "ghost": {
+      "$value": "{color.gray.900}",
+      "$type": "color",
+      "$description": "Solid fill. Bind layer opacity to opacity/100 where this is used. Previously baked as #111111 @10%."
+    },
+    "subtle": {
+      "$value": "{color.base.white}",
+      "$type": "color",
+      "$description": "Solid fill. Bind layer opacity to opacity/200 where this is used. Previously baked as #ffffff @20%."
+    }
+  },
+  "border": {
+    "primary": {
+      "$value": "{color.gray.700}",
+      "$type": "color"
+    }
+  },
+  "control": {
+    "waveform": {
+      "$value": "{color.green.300}",
+      "$type": "color"
+    },
+    "off": {
+      "$value": "{color.red.500}",
+      "$type": "color"
+    }
+  }
+}
