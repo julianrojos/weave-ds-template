@@ -4,24 +4,25 @@ What is actually in the design source, measured rather than assumed.
 
 **Source:** `.figma/manifest.json` → `sources.weave`. Read the key from there; never hard-code it.
 
-Everything below was measured live on **2026-08-28** through the Desktop Bridge. Collection and
+Everything below was measured live on **2026-09-10** through the Desktop Bridge. Collection and
 style **names** are the stable join; node ids are not. Re-derive before relying on any of it — this
 file is a snapshot, and the source is a working design file, not a frozen library.
 
 > The file is **not published as a library** (`sources.weave.published: false`), so nothing here has
 > a durable `componentKey`. Every id is file-local and refreshable.
 
-## Variable collections — 5, and every one has a single mode
+## Variable collections — 6, and every one has a single mode
 
-| Collection         | Modes     | Variables | Types         | Tier      |
-| ------------------ | --------- | --------- | ------------- | --------- |
-| `Color Primitives` | `Mode 1`  | 15        | COLOR         | primitive |
-| `Color Tokens`     | `Mode 1`  | 15        | COLOR         | **token** |
-| `Type Primitives`  | `Default` | 10        | FLOAT, STRING | primitive |
-| `Type Tokens`      | `Mode 1`  | 24        | STRING, FLOAT | **token** |
-| `Spacing Tokens`   | `Mode 1`  | 23        | FLOAT         | **token** |
+| Collection           | Modes     | Variables | Types         | Tier      |
+| -------------------- | --------- | --------- | ------------- | --------- |
+| `Color Primitives`   | `Mode 1`  | 71        | COLOR         | primitive |
+| `Color Tokens`       | `Mode 1`  | 15        | COLOR         | **token** |
+| `Type Primitives`    | `Default` | 10        | FLOAT, STRING | primitive |
+| `Type Tokens`        | `Mode 1`  | 24        | STRING, FLOAT | **token** |
+| `Spacing Tokens`     | `Mode 1`  | 23        | FLOAT         | **token** |
+| `Opacity Primitives` | `Mode 1`  | 11        | FLOAT         | primitive |
 
-87 variables in total.
+154 variables in total.
 
 **Bind to the token tier. Never to the primitive tier.** A primitive is a raw value with no role;
 binding one produces a component that silently opts out of every axis the token layer will carry.
@@ -34,9 +35,11 @@ nothing about which token file it should become.
 
 ### Single mode is the fact that shapes everything
 
-Every collection has exactly one mode. There is **no light/dark axis, no density axis, no shape
-axis** — nothing to flip. The manifest records this as `identity.themes: { modes: ["dark"],
-decided: false }`: dark-only, and not yet _decided_ to be dark-only.
+Every collection has exactly one mode — that part is measured. There is **no light/dark axis, no
+density axis, no shape axis** — nothing to flip. The manifest records the mode's appearance as
+`identity.themes: { modes: ["dark"], decided: false }`: dark-only by observation, not yet _decided_
+to be dark-only, and `modesConfidence` there flags `"dark"` itself as an observed appearance rather
+than a Plugin API measurement.
 
 Two consequences, both load-bearing:
 
@@ -67,11 +70,11 @@ which is why type should be applied as a **style** and never as a hand-set `font
 `UI/Button` is the only style with an explicit line height. The other seven are `AUTO` — Figma's
 font-metric default, which is not a number the type scale controls.
 
-**This corrects the manifest.** `.figma/manifest.json` → `identity.font.knownProblems` currently
-says _"UI/Button uses 1.2487 while every other style uses 100"_. The `100` is wrong: measured, the
-others are `AUTO`, and `AUTO` and `100%` are different things. The defect is real but it is worse
-than recorded — seven styles have **no controlled line height at all**, rather than a consistent one
-that disagrees with an eighth.
+**This matches the manifest's own correction.** `.figma/manifest.json` → `identity.font.knownProblems`
+now records that it previously said _"UI/Button uses 1.2487 while every other style uses 100"_ — the
+`100` was wrong: measured, the others are `AUTO`, and `AUTO` and `100%` are different things. The
+defect is real but it is worse than first recorded — seven styles have **no controlled line height at
+all**, rather than a consistent one that disagrees with an eighth.
 
 Do not fix this inside a component. Record it, and let `ds-decide` settle whether the type scale
 owns line height. Every set generated before it is settled inherits the inconsistency.
@@ -95,10 +98,14 @@ This matters more than it looks:
 
 ## Pages
 
-20 pages. The structure is a taxonomy that has been laid out but not filled.
+13 pages. The structure is now a mix of source material, example boards and a test page.
 
 ```
 Starter UI kit          ← everything actually lives here
+Component API Examples
+Token System Examples
+Cheat Sheet
+Pipeline
 -----------
 Design Language
 ├ Primitives
@@ -106,26 +113,17 @@ Design Language
 ├ Typography
 ├ Icons
 ---
-Components
-> Primitives
-   ├ Component
-         └ Component Item
-> Forms & Input
-> Images
-> Labels
-> Layout & Structure
-> Loading
-> Navigation
-> Status Indicators
-> Overlays & Layering
+test-juro_1
 ```
 
-**Every `>` and `├` page under `Components` is empty.** They are the intended destination, not a
-record of work done. Putting a generated set on the right one is part of the job.
+The component taxonomy pages recorded in the previous source are not present in this copy. Putting a
+generated set on a destination page therefore needs a fresh page decision rather than assuming the
+old taxonomy still exists.
 
-## Components — 44 sets and 35 loose components, all on one page
+## Components — 44 sets and 35 loose components
 
-All of it sits on `Starter UI kit`. Nothing has been sorted into the taxonomy.
+Measured 2026-09-10. All of it sits on `Starter UI kit`. There is no taxonomy in this copy to sort
+components into — see the note above.
 
 Roughly three groups:
 
@@ -171,7 +169,8 @@ await figma.loadAllPagesAsync();
 const set = figma.root.findAll((n) => n.type === 'COMPONENT_SET' && n.name === '<Name>')[0];
 
 // a page — check before creating, and use the async setter
-const page = figma.root.children.find((p) => p.name === '> Forms & Input');
+const page = figma.root.children.find((p) => p.name === '<target page name>');
+if (!page) throw new Error('destination page must be decided — see figma-file.md');
 await figma.setCurrentPageAsync(page); // sync assignment throws under dynamic-page
 ```
 

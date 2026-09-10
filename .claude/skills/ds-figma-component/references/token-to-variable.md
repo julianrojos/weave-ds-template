@@ -18,20 +18,19 @@ CSS custom property   --ds-surface-primary
 DTCG token            surface.primary
 ```
 
-`.figma/manifest.json` → `identity.variableNaming` is the record of this. **It does not currently
-match the file.** Measured live on 2026-08-28:
+`.figma/manifest.json` → `identity.variableNaming` is the record of this. It was re-measured live on
+2026-09-10:
 
-|                        | Manifest says              | Actually measured      |
-| ---------------------- | -------------------------- | ---------------------- |
-| Variable name shape    | `weave-ds-surface-primary` | `surface/primary`      |
-| Group separator        | `separatorUnknown: true`   | `/` — slash, confirmed |
-| Prefix on the variable | `weave-ds-` infix present  | **no prefix at all**   |
+|                        | Manifest records                      | Actually measured                           |
+| ---------------------- | ------------------------------------- | ------------------------------------------- |
+| Variable name shape    | `figmaNamePattern: "{path}"`          | `surface/primary`                           |
+| Group separator        | `separator: "/"`                      | `/` — slash, confirmed                      |
+| Code syntax            | `weave-ds-{path-flattened-to-dashes}` | `weave-ds-surface-primary` on WEB where set |
+| Prefix on the variable | none                                  | **no prefix at all**                        |
 
-Every one of the manifest's `observed` names carries a `weave-ds-` prefix and dashes; every real
-variable in the file is a bare slash path. The prefix is almost certainly introduced downstream — it
-is what Dev Mode emits, not what the variable is called — but **do not write that into the manifest
-on my say-so.** Establishing where the prefix enters is a measurement someone has to make, and
-recording which spelling the pipeline consumes is a `ds-decide` job.
+Every real variable name read through the API is a bare slash path. The `weave-ds-` prefix is
+`codeSyntax.WEB`, not the variable name. That distinction is now recorded directly in the manifest;
+which spelling the token pipeline should consume is still a `ds-decide` job.
 
 What this means for you today: **look variables up by their slash path.** A lookup for
 `weave-ds-surface-primary` returns `undefined`, and the temptation at that point is to fall back to a
@@ -39,23 +38,24 @@ literal. Don't.
 
 ## The two tiers, by name shape
 
-Measured 2026-08-28. The tier is legible from the name, which is a good sign about the file:
+Measured 2026-09-10. The tier is legible from the name, which is a good sign about the file:
 
-| Tier      | Collection         | Name shape               | Examples                                                                                                                                          |
-| --------- | ------------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **token** | `Color Tokens`     | role path                | `brand/primary`, `text/primary`, `text/disabled`, `surface/primary`, `surface/overlay`, `border/primary`, `interactive/hover`, `control/waveform` |
-| primitive | `Color Primitives` | `color/<family>/<step>`  | `color/purple/500`, `color/red/500`, `color/gray/900`, `color/pure/white`                                                                         |
-| **token** | `Spacing Tokens`   | scale path               | `space/1`, `radius/m`, `border/thin`                                                                                                              |
-| **token** | `Type Tokens`      | `<Group>/<Role>/<facet>` | `UI/Button/size`, `UI/Label/weight`, `Display/Heading/fontFamily`                                                                                 |
-| primitive | `Type Primitives`  | scale path               | `font/size/xs`, `font/weight/medium`, `font/fontFamily/primary`                                                                                   |
+| Tier      | Collection           | Name shape               | Examples                                                                                                                                          |
+| --------- | -------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **token** | `Color Tokens`       | role path                | `brand/primary`, `text/primary`, `text/disabled`, `surface/primary`, `surface/overlay`, `border/primary`, `interactive/hover`, `control/waveform` |
+| primitive | `Color Primitives`   | `color/<family>/<step>`  | `color/purple/500`, `color/red/500`, `color/gray/900`, `color/base/transparent`                                                                   |
+| **token** | `Spacing Tokens`     | scale path               | `space/1`, `radius/m`, `border/thin`                                                                                                              |
+| **token** | `Type Tokens`        | `<Group>/<Role>/<facet>` | `UI/Button/size`, `UI/Label/weight`, `Display/Heading/fontFamily`                                                                                 |
+| primitive | `Type Primitives`    | scale path               | `font/size/xs`, `font/weight/medium`, `font/fontFamily/primary`                                                                                   |
+| primitive | `Opacity Primitives` | scale path               | `opacity/50`, `opacity/500`, `opacity/1000`                                                                                                       |
 
 **Bind to the token tier. Never to the primitive tier.** `brand/primary` is an alias onto
 `color/purple/500`; binding the primitive directly gives you a component that keeps the colour when
 the brand moves.
 
 **Always scope the lookup by collection id.** Both `Color Tokens` and `Color Primitives` are colour
-collections and the file is small enough today that names happen not to collide — that is luck, not
-a guarantee, and it will stop being true the moment a colour ramp is seeded.
+collections, and opacity now has its own primitive collection. An unscoped lookup can bind to the
+wrong tier without an error.
 
 ```js
 const cols = await figma.variables.getLocalVariableCollectionsAsync();
@@ -139,7 +139,7 @@ variables, so the style carries the token linkage for you. Setting `fontName`/`f
 throws that away and produces a node that looks identical and follows nothing.
 
 **Shadow** — **there is nothing to bind to.** The file has zero effect styles and zero paint styles
-(measured 2026-08-28). A shadow you add is a literal. Annotate it as one per the honesty rule, or
+(measured 2026-09-10). A shadow you add is a literal. Annotate it as one per the honesty rule, or
 leave it out and report that elevation has no token.
 
 ## What cannot bind

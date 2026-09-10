@@ -71,10 +71,10 @@ So the kit degrades on purpose:
 Filling `CONFIG` is a one-time job that belongs after the token set is decided and built. Do it
 there, not inline in a board script.
 
-The collections measured in the source file on 2026-08-28 — `Color Tokens`, `Type Tokens`,
-`Spacing Tokens` for the token tier, `Color Primitives` and `Type Primitives` for the primitive tier
-— are already in `CONFIG` as a starting point. Re-measure before trusting them; they were observed,
-not decided.
+The collections measured in the source file on 2026-09-10 — `Color Tokens`, `Type Tokens`,
+`Spacing Tokens` for the token tier, `Color Primitives`, `Type Primitives` and
+`Opacity Primitives` for the primitive tier — are already in `CONFIG` as a starting point.
+Re-measure before trusting them; they were observed, not decided.
 
 ## Before writing any Figma code
 
@@ -141,7 +141,8 @@ frame.clearExplicitVariableModeForCollection(T.colorScheme);
 ```
 
 **This file has one mode.** `.figma/manifest.json` → `identity.themes` records `modes: ["dark"]`
-with `decided: false`, so there is nothing to flip to and this check cannot run. Say that in the
+with `decided: false` (`"dark"` is an observed appearance, not measured — see `modesConfidence`),
+so there is nothing to flip to and this check cannot run. Say that in the
 report. When a second mode exists, this becomes mandatory: if nothing changes on the flip, something
 is bound to a primitive or pinned to an explicit mode, which is the most common serious defect —
 perfect in the default, wrong everywhere else.

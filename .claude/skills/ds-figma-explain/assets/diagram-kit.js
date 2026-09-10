@@ -46,8 +46,9 @@
 // Fill CONFIG once, after the token set has been decided and built.
 // Do not patch role names inline in a board script.
 //
-// Measured against "weave DS - Mokkap masterclass" (eUO2kF0A3tJXdVTcvEPQjW) on
-// 2026-08-28. Collection and style NAMES are the stable join; node IDs are not.
+// Measured against "weave DS - Mokkap masterclass 29-08-2026 (Copy)"
+// (CAZybLope1cikvLyECBQnD) on 2026-09-10. Collection and style NAMES are the
+// stable join; node IDs are not.
 // See ds-figma-component/references/figma-file.md for the full survey.
 
 // ─── tokens ─────────────────────────────────────────────────────────────────
@@ -56,7 +57,7 @@
 // The only block you edit when the token set lands. Everything below it is
 // mechanism.
 //
-// COLLECTIONS: measured 2026-08-28. The token/primitive split is what the
+// COLLECTIONS: measured 2026-09-10. The token/primitive split is what the
 // scoping enforces — a board bound into a primitive carries no role and will not
 // follow the token layer when it moves.
 const COLLECTIONS = {
@@ -66,6 +67,7 @@ const COLLECTIONS = {
   // primitive tier, listed so it is obvious they are NOT what we bind to
   _colorPrimitive: 'Color Primitives',
   _typePrimitive: 'Type Primitives',
+  _opacityPrimitive: 'Opacity Primitives',
 };
 
 // ROLES: the board's visual language. PLACEHOLDER NAMES — these point at the

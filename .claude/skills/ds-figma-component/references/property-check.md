@@ -89,7 +89,7 @@ frame.clearExplicitVariableModeForCollection(colorSchemeCollection);
 A set that ignores a mode flip is the single most common serious defect, because it looks perfect in
 the default and is wrong everywhere else.
 
-**Every collection in this file has exactly one mode** (measured 2026-08-28, see `figma-file.md`).
+**Every collection in this file has exactly one mode** (measured 2026-09-10, see `figma-file.md`).
 There is no light/dark, density or shape axis to flip, so this check has no target.
 
 Two things follow, and neither is optional:

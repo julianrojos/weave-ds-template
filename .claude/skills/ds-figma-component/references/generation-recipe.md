@@ -46,7 +46,8 @@ it.
 ## Building one variant
 
 ```js
-const page = figma.root.children.find((p) => p.name.trim() === '> Forms & Input');
+const page = figma.root.children.find((p) => p.name.trim() === '<target page name>');
+if (!page) throw new Error('destination page must be decided — see figma-file.md');
 await page.loadAsync();
 if (figma.currentPage.id !== page.id) await figma.setCurrentPageAsync(page);
 
@@ -78,9 +79,10 @@ for (const c of ['topLeftRadius', 'topRightRadius', 'bottomLeftRadius', 'bottomR
 }
 ```
 
-Collection and variable names above are this file's, measured 2026-08-28 — see
+Collection and variable names above are this file's, measured 2026-09-10 — see
 `figma-file.md`. **Always scope by collection**, and always to the _token_ tier
-(`Color Tokens`, `Spacing Tokens`, `Type Tokens`), never to `Color Primitives` or `Type Primitives`.
+(`Color Tokens`, `Spacing Tokens`, `Type Tokens`), never to `Color Primitives`, `Type Primitives` or
+`Opacity Primitives`.
 
 ## Fills
 

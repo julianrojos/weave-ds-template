@@ -46,7 +46,8 @@ The bridge question is **settled**: `.figma/manifest.json` → `bridges` records
 — nothing gates it, which is a known hole recorded in `bridges.write._gatedNote`.
 
 There is a third, smaller one: the source file has **no light/dark axis**
-(`identity.themes.decided: false`, `modes: ["dark"]`). The mode-flip verification below is the
+(`identity.themes.decided: false`, `modes: ["dark"]` — `"dark"` is an observed appearance, not a
+measured value; see `identity.themes.modesConfidence`). The mode-flip verification below is the
 strongest check in the whole workflow and it **cannot run yet**. When a theme axis is decided,
 turn it back on — until then, say in the report that this check did not run rather than implying
 it passed.
@@ -86,14 +87,14 @@ is calibrated to this repo's token model and this Figma file.
 
 The repo's token rule has a direct Figma counterpart, and it is the thing most worth getting right:
 
-**Bind to the token-tier collections and the published styles. Never to the primitive tier.**
+**Bind to the token-tier collections and the file's local text styles. Never to the primitive tier.**
 
-The source file separates the two by collection name. Measured on 2026-08-28:
+The source file separates the two by collection name. Measured on 2026-09-10:
 
-| Tier      | Collections                                     | Bind?   |
-| --------- | ----------------------------------------------- | ------- |
-| Token     | `Color Tokens`, `Type Tokens`, `Spacing Tokens` | **yes** |
-| Primitive | `Color Primitives`, `Type Primitives`           | **no**  |
+| Tier      | Collections                                                 | Bind?   |
+| --------- | ----------------------------------------------------------- | ------- |
+| Token     | `Color Tokens`, `Type Tokens`, `Spacing Tokens`             | **yes** |
+| Primitive | `Color Primitives`, `Type Primitives`, `Opacity Primitives` | **no**  |
 
 A primitive is a raw value with no role. Binding one produces a component that looks right and
 silently opts out of every axis the token layer will later carry — the Figma equivalent of a
@@ -312,8 +313,10 @@ Full table in `references/token-to-variable.md`. The ones that bite:
   empty, and re-exporting the same node id can return a cached image — capture a _different_ node to
   force a fresh render.
 
-- **`opacity` binds — verified in this file on 2026-08-28** (`node.setBoundVariable('opacity', v)`
-  succeeded against a local FLOAT). What is **not** settled here is the storage convention: Figma
+- **`opacity` binds — verified in the previous source file on 2026-08-28**
+  (`node.setBoundVariable('opacity', v)` succeeded against a local FLOAT). The current source was
+  re-measured on 2026-09-10 and now has an `Opacity Primitives` collection, but this binding check
+  was not re-run. What is **not** settled here is the storage convention: Figma
   reads the bound FLOAT as a percentage, while CSS wants a 0–1 ratio, so the same pixel is reached
   from numbers that differ by 100×. This repo has not decided which the token stores. Settle it in
   an ADR before writing opacity tokens, and until then **do not "correct" one side to match the
