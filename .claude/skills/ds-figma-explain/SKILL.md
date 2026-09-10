@@ -1,6 +1,6 @@
 ---
 name: ds-figma-explain
-description: Build visual explanations of this design system on a Figma canvas — node-graph diagrams with elbow connectors (component APIs, token tiers, architecture, data flow), spec and comparison tables, annotated anatomy mocks with numbered callouts, and flow diagrams. Use when asked to "explain X in Figma", "diagram this", "make a component API map", "visualise the token tiers", "put a spec table in Figma", "annotate this mock", or for a board that communicates how something works. NOT for producing library components — see ds-figma-component.
+description: Build visual explanations of this design system on a Figma canvas — node-graph diagrams with elbow connectors (component APIs, token tiers, architecture, data flow), spec and comparison tables, annotated anatomy mocks with numbered callouts, and flow diagrams. Use when asked to "explain X in Figma", "diagram this", "make a component API map", "visualise the token tiers", "put a spec table in Figma", "annotate this mock", or for a board that communicates how something works. NOT for producing library components; ds-figma-component is currently blocked.
 ---
 
 # ds-figma-explain
@@ -10,13 +10,13 @@ Runs through the **figma-console MCP**.
 
 ## When this, and when the other two
 
-| You want                                                    | Skill                |
-| ----------------------------------------------------------- | -------------------- |
-| A board that explains how something works                   | **this one**         |
-| A component set with variants that designers instantiate    | `ds-figma-component` |
-| The page around a set: description, cell grid, state tables | `ds-figma-document`  |
-| An anatomy mock with numbered callouts                      | **this one**         |
-| A real `Button` in the library                              | `ds-figma-component` |
+| You want                                                    | Skill                                                                  |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------- |
+| A board that explains how something works                   | **this one**                                                           |
+| A component set with variants that designers instantiate    | no working skill today — `ds-figma-component` is blocked               |
+| The page around a set: description, cell grid, state tables | `ds-figma-document`                                                    |
+| An anatomy mock with numbered callouts                      | **this one**                                                           |
+| A real `Button` in the library                              | no working skill today — contract-driven generation is not implemented |
 
 If the output is meant to be _used_ as a component, it is another skill. If it is meant to be
 _read_, it is this one.

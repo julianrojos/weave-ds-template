@@ -43,22 +43,22 @@ governing decision.
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | [`ds-decide`](./ds-decide/)                   | Turns a research report's open questions into Architecture Decision Records. Writes records, never code.                                                | `docs/ADR/`                          |
 | [`ds-component`](./ds-component/)             | **SUPERSEDED — do not use.** Describes the retired hand-authoring flow. No replacement exists yet; the library is moving to contract-driven generation. | —                                    |
-| [`ds-figma-component`](./ds-figma-component/) | Generates a Figma **component set** from a component's source, bound to the file's variables and text styles.                                           | Figma, `.figma/maps/components.json` |
+| [`ds-figma-component`](./ds-figma-component/) | **BLOCKED — do not use.** Describes the retired TSX-driven Figma set flow; it needs rewriting against contracts.                                        | Figma, `.figma/maps/components.json` |
 | [`ds-figma-document`](./ds-figma-document/)   | Lays out the **page around** a component set — title, description, labelled cell grid, extension tables. Works on sets this repo never generated.       | Figma, `.figma/maps/components.json` |
 | [`ds-figma-explain`](./ds-figma-explain/)     | Builds **explanatory** boards — node graphs, spec tables, annotated anatomy, flows. For things meant to be read, not instantiated.                      | Figma                                |
 
 ### Picking between the three Figma skills
 
-| You want                                           | Skill                                  |
-| -------------------------------------------------- | -------------------------------------- |
-| A component set that does not exist yet            | `ds-figma-component`                   |
-| The page around a set: description, labels, states | `ds-figma-document`                    |
-| To show a state _without_ adding a variant axis    | `ds-figma-document` — extension tables |
-| A board that explains how something works          | `ds-figma-explain`                     |
-| To read the design source and write it down        | none — do it yourself, see `.figma/`   |
+| You want                                           | Skill                                                    |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| A component set that does not exist yet            | no working skill today — `ds-figma-component` is blocked |
+| The page around a set: description, labels, states | `ds-figma-document`                                      |
+| To show a state _without_ adding a variant axis    | `ds-figma-document` — extension tables                   |
+| A board that explains how something works          | `ds-figma-explain`                                       |
+| To read the design source and write it down        | none — do it yourself, see `.figma/`                     |
 
-If the output is meant to be _used_ as a component, it is `ds-figma-component`. If it is meant to be
-_read_, it is `ds-figma-explain`.
+If the output is meant to be _used_ as a component, there is no working skill today. If it is meant
+to be _read_, it is `ds-figma-explain`.
 
 ## Readiness — one is blocked, one is partial
 

@@ -1,6 +1,6 @@
 ---
 name: ds-component
-description: SUPERSEDED, DO NOT USE — describes the retired hand-authoring flow and writes to packages/react/src/components/, a directory that no longer exists. The library is now contract-driven and there is no replacement skill yet. Read packages/contracts/components/README.md instead. Retained only for its reasoning. Originally: build a React component from an accepted decision — the five files, its agnostic contract and React binding, the barrel entry, and every gate. Use when asked to "create the Button", "scaffold a component", "implement ADR NNNN", "add a component to the design system", or when given a component name plus a design intent. Requires a governing ADR or a prop-map proposal to work from.
+description: SUPERSEDED, DO NOT USE — describes the retired hand-authoring flow and writes to packages/react/src/components/, a directory that no longer exists. The library is now contract-driven and there is no replacement skill yet. Read packages/contracts/components/README.md instead. Retained only for its reasoning. Originally: build a React component from an accepted decision — the five files, its agnostic contract and React binding, the barrel entry, and every gate. Historically triggered by requests like "create the Button", "scaffold a component", "implement ADR NNNN", "add a component to the design system" — do NOT trigger on these while superseded; say so and point to packages/contracts/components/README.md instead.
 ---
 
 > [!CAUTION]
