@@ -4,9 +4,11 @@ What is actually in the design source, measured rather than assumed.
 
 **Source:** `.figma/manifest.json` → `sources.weave`. Read the key from there; never hard-code it.
 
-Everything below was measured live on **2026-09-10** through the Desktop Bridge. Collection and
-style **names** are the stable join; node ids are not. Re-derive before relying on any of it — this
-file is a snapshot, and the source is a working design file, not a frozen library.
+Variable, collection and style facts below were measured live on **2026-09-10** through the Desktop
+Bridge. The page and component inventories were re-measured on **2026-09-11** through the Figma
+Plugin API. Collection and style **names** are the stable join; node ids are not. Re-derive before
+relying on any of it — this file is a snapshot, and the source is a working design file, not a frozen
+library.
 
 > The file is **not published as a library** (`sources.weave.published: false`), so nothing here has
 > a durable `componentKey`. Every id is file-local and refreshable.
@@ -98,14 +100,16 @@ This matters more than it looks:
 
 ## Pages
 
-13 pages. The structure is now a mix of source material, example boards and a test page.
+Measured **2026-09-11**. 15 pages. The structure is now a mix of source material, example boards,
+an import page and test pages.
 
 ```
-Starter UI kit          ← everything actually lives here
+Starter UI kit          ← the original component kit lives here
 Component API Examples
 Token System Examples
 Cheat Sheet
 Pipeline
+Imported
 -----------
 Design Language
 ├ Primitives
@@ -114,18 +118,39 @@ Design Language
 ├ Icons
 ---
 test-juro_1
+test-juro_3
 ```
 
 The component taxonomy pages recorded in the previous source are not present in this copy. Putting a
 generated set on a destination page therefore needs a fresh page decision rather than assuming the
 old taxonomy still exists.
 
-## Components — 44 sets and 35 loose components
+## Components — 58 sets and 35 loose components
 
-Measured 2026-09-10. All of it sits on `Starter UI kit`. There is no taxonomy in this copy to sort
-components into — see the note above.
+Measured **2026-09-11**, page by page across all 15 pages. The original 44 sets and 35 loose
+components remain on `Starter UI kit`; 14 additional sets now live on five other pages. There is no
+component taxonomy in this copy to sort them into — see the note above.
 
-Roughly three groups:
+| Page                     | Component sets | Loose components |
+| ------------------------ | -------------: | ---------------: |
+| `Starter UI kit`         |             44 |               35 |
+| `Component API Examples` |              1 |                0 |
+| `Imported`               |              1 |                0 |
+| `├ Icons`                |              1 |                0 |
+| `test-juro_1`            |              5 |                0 |
+| `test-juro_3`            |              6 |                0 |
+| Other nine pages         |              0 |                0 |
+| **Total**                |         **58** |           **35** |
+
+`test-juro_3` holds six `TabItem` candidate sets from a model comparison, and none is reconciled
+with `TabItem.contract.json`. Four were measured on **2026-09-15**: `TabItem_GPT-5.5_Alto` and the
+three Claude sets. Only `TabItem_GPT-5.5_Alto` has the contract's separate `indicator` part and an
+inside focus ring, and it still diverges — Disabled dims the whole tab through root opacity where
+the contract dims the label, and Hover's label colour was not checked. `TabItem_GPT-5.5_Medio` and
+`TabItem_GPT-5.6_Sol_Alto` were not measured. Which candidate becomes `TabItem` is a design decision
+to take before any of them is recorded in `.figma/maps/components.json`.
+
+The original `Starter UI kit` inventory breaks into roughly three groups:
 
 | Group                      | Examples                                                                                                                        |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
@@ -135,9 +160,11 @@ Roughly three groups:
 
 Three things to know before touching any of them:
 
-1. **None of these came from this repo.** `.figma/maps/components.json` is empty. They are a
-   designer's hand-built kit, and `ds-figma-document` is the skill that works on them; this skill
-   generates _new_ sets from code.
+1. **The `Starter UI kit` inventory did not come from this repo.** Those 44 sets and 35 loose
+   components are a designer's hand-built kit, and `ds-figma-document` is the skill that works on
+   them. Provenance outside that page is recorded in `.figma/maps/components.json`: a set is
+   reconciled with code only if that map has an entry pointing at it. Do not infer provenance from a
+   set's name or appearance.
 2. **The naming is not the repo's canon.** `button` / `main-ui-button` / `closeButton` /
    `settingsButton` mix cases and conventions in one file. `.ai/maps/prop-map.md` §1 is the canon for
    anything you create. Do not rename someone's existing component as a side effect.
