@@ -67,11 +67,11 @@ governance.
 ## Brand it before anything else
 
 On a fresh, unbranded checkout, set the repository identity **once**, before writing components.
-Replace `acme` with your system's name:
+Replace `yourname` with your system's name:
 
 ```bash
-pnpm init-ds acme --dry    # inspect
-pnpm init-ds acme          # apply, then pnpm install
+pnpm init-ds yourname --dry    # inspect
+pnpm init-ds yourname          # apply, then pnpm install
 ```
 
 The scope, the token prefix and the data-attribute prefix are one decision in three syntaxes and

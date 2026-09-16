@@ -50,7 +50,7 @@ meant to consume as is. I encourage you to modify or build your own emitters bas
 
 ```bash
 pnpm install
-pnpm init-ds acme          # fresh, unbranded checkout only; use your own name
+pnpm init-ds yourname      # fresh, unbranded checkout only; use your own name
 pnpm install               # workspace links move with the scope
 pnpm verify                # every gate, green
 pnpm dev                   # React sandbox at localhost:4300
