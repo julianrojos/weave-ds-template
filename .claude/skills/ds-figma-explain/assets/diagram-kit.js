@@ -46,9 +46,10 @@
 // Fill CONFIG once, after the token set has been decided and built.
 // Do not patch role names inline in a board script.
 //
-// Measured against "weave DS - Mokkap masterclass" (eUO2kF0A3tJXdVTcvEPQjW) on
-// 2026-08-28. Collection and style NAMES are the stable join; node IDs are not.
-// See ds-figma-component/references/figma-file.md for the full survey.
+// The initial survey was recorded on 2026-08-28. Re-measure collection and
+// style names against the source named in .figma/manifest.json before using
+// this kit; node IDs are never durable. See
+// ds-figma-component/references/figma-file.md for the full survey.
 
 // ─── tokens ─────────────────────────────────────────────────────────────────
 
