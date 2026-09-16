@@ -61,6 +61,7 @@ documented next to the code that enforces it, not here:
 | [0003](./0003-paints-name-the-channel-and-leave-the-source-unbound.md)                       | A paint names the channel and leaves its source unbound                    | Draft    |
 | [0004](./0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md)          | A state declares who may set it, and prop names are generated from that    | Draft    |
 | [0005](./0005-measured-figma-tokens-enter-code-verbatim-as-a-provisional-source-snapshot.md) | Measured Figma tokens enter code verbatim as a provisional source snapshot | Accepted |
+| [0006](./0006-contract-axes-and-figma-visual-state-axes-are-recorded-separately.md)          | Contract axes and Figma visual-state axes are recorded separately          | Accepted |
 
 <!-- adr-index:end -->
 

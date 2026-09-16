@@ -275,8 +275,10 @@ shape. Three of its rules matter more than the rest:
 - **`componentKey` stays `null`** until the source file is published as a library. Until then the
   only join is `pageId` + `componentSetId`, and the schema marks both EPHEMERAL. Record them, treat
   them as refreshable, and never rewrite a non-null key from a scan.
-- **`axes` must agree with the component's extracted prop value sets.** A disagreement means the two
-  surfaces describe different components, which is the whole failure this map exists to catch.
+- **`axes` must agree with the contract's axes.** A disagreement means the two surfaces describe
+  different components, which is the whole failure this map exists to catch. A Figma-only visual
+  `State` axis goes in `designAxes`; content axes and other non-contract variants are divergences,
+  not design axes.
 
 ## What cannot bind
 

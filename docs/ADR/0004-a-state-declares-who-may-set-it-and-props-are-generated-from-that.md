@@ -7,7 +7,7 @@
   new component keeps finding the next thing a contract cannot say.
 - **Deciders:** cris
 - **Tags:** components, governance, packaging, a11y
-- **Related:** [ADR 0002 — Agnostic contracts live in their own package, not at the repo root](./0002-agnostic-contracts-live-in-their-own-package.md)
+- **Related:** [ADR 0002 — Agnostic contracts live in their own package, not at the repo root](./0002-agnostic-contracts-live-in-their-own-package.md), [ADR 0006 — Contract axes and Figma visual-state axes are recorded separately](./0006-contract-axes-and-figma-visual-state-axes-are-recorded-separately.md)
 
 ## Context
 

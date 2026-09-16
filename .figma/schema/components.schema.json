@@ -15,7 +15,7 @@
     "components": {
       "type": "object",
       "description": "Keyed by the code component name in PascalCase.",
-      "additionalProperties": { "$ref": "#/definitions/entry" }
+      "additionalProperties": { "$ref": "#/definitions/componentEntry" }
     },
     "icons": {
       "type": "object",
@@ -25,6 +25,21 @@
   },
 
   "definitions": {
+    "componentEntry": {
+      "allOf": [
+        { "$ref": "#/definitions/entry" },
+        {
+          "if": {
+            "properties": { "assetType": { "enum": ["component_set", "component"] } },
+            "required": ["assetType"]
+          },
+          "then": {
+            "required": ["codePath"],
+            "properties": { "codePath": { "type": "string", "minLength": 1 } }
+          }
+        }
+      ]
+    },
     "entry": {
       "type": "object",
       "additionalProperties": false,
@@ -33,7 +48,7 @@
         "source": { "type": "string", "description": "A key in manifest.json -> sources." },
         "codePath": {
           "type": ["string", "null"],
-          "description": "Repo-relative path to the component directory, e.g. packages/react/src/components/Button."
+          "description": "Repo-relative path to the component's contract directory, e.g. packages/contracts/components/Button. Required and non-null for modelled entries under components; icon entries may have no component contract. verify:figma requires <Name>.contract.json when a path is present."
         },
         "pageId": {
           "type": ["string", "null"],
@@ -52,7 +67,12 @@
         "variantCount": { "type": ["integer", "null"], "minimum": 0 },
         "axes": {
           "type": "object",
-          "description": "Figma variant property -> its values, TitleCase property with prop-exact values. Must agree with the component's extracted prop value sets; a disagreement means the two surfaces describe different components.",
+          "description": "Figma variant properties that correspond to the contract's `axes`: TitleCase property, values exactly that axis's values. verify:figma asserts both directions — no axis the contract lacks, and no contract axis missing from a component set. A disagreement means the two surfaces describe different components.",
+          "additionalProperties": { "type": "array", "items": { "type": "string" } }
+        },
+        "designAxes": {
+          "type": "object",
+          "description": "Figma-only visual-state properties that correspond to no contract axis, typically a State axis kept for review. Content axes and other non-contract variants are divergences, not designAxes. Whether a state has a public input behind it does not matter here: `disabled` does and `hover` does not, and both may appear. Each value, normalized (trimmed, lowercased, whitespace runs to '-'), must be a state the contract declares, one of a state's enumerated `values`, or `default` for the resting state. One axis flattens states the contract keeps independent — a tab can be selected and focused at once — so treat it as a review aid, not a model of the state space. verify:figma asserts all of this.",
           "additionalProperties": { "type": "array", "items": { "type": "string" } }
         },
         "dependsOn": {

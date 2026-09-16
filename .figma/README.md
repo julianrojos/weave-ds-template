@@ -164,12 +164,21 @@ than papering over.
 | [`maps/tokens.json`](./maps/tokens.json)         | Figma variable → DTCG token path. `code: null` means drift.     |
 | [`maps/components.json`](./maps/components.json) | Code component → Figma node, plus the variant axes found there. |
 
-`maps/tokens.json` is now populated from the current Figma source measured on **2026-09-10**:
-154 variable → DTCG token correspondences across six collections. `maps/components.json` still
-ships empty and schema-valid until component reconciliation work happens. `pnpm verify:figma`
-validates both in CI, so either an empty or populated map is a checked state rather than an
-unchecked one. ADR 0005 records the decision to preserve the measured token names and values
-verbatim as a provisional source snapshot.
+`maps/tokens.json` is populated from the current Figma source measured on **2026-09-10**: 154
+variable → DTCG token correspondences across six collections. ADR 0005 records the decision to
+preserve the measured token names and values verbatim as a provisional source snapshot.
+
+`maps/components.json` starts empty in the template and gains an entry only once a Figma set has been
+reconciled with its contract. Read the map itself for what is reconciled today — this page
+deliberately does not list it, because a copy here goes stale the moment an entry lands.
+
+Each component entry separates two kinds of variant axis. `axes` holds the ones that correspond to
+the contract's `axes`, and must equal them. `designAxes` is narrower: it holds Figma-only visual-state
+axes such as a `State` kept for review — whether their values have a public input behind them is
+irrelevant. Their values may only be states the contract declares or those states' enumerated values.
+Content axes and any other non-contract variants are divergences, not `designAxes`.
+`pnpm verify:figma` checks both in CI, and checks that each entry's contract is the component it is
+keyed under.
 
 ## Conventions
 
