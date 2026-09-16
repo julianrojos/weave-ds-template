@@ -1,5 +1,5 @@
 {
-  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @ds/contracts/prop-canon.json and is framework-free. This file holds ONLY the places Vue's idiom differs from it.",
+  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @juro/contracts/prop-canon.json and is framework-free. This file holds ONLY the places Vue's idiom differs from it.",
   "_why": "A contract says a component has a selection that can be controlled. It does not say whether that is `value` + `onValueChange`, `modelValue` + `update:modelValue`, or a two-way binding, because that is a framework's business and not the specification's. This file is the second half of that sentence finally being written down: the React table said `modelValue` as a hypothetical, and this is the real one.",
   "_regenerate": "Hand-maintained. Nothing generates this file.",
   "conventions": {
@@ -42,9 +42,9 @@
   "axisOverrides": {},
   "_behaviorBindingDoc": "Behaviour vocabulary primitive -> the Vue implementation that satisfies it. The vocabulary is still unbuilt; the primitives are not, and these three are what a contract's `dismisses`, `collection.navigation` and `range` blocks compile to.",
   "behaviorBindings": {
-    "dismissal": "useDismissal from @ds/vue/behavior",
-    "linear-navigation": "useLinearNavigation from @ds/vue/behavior",
-    "range-stepping": "useRangeControl from @ds/vue/behavior"
+    "dismissal": "useDismissal from @juro/vue/behavior",
+    "linear-navigation": "useLinearNavigation from @juro/vue/behavior",
+    "range-stepping": "useRangeControl from @juro/vue/behavior"
   },
   "_whatVueSuppliesThatReactDoesNot": "Recorded here because each one is a React binding field with no Vue counterpart, and a reader comparing the two directories will otherwise read the absence as an omission.",
   "suppliedByTheFramework": {

@@ -62,11 +62,11 @@ function onRootInput(event: Event) {
     :disabled="disabled || undefined"
     :aria-readonly="readOnly || undefined"
     :aria-invalid="invalid || undefined"
-    :data-ds-size="size"
+    :data-juro-size="size"
     :value="value"
     :readonly="readOnly"
-    data-ds-component="TextField"
-    data-ds-part="root"
+    data-juro-component="TextField"
+    data-juro-part="root"
     @input="onRootInput"
   />
 </template>

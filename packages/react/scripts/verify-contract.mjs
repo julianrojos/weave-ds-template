@@ -32,7 +32,7 @@
 import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import Ajv from 'ajv/dist/2020.js';
-import { loadProfile } from '@ds/platform-web';
+import { loadProfile } from '@juro/platform-web';
 import {
   REPO_ROOT,
   listContracts,
@@ -226,7 +226,7 @@ function check(name, validateContract, validateBinding) {
         name,
         'invented',
         `state "${state}" is declared intrinsic, but no platform state has that name. ` +
-          `@ds/platform-web knows: ${PLATFORM_STATES.join(', ')}. ` +
+          `@juro/platform-web knows: ${PLATFORM_STATES.join(', ')}. ` +
           `An authored state has to be tracked by the implementation instead.`,
       );
     }

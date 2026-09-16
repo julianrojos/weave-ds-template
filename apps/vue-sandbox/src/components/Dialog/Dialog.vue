@@ -15,8 +15,8 @@ export interface DialogProps {
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useAttrs, useId, watchEffect } from 'vue';
-import { useDismissal } from '@ds/vue/behavior';
-import type { DismissalOptions } from '@ds/vue/behavior';
+import { useDismissal } from '@juro/vue/behavior';
+import type { DismissalOptions } from '@juro/vue/behavior';
 import './Dialog.structure.css';
 import './Dialog.theme.css';
 
@@ -87,10 +87,10 @@ onMounted(() => {
 onBeforeUnmount(() => openObserver?.disconnect());
 
 // Transcribed from Dialog.contract.json > dismisses. The cases this commits us to
-// are in @ds/contracts/conformance/dismissal.json.
+// are in @juro/contracts/conformance/dismissal.json.
 //
 // The contract also declares escape, which is NOT generated: the
-// platform supplies it for a <dialog>. See @ds/platform-web > visibility.supplies.
+// platform supplies it for a <dialog>. See @juro/platform-web > visibility.supplies.
 const DISMISSAL: DismissalOptions = {
   on: ['outside-press'],
 };
@@ -134,22 +134,22 @@ function onRootClick(event: MouseEvent) {
     v-bind="fallthrough"
     ref="dialogEl"
     :id="baseId"
-    :data-ds-state-open="open || undefined"
-    :data-ds-size="size"
+    :data-juro-state-open="open || undefined"
+    :data-juro-size="size"
     :aria-labelledby="`${baseId}-title`"
-    data-ds-component="Dialog"
-    data-ds-part="root"
+    data-juro-component="Dialog"
+    data-juro-part="root"
     @pointerdown="onRootPointerdown"
     @pointercancel="onRootPointercancel"
     @click="onRootClick"
   >
-    <div :id="`${baseId}-title`" data-ds-part="title">
+    <div :id="`${baseId}-title`" data-juro-part="title">
       <slot name="title" />
     </div>
-    <div data-ds-part="body">
+    <div data-juro-part="body">
       <slot name="body" />
     </div>
-    <div data-ds-part="actions">
+    <div data-juro-part="actions">
       <slot name="actions" />
     </div>
     <slot />

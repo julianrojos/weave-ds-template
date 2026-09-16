@@ -6,7 +6,7 @@ import dts from 'vite-plugin-dts';
 //
 // `src/behavior/` holds plain TypeScript: signals, functions and one injection-context call. There
 // is no template, no decorator and nothing for the Angular compiler to do — which is the same
-// reason `@ds/vue`'s build needs no SFC compiler for its primitives. The EMITTED components are
+// reason `@juro/vue`'s build needs no SFC compiler for its primitives. The EMITTED components are
 // Angular-compiled, but they are compiled in the consumer's own application, not here.
 export default defineConfig({
   plugins: [dts({ include: ['src'], rollupTypes: false })],

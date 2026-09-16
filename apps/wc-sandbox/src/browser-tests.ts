@@ -16,14 +16,14 @@ import './components/RadioItem';
 
 const rosters = {
   tabs: {
-    collection: document.createElement('ds-tabs'),
-    first: document.createElement('ds-tab-item'),
-    second: document.createElement('ds-tab-item'),
+    collection: document.createElement('juro-tabs'),
+    first: document.createElement('juro-tab-item'),
+    second: document.createElement('juro-tab-item'),
   },
   radios: {
-    collection: document.createElement('ds-radio-group'),
-    first: document.createElement('ds-radio-item'),
-    second: document.createElement('ds-radio-item'),
+    collection: document.createElement('juro-radio-group'),
+    first: document.createElement('juro-radio-item'),
+    second: document.createElement('juro-radio-item'),
   },
 };
 for (const [kind, { collection, first, second }] of Object.entries(rosters)) {
@@ -50,6 +50,6 @@ export function updateRoster(
   else if (patch.visible === true && !first.isConnected) collection.insertBefore(first, second);
 }
 
-const styleProbe = document.createElement('ds-button');
+const styleProbe = document.createElement('juro-button');
 styleProbe.textContent = 'Style probe';
 document.body.append(styleProbe);

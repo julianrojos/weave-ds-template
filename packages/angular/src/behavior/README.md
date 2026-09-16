@@ -15,7 +15,7 @@ index.ts                    the public barrel
 
 The decision logic these wrap — `dismissal.ts`, `linear-navigation.ts`, `range-stepping.ts` and
 their conformance suites — **used to sit beside them, copied byte for byte from the React package.**
-It now lives once, in [`@ds/behavior`](../../../behavior/README.md), which explains at length why it
+It now lives once, in [`@juro/behavior`](../../../behavior/README.md), which explains at length why it
 was duplicated in the first place and what had to be true before it could move.
 
 What is left here is genuinely Angular and nothing else: reading an event, and calling a state writer.

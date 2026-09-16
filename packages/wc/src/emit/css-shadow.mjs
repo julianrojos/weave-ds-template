@@ -1,6 +1,6 @@
 // The two stylesheets, in the shadow flavour.
 //
-// `@ds/emit-web/css` writes the light-DOM pair and its README says plainly where it stops:
+// `@juro/emit-web/css` writes the light-DOM pair and its README says plainly where it stops:
 //
 //     Whether that becomes a parameter on these functions or a second module beside them is NOT
 //     decided here, because nothing has built it yet.
@@ -12,10 +12,10 @@
 //
 //   light DOM                                          shadow DOM
 //   ---------------------------------------------      --------------------------------
-//   [data-ds-component='Button']                        :host
-//   [data-ds-component='Button'] [data-ds-part='x']     [part='x']
-//   [data-ds-component='Button'][data-ds-hierarchy=..]  :host([hierarchy='...'])
-//   [data-ds-component='Button'][data-ds-state-open]    :host([open])
+//   [data-juro-component='Button']                        :host
+//   [data-juro-component='Button'] [data-juro-part='x']     [part='x']
+//   [data-juro-component='Button'][data-juro-hierarchy=..]  :host([hierarchy='...'])
+//   [data-juro-component='Button'][data-juro-state-open]    :host([open])
 //
 // WHAT THAT MEANS, and it is the sharpest finding this backend produced: the component-scoping
 // attribute, the part attribute and the axis attribute family were all inventions the other three
@@ -27,8 +27,8 @@
 // three backends shared — that a single theme file dresses them all — does not hold here. A
 // consumer's reach from outside is `::part()` and custom properties, and nothing else.
 
-import { kebab, partsOf } from '@ds/emit-web';
-import { pseudoClassFor } from '@ds/platform-web';
+import { kebab, partsOf } from '@juro/emit-web';
+import { pseudoClassFor } from '@juro/platform-web';
 
 /**
  * The selector for one state, inside the shadow root.
@@ -138,7 +138,7 @@ export function emitStructureShadow(name, contract, prefix, assume) {
   if (hides) {
     L.push(`/*`);
     L.push(
-      ` * Hiding is a contract claim, not a style — see @ds/emit-web. The rule below is inside`,
+      ` * Hiding is a contract claim, not a style — see @juro/emit-web. The rule below is inside`,
     );
     L.push(` * the shadow root, so unlike the light-DOM backends nothing a consumer writes can`);
     L.push(` * outrank it by accident: they would have to target \`::part()\` deliberately.`);

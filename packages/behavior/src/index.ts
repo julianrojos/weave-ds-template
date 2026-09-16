@@ -11,23 +11,23 @@
 // That measurement is taken — docs/research/0004 and 0005 — and at three copies the reason had run
 // out. This is the move those reports named.
 //
-// WHY NOT `@ds/platform-web`. That package's rule is "if it would still be true in a Vue, Svelte or
+// WHY NOT `@juro/platform-web`. That package's rule is "if it would still be true in a Vue, Svelte or
 // Lit backend rendering the same DOM, it belongs here". These pass that test and then keep going:
 // what Escape means, which member an arrow key moves to, where a number lands when you step it —
 // none of that needs a DOM at all, and all of it would be true in React Native. They are MORE
 // agnostic than the web profile, so a home inside it would have been a demotion.
 //
-// WHY NOT `@ds/contracts`. That package is the specification and ships JSON. The conformance cases
+// WHY NOT `@juro/contracts`. That package is the specification and ships JSON. The conformance cases
 // these satisfy already live there, in `conformance/`. This is the executable reference
 // implementation of those cases — a different kind of artifact, and keeping it out is what lets a
 // consumer hold the contract set without holding any code at all.
 //
 // Each framework package wraps these in its own binding and re-exports them under the same names,
-// so an emitted component imports `@ds/react/behavior` rather than reaching in here.
+// so an emitted component imports `@juro/react/behavior` rather than reaching in here.
 //
 // `intentFor` EXISTS TWICE and is exported under two names. Two primitives may be used by one
 // component, and a bare `intentFor` would then be ambiguous at the import site rather than at the
-// definition. The subpath exports (`@ds/behavior/linear-navigation`) expose the original names for
+// definition. The subpath exports (`@juro/behavior/linear-navigation`) expose the original names for
 // anyone who wants them.
 
 // --- dismissal: closing a region with a key or a press that is not activation

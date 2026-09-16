@@ -28,8 +28,8 @@ Tokens resolve top-down through `var()`:
 | **Semantic**       | `color.brand.primary` = `{color.indigo.500}` | primitives only           |
 | **Component slot** | `color.fill.loud`                            | semantics only            |
 
-**A component styles against the group-less roles** (`--ds-color-fill-*`, `--ds-color-border-*`,
-`--ds-color-on-*`), never against a branded family like `--ds-color-brand-*`. Those roles are what
+**A component styles against the group-less roles** (`--juro-color-fill-*`, `--juro-color-border-*`,
+`--juro-color-on-*`), never against a branded family like `--juro-color-brand-*`. Those roles are what
 a `variant` prop re-points, so a component styled against them picks up every variant for free.
 Naming a branded family in a component pins it to one colour and is almost always a mistake.
 
@@ -43,8 +43,8 @@ The trap it records: the observed Figma variables carry a `-ds` infix (`weave-ds
 part of the **Figma** name and must **not** survive into the CSS custom property.
 
 ```
-weave-ds-surface-primary   ->  --ds-surface-primary   ->  surface.primary   (DTCG path)
-weave-ds-space-3           ->  --ds-space-3           ->  space.3
+weave-ds-surface-primary   ->  --juro-surface-primary   ->  surface.primary   (DTCG path)
+weave-ds-space-3           ->  --juro-space-3           ->  space.3
 ```
 
 ## 4. Naming rules

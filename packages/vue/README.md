@@ -1,12 +1,12 @@
-# `@ds/vue`
+# `@juro/vue`
 
 **The second backend.** Vue bindings, a Vue emitter, and the interaction primitives emitted
-components import. It ships **no components**, exactly as [`@ds/react`](../react/README.md) ships
+components import. It ships **no components**, exactly as [`@juro/react`](../react/README.md) ships
 none — a component is generated from a contract into a consumer's own repository.
 
 ## Why this package exists, and what it is for
 
-Not to support Vue. To find out whether [`@ds/contracts`](../contracts/README.md) is a
+Not to support Vue. To find out whether [`@juro/contracts`](../contracts/README.md) is a
 specification or one framework wearing a specification's clothes.
 
 [ADR 0002](../../docs/ADR/0002-agnostic-contracts-live-in-their-own-package.md) is held at **Draft**
@@ -14,12 +14,12 @@ for exactly this reason, and states the test in one sentence:
 
 > The proof is a second backend, and it is a specific test, not a feeling: a compiler for another
 > target reads the same contracts and the same conformance definitions, and changes NOTHING inside
-> `@ds/contracts` to do it.
+> `@juro/contracts` to do it.
 
 This package is that compiler. What it found is in
 [`docs/research/0004`](../../docs/research/0004-a-second-backend-reading-the-same-contracts.md).
-The short version: fifteen contracts compiled, nothing in `@ds/contracts` changed, and nothing in
-[`@ds/platform-web`](../platform-web/README.md) changed either.
+The short version: fifteen contracts compiled, nothing in `@juro/contracts` changed, and nothing in
+[`@juro/platform-web`](../platform-web/README.md) changed either.
 
 That record's own table is also honest about what this does **not** prove. Vue is a web framework
 with a virtual DOM, a cascade and a document, so it falsifies _"the prop and event model is React's
@@ -36,7 +36,7 @@ emitter produces two **stylesheets**, and there is no stylesheet in Flutter.
 | [`src/behavior/`](./src/behavior/README.md)  | the interaction primitives, and the ones duplicated     |
 | `src/index.ts`                               | a deliberately empty barrel — see the file              |
 
-## The three places it diverges from `@ds/react`
+## The three places it diverges from `@juro/react`
 
 Everything else is the same component compiled twice. These are the differences, and each is a
 framework fact the contract deliberately does not state.

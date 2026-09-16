@@ -96,7 +96,7 @@ an accessibility promise, so those are written once, in the contract, and a huma
     "notes": ["Icon-only usage needs a label from whoever uses it. Nothing here can enforce that."]
   },
   "anatomy": {
-    "root": { "part": "root", "paints": { "background-color": "--ds-color-fill-" } }
+    "root": { "part": "root", "paints": { "background-color": "--juro-color-fill-" } }
   }
 }
 ```

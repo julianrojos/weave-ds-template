@@ -53,20 +53,20 @@ const fallthrough = computed(() => ({ ...attrs }));
     v-bind="fallthrough"
     type="button"
     :disabled="disabled || undefined"
-    :data-ds-state-loading="loading || undefined"
-    :data-ds-hierarchy="hierarchy"
-    :data-ds-variant="variant"
-    :data-ds-size="size"
-    data-ds-component="Button"
-    data-ds-part="root"
+    :data-juro-state-loading="loading || undefined"
+    :data-juro-hierarchy="hierarchy"
+    :data-juro-variant="variant"
+    :data-juro-size="size"
+    data-juro-component="Button"
+    data-juro-part="root"
   >
-    <div data-ds-part="icon-start">
+    <div data-juro-part="icon-start">
       <slot name="iconStart" />
     </div>
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <slot />
     </div>
-    <div data-ds-part="icon-end">
+    <div data-juro-part="icon-end">
       <slot name="iconEnd" />
     </div>
   </button>

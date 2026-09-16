@@ -23,7 +23,7 @@
 }
 
 /*
- * Hiding is a contract claim, not a style — see @ds/emit-web. The rule below is inside
+ * Hiding is a contract claim, not a style — see @juro/emit-web. The rule below is inside
  * the shadow root, so unlike the light-DOM backends nothing a consumer writes can
  * outrank it by accident: they would have to target `::part()` deliberately.
  */

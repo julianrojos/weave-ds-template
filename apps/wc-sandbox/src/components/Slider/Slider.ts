@@ -3,8 +3,8 @@
 //
 // Chooses a number from a continuous range where the approximate value matters more than the exact one — a volume, a zoom level, a price ceiling.
 
-import { snap, useRangeControl } from '@ds/wc/behavior';
-import type { RangeOptions } from '@ds/wc/behavior';
+import { snap, useRangeControl } from '@juro/wc/behavior';
+import type { RangeOptions } from '@juro/wc/behavior';
 
 // THE ONE BUNDLER-SPECIFIC TOKEN IN THIS FILE. `?inline` asks Vite for the stylesheet as
 // a string so it can be adopted into the shadow root rather than injected into the page —
@@ -39,7 +39,7 @@ const RANGE: RangeOptions = {
 };
 
 export class Slider extends HTMLElement {
-  static readonly tagName = 'ds-slider';
+  static readonly tagName = 'juro-slider';
   static readonly formAssociated = true;
   static readonly observedAttributes = ['disabled', 'name', 'required', 'value', 'aria-label'];
 
@@ -170,7 +170,7 @@ export class Slider extends HTMLElement {
     root.setAttribute('aria-valuemin', '0');
     root.setAttribute('aria-valuemax', '100');
     root.setAttribute('aria-valuenow', String(snap(this.value, RANGE)));
-    root.style.setProperty('--ds-fraction', String(this.#range.fraction));
+    root.style.setProperty('--juro-fraction', String(this.#range.fraction));
     this.toggleAttribute('dragging', this.#range.dragging);
     root.setAttribute('tabindex', this.disabled || this.#formDisabled ? '-1' : '0');
     this.#syncForm();
@@ -238,6 +238,6 @@ if (!customElements.get(Slider.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-slider': Slider;
+    'juro-slider': Slider;
   }
 }

@@ -30,7 +30,7 @@ export const pascal = (s) => {
  * An Angular component ATTACHES to an element rather than rendering one, so the binding's `element`
  * becomes an attribute selector and the consumer writes the element themselves:
  *
- *   element: "button", component: "Switch"  ->  button[dsSwitch]  ->  <button dsSwitch>
+ *   element: "button", component: "Switch"  ->  button[juroSwitch]  ->  <button juroSwitch>
  *
  * The prefix comes from `/ds.config.json` like every other prefix in the repo, so `pnpm init-ds`
  * renames the selector along with everything else.

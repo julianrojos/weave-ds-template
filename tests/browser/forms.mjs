@@ -9,14 +9,14 @@ async function setup(page) {
     const form = document.createElement('form');
     form.id = 'form';
     form.innerHTML = `<fieldset id="form-fields">
-      <ds-text-field id="answer" name="answer" value="initial" aria-label="Answer"></ds-text-field>
-      <ds-checkbox id="consent" name="consent" checked="checked"><span slot="label">Consent</span></ds-checkbox>
-      <ds-switch id="setting" name="setting" checked><span slot="label">Setting</span></ds-switch>
-      <ds-slider id="amount" name="amount" value="25" aria-label="Amount"></ds-slider>
-      <ds-radio-group id="choice" name="choice" value="b" aria-label="Choice">
-        <ds-radio-item value="a">Alpha</ds-radio-item><ds-radio-item value="b">Beta</ds-radio-item>
-      </ds-radio-group>
-      <ds-button>Action</ds-button>
+      <juro-text-field id="answer" name="answer" value="initial" aria-label="Answer"></juro-text-field>
+      <juro-checkbox id="consent" name="consent" checked="checked"><span slot="label">Consent</span></juro-checkbox>
+      <juro-switch id="setting" name="setting" checked><span slot="label">Setting</span></juro-switch>
+      <juro-slider id="amount" name="amount" value="25" aria-label="Amount"></juro-slider>
+      <juro-radio-group id="choice" name="choice" value="b" aria-label="Choice">
+        <juro-radio-item value="a">Alpha</juro-radio-item><juro-radio-item value="b">Beta</juro-radio-item>
+      </juro-radio-group>
+      <juro-button>Action</juro-button>
     </fieldset><button type="submit">Submit answers</button>`;
     form.addEventListener('submit', (event) => {
       event.preventDefault();
@@ -167,7 +167,7 @@ export function formRegressions() {
     await page.evaluate(async () => {
       document.querySelector('#consent').shadowRoot.querySelector('[part="root"]').click();
       document
-        .querySelector('#choice ds-radio-item')
+        .querySelector('#choice juro-radio-item')
         .shadowRoot.querySelector('[part="root"]')
         .click();
       document.querySelector('#form').reset();

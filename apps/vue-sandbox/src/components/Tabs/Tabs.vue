@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import type { ComputedRef, InjectionKey } from 'vue';
-import type { MemberRegistration } from '@ds/vue/behavior';
+import type { MemberRegistration } from '@juro/vue/behavior';
 
 /** What a consumer may pass. `v-model` bindings are declared separately below. */
 export interface TabsProps {
@@ -41,8 +41,8 @@ export const TabsKey: InjectionKey<TabsContextValue> = Symbol('Tabs');
 
 <script setup lang="ts">
 import { computed, provide, useAttrs, useId } from 'vue';
-import { useLinearNavigation } from '@ds/vue/behavior';
-import type { NavigationOptions } from '@ds/vue/behavior';
+import { useLinearNavigation } from '@juro/vue/behavior';
+import type { NavigationOptions } from '@juro/vue/behavior';
 import './Tabs.structure.css';
 import './Tabs.theme.css';
 
@@ -70,7 +70,7 @@ function toggle(memberValue: string) {
 
 // Transcribed field for field from Tabs.contract.json > collection.navigation.
 // The cases this commits us to are in
-// @ds/contracts/conformance/linear-navigation.json.
+// @juro/contracts/conformance/linear-navigation.json.
 const NAVIGATION: NavigationOptions = {
   orientation: 'horizontal',
   wrap: true,
@@ -115,11 +115,11 @@ function onRootKeydown(event: KeyboardEvent) {
     v-bind="fallthrough"
     :id="baseId"
     :aria-disabled="disabled || undefined"
-    data-ds-component="Tabs"
-    data-ds-part="root"
+    data-juro-component="Tabs"
+    data-juro-part="root"
     @keydown="onRootKeydown"
   >
-    <div role="tablist" :id="`${baseId}-list`" data-ds-part="list" />
+    <div role="tablist" :id="`${baseId}-list`" data-juro-part="list" />
     <slot />
   </div>
 </template>

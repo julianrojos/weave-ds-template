@@ -17,13 +17,13 @@ import { RADIOGROUP, type RadioGroupContext } from '../RadioGroup/RadioGroup';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <div dsRadioItem>.
-  selector: 'div[dsRadioItem]',
-  exportAs: 'dsRadioItem',
+  // to an element rather than rendering one. A consumer writes <div juroRadioItem>.
+  selector: 'div[juroRadioItem]',
+  exportAs: 'juroRadioItem',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -33,15 +33,15 @@ import { RADIOGROUP, type RadioGroupContext } from '../RadioGroup/RadioGroup';
     '[attr.aria-disabled]': 'disabled() || null',
     '[attr.aria-checked]': 'selected()',
     '[attr.tabindex]': 'collection.isTabStop(value()) ? 0 : -1',
-    'data-ds-component': 'RadioItem',
-    'data-ds-part': 'root',
+    'data-juro-component': 'RadioItem',
+    'data-juro-part': 'root',
     '(click)': 'activate($event)',
   },
   template: `
-    <div data-ds-part="control">
-      <div [attr.hidden]="selected() ? null : ''" data-ds-part="mark"></div>
+    <div data-juro-part="control">
+      <div [attr.hidden]="selected() ? null : ''" data-juro-part="mark"></div>
     </div>
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <ng-content select="[slot=label]" />
     </div>
     <ng-content />

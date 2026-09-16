@@ -10,8 +10,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@ds/tokens": "workspace:*",
-    "@ds/vue": "workspace:*",
+    "@juro/tokens": "workspace:*",
+    "@juro/vue": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

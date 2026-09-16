@@ -1,4 +1,4 @@
-// Drives the conformance cases in @ds/contracts against the one shared implementation.
+// Drives the conformance cases in @juro/contracts against the one shared implementation.
 //
 // Same arrangement as the other two primitives: the cases are DATA owned by the contracts package,
 // and this file is the adapter that executes them.
@@ -43,7 +43,7 @@ const NEEDS_A_BROWSER: Record<string, string> = {
 };
 
 const SUITE = JSON.parse(
-  readFileSync(require.resolve('@ds/contracts/conformance/dismissal.json'), 'utf8'),
+  readFileSync(require.resolve('@juro/contracts/conformance/dismissal.json'), 'utf8'),
 ) as { primitive: string; cases: Case[] };
 
 describe(`conformance: ${SUITE.primitive}`, () => {

@@ -33,12 +33,12 @@ export const TabPanel = forwardRef<HTMLDivElement, TabPanelProps>(function TabPa
       ref={ref}
       role="tabpanel"
       id={baseId}
-      data-ds-state-selected={selected || undefined}
+      data-juro-state-selected={selected || undefined}
       tabIndex={0}
       hidden={!selected}
       aria-labelledby={`${ctx.baseId}-TabItem-${value}`}
-      data-ds-component="TabPanel"
-      data-ds-part="root"
+      data-juro-component="TabPanel"
+      data-juro-part="root"
       className={className}
     ></div>
   );

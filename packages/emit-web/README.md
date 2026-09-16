@@ -1,12 +1,12 @@
-# `@ds/emit-web`
+# `@juro/emit-web`
 
 **What every backend that emits components into an HTML document shares, and nothing that assumes a
 framework.** Two halves, and they answer different questions:
 
-| Subpath                                   | Holds                                                                              |
-| ----------------------------------------- | ---------------------------------------------------------------------------------- |
-| [`@ds/emit-web/contract`](./contract.mjs) | reading a contract: `loadPair`, `partsOf`, `memberFacts`, `camel`/`pascal`/`kebab` |
-| [`@ds/emit-web/css`](./css.mjs)           | writing the two stylesheets: `emitStructure`, `emitTheme`, `stateSelector`         |
+| Subpath                                     | Holds                                                                              |
+| ------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [`@juro/emit-web/contract`](./contract.mjs) | reading a contract: `loadPair`, `partsOf`, `memberFacts`, `camel`/`pascal`/`kebab` |
+| [`@juro/emit-web/css`](./css.mjs)           | writing the two stylesheets: `emitStructure`, `emitTheme`, `stateSelector`         |
 
 ## Why it exists
 
@@ -15,7 +15,7 @@ and Angular ones. There was never anything framework-specific to remove — one 
 other emits CSS, and neither knows what a component function is.
 
 The copies were kept deliberately while a second and third backend were built, for the reason
-[`@ds/behavior`](../behavior/README.md) gives at length: sharing code before you have measured what
+[`@juro/behavior`](../behavior/README.md) gives at length: sharing code before you have measured what
 a backend costs destroys the measurement. That measurement is in
 [`docs/research/0004`](../../docs/research/0004-a-second-backend-reading-the-same-contracts.md) and
 [`0005`](../../docs/research/0005-a-third-backend-and-what-only-it-could-find.md).
@@ -29,7 +29,7 @@ was one comment line pointing here.
 **Every selector in `css.mjs` is a light-DOM descendant selector over data attributes.**
 
 ```css
-[data-ds-component='Button'] [data-ds-part='label'] { … }
+[data-juro-component='Button'] [data-juro-part='label'] { … }
 ```
 
 The WC backend uses `packages/wc/src/emit/css-shadow.mjs` for the corresponding shadow grammar.
@@ -38,9 +38,9 @@ Inside a shadow stylesheet use `[part="root"]` or `:host([hierarchy="primary"]) 
 The WC host and the inner semantic root are separate elements.
 
 Note what does **not** break at that boundary: CSS custom properties inherit into a shadow root, so
-`--ds-*` tokens reach inside untouched. It is only the part and state selectors that stop.
+`--juro-*` tokens reach inside untouched. It is only the part and state selectors that stop.
 
-## Why not `@ds/platform-web`
+## Why not `@juro/platform-web`
 
 That package's own boundary says it **describes the platform, never a component**. These functions
 take a contract and a component name; they are one layer up. `platform-web` is a dependency here —

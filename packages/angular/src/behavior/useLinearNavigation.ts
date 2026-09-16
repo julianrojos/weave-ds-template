@@ -1,6 +1,6 @@
 import { computed, signal } from '@angular/core';
-import { intentFor, navigable, resolve, tabStop } from '@ds/behavior/linear-navigation';
-import type { Member, NavigationOptions } from '@ds/behavior/linear-navigation';
+import { intentFor, navigable, resolve, tabStop } from '@juro/behavior/linear-navigation';
+import type { Member, NavigationOptions } from '@juro/behavior/linear-navigation';
 
 export type {
   DisabledItems,
@@ -8,7 +8,7 @@ export type {
   Member,
   NavigationOptions,
   Orientation,
-} from '@ds/behavior/linear-navigation';
+} from '@juro/behavior/linear-navigation';
 
 /** What a member hands the collection when it registers. */
 export interface MemberRegistration {
@@ -30,8 +30,8 @@ export interface LinearNavigation {
  * Moving between the members of a collection with the arrow keys, and keeping exactly one of them
  * in the page's tab sequence.
  *
- * The decision logic is in @ds/behavior as pure functions, so the cases in
- * `@ds/contracts/conformance/linear-navigation.json` execute against it. This is the Angular
+ * The decision logic is in @juro/behavior as pure functions, so the cases in
+ * `@juro/contracts/conformance/linear-navigation.json` execute against it. This is the Angular
  * binding: the registry, document order, and moving focus.
  *
  * `register`, `unregister` and `isTabStop` are ARROW-FUNCTION PROPERTIES, not methods, because a

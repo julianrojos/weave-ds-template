@@ -1,9 +1,9 @@
 import { computed, signal } from '@angular/core';
 import type { Signal } from '@angular/core';
-import { apply, fractionOf, intentFor, snap, valueAt } from '@ds/behavior/range-stepping';
-import type { RangeOptions } from '@ds/behavior/range-stepping';
+import { apply, fractionOf, intentFor, snap, valueAt } from '@juro/behavior/range-stepping';
+import type { RangeOptions } from '@juro/behavior/range-stepping';
 
-export type { RangeIntent, RangeOptions, RangeOrientation } from '@ds/behavior/range-stepping';
+export type { RangeIntent, RangeOptions, RangeOrientation } from '@juro/behavior/range-stepping';
 
 export interface RangeControl {
   /** Goes on the component's host, alongside the pointer handlers. */
@@ -20,8 +20,8 @@ export interface RangeControl {
 /**
  * A number in a range, operated by keyboard and pointer.
  *
- * The arithmetic lives in @ds/behavior as pure functions, so it can be executed against the
- * conformance cases in `@ds/contracts/conformance/range-stepping.json`. This is the Angular binding
+ * The arithmetic lives in @juro/behavior as pure functions, so it can be executed against the
+ * conformance cases in `@juro/contracts/conformance/range-stepping.json`. This is the Angular binding
  * around it: the track's box, pointer capture, and the drag.
  *
  * THE TRACK ARRIVES AS A GETTER, not as a ref setter. React hands this primitive a callback ref to

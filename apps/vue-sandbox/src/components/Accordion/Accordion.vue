@@ -81,9 +81,9 @@ const fallthrough = computed(() => ({ ...attrs }));
     v-bind="fallthrough"
     :id="baseId"
     :aria-disabled="disabled || undefined"
-    :data-ds-orientation="orientation"
-    data-ds-component="Accordion"
-    data-ds-part="root"
+    :data-juro-orientation="orientation"
+    data-juro-component="Accordion"
+    data-juro-part="root"
   >
     <slot />
   </div>

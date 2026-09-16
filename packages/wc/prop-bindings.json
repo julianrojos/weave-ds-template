@@ -1,5 +1,5 @@
 {
-  "_doc": "How the PLATFORM spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @ds/contracts/prop-canon.json and is framework-free. This file holds only the places a custom element's idiom differs from it.",
+  "_doc": "How the PLATFORM spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @juro/contracts/prop-canon.json and is framework-free. This file holds only the places a custom element's idiom differs from it.",
   "_why": "The fourth of these files, and the first that is not about a framework's taste. There is no framework. What it records is what the PLATFORM offers a component author, which turns out to be three separate mechanisms where every framework offers one binding.",
   "_regenerate": "Hand-maintained. Nothing generates this file.",
   "conventions": {
@@ -8,7 +8,7 @@
     "eventPrefix": "<prefix>-, e.g. `ds-checked-change`. Prefixed because an event name is global once it crosses the shadow boundary and `change` is already taken by the platform.",
     "booleanNaming": "bare adjective, as the canon requires. Presence-only, as every HTML boolean attribute is."
   },
-  "_tagRule": "A custom element's tag is `<prefix>-<kebab(Component)>`: `<ds-tab-item>`. Derived rather than stored in the binding, because a tag that could disagree with the component name would be a second name for one thing. The hyphen is not a style choice — a custom element name is REQUIRED to contain one, which is the platform reserving every single-word tag for itself.",
+  "_tagRule": "A custom element's tag is `<prefix>-<kebab(Component)>`: `<juro-tab-item>`. Derived rather than stored in the binding, because a tag that could disagree with the component name would be a second name for one thing. The hyphen is not a style choice — a custom element name is REQUIRED to contain one, which is the platform reserving every single-word tag for itself.",
   "_controlRulesDoc": "How a custom element spells each `control` value from a contract's `states`. THESE ARE RULES, NOT A TABLE: one entry per control value covers every state in the library.",
   "controlRules": {
     "consumer": {
@@ -26,7 +26,7 @@
   },
   "_valueCrossingDoc": "An attribute is always a string, so every non-string value needs a conversion in both directions and the emitter writes both. The other three backends pass values through a binding and never meet this.",
   "valueRules": {
-    "boolean": "presence: `hasAttribute` / `toggleAttribute`. `checked=\"false\"` is TRUE, which is the same trap @ds/platform-web's `native.disabled.rendersFalse` records.",
+    "boolean": "presence: `hasAttribute` / `toggleAttribute`. `checked=\"false\"` is TRUE, which is the same trap @juro/platform-web's `native.disabled.rendersFalse` records.",
     "enum": "the word itself, with the contract's default when the attribute is absent",
     "number": "`Number()` in, `String()` out",
     "tokens": "space-separated, like `class`, `rel` and `aria-describedby`. A collection with `cardinality: many` holds a LIST of member identities, and this is the only backend that ever has to write one down as text."
@@ -49,9 +49,9 @@
   "axisOverrides": {},
   "_behaviorBindingDoc": "Behaviour vocabulary primitive -> the implementation that satisfies it.",
   "behaviorBindings": {
-    "dismissal": "useDismissal from @ds/wc/behavior",
-    "linear-navigation": "useLinearNavigation from @ds/wc/behavior",
-    "range-stepping": "useRangeControl from @ds/wc/behavior"
+    "dismissal": "useDismissal from @juro/wc/behavior",
+    "linear-navigation": "useLinearNavigation from @juro/wc/behavior",
+    "range-stepping": "useRangeControl from @juro/wc/behavior"
   },
   "_whatThePlatformSuppliesThatNoFrameworkDoes": {
     "scoping": "The shadow root IS the scope. `data-<prefix>-component`, `data-<prefix>-part` and `data-<prefix>-<axis>` — three attribute families the other backends invented and nothing in the contract system defines — are all unnecessary here.",

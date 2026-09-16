@@ -4,11 +4,11 @@
 // Shows a short label for a control whose own presentation cannot carry it — an icon button, a truncated name — on hover and on focus, without taking focus itself.
 
 import { Component, ViewEncapsulation, input, model } from '@angular/core';
-import { useDismissal } from '@ds/angular/behavior';
-import type { DismissalOptions } from '@ds/angular/behavior';
+import { useDismissal } from '@juro/angular/behavior';
+import type { DismissalOptions } from '@juro/angular/behavior';
 
 // Transcribed from Tooltip.contract.json > dismisses. The cases this commits us to
-// are in @ds/contracts/conformance/dismissal.json.
+// are in @juro/contracts/conformance/dismissal.json.
 const DISMISSAL: DismissalOptions = {
   on: ['escape'],
 };
@@ -20,31 +20,31 @@ let nextId = 0;
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <div dsTooltip>.
-  selector: 'div[dsTooltip]',
-  exportAs: 'dsTooltip',
+  // to an element rather than rendering one. A consumer writes <div juroTooltip>.
+  selector: 'div[juroTooltip]',
+  exportAs: 'juroTooltip',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./Tooltip.structure.css', './Tooltip.theme.css'],
   host: {
     '[attr.id]': 'baseId',
-    '[attr.data-ds-state-open]': 'open() || null',
+    '[attr.data-juro-state-open]': 'open() || null',
     '[attr.aria-disabled]': 'disabled() || null',
-    '[attr.data-ds-placement]': 'placement()',
-    'data-ds-component': 'Tooltip',
-    'data-ds-part': 'root',
+    '[attr.data-juro-placement]': 'placement()',
+    'data-juro-component': 'Tooltip',
+    'data-juro-part': 'root',
     '(keydown)': 'dismissal.onKeyDown($event)',
   },
   template: `
     <div
       [attr.id]="baseId + '-trigger'"
       [attr.aria-describedby]="ids(open() ? baseId + '-popup' : null)"
-      data-ds-part="trigger"
+      data-juro-part="trigger"
     >
       <ng-content select="[slot=trigger]" />
     </div>
@@ -52,7 +52,7 @@ let nextId = 0;
       role="tooltip"
       [attr.id]="baseId + '-popup'"
       [attr.hidden]="open() ? null : ''"
-      data-ds-part="popup"
+      data-juro-part="popup"
     >
       <ng-content select="[slot=content]" />
     </div>
@@ -69,7 +69,7 @@ export class Tooltip {
   /** The tooltip is showing. A consumer may control it; hover and focus on the trigger also change it. Two-way: `[(open)]`. */
   readonly open = model<boolean>(false);
 
-  readonly baseId = 'ds-tooltip-' + nextId++;
+  readonly baseId = 'juro-tooltip-' + nextId++;
 
   protected readonly dismissal = useDismissal(
     DISMISSAL,

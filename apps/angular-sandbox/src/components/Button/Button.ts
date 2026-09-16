@@ -7,13 +7,13 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <button dsButton>.
-  selector: 'button[dsButton]',
-  exportAs: 'dsButton',
+  // to an element rather than rendering one. A consumer writes <button juroButton>.
+  selector: 'button[juroButton]',
+  exportAs: 'juroButton',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -21,21 +21,21 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
   host: {
     type: 'button',
     '[attr.disabled]': 'disabled() || null',
-    '[attr.data-ds-state-loading]': 'loading() || null',
-    '[attr.data-ds-hierarchy]': 'hierarchy()',
-    '[attr.data-ds-variant]': 'variant()',
-    '[attr.data-ds-size]': 'size()',
-    'data-ds-component': 'Button',
-    'data-ds-part': 'root',
+    '[attr.data-juro-state-loading]': 'loading() || null',
+    '[attr.data-juro-hierarchy]': 'hierarchy()',
+    '[attr.data-juro-variant]': 'variant()',
+    '[attr.data-juro-size]': 'size()',
+    'data-juro-component': 'Button',
+    'data-juro-part': 'root',
   },
   template: `
-    <div data-ds-part="icon-start">
+    <div data-juro-part="icon-start">
       <ng-content select="[slot=iconStart]" />
     </div>
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <ng-content />
     </div>
-    <div data-ds-part="icon-end">
+    <div data-juro-part="icon-end">
       <ng-content select="[slot=iconEnd]" />
     </div>
   `,

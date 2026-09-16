@@ -2,7 +2,7 @@
 //
 // THIS FILE EXISTS BECAUSE OF A SHIPPED BUG THAT FROZE THE BROWSER TAB IT RENDERED IN, and it is
 // deliberately narrow: the arrow-key decisions are already covered by the conformance cases in
-// `@ds/contracts/conformance/linear-navigation.json`, which execute against `@ds/behavior`. What
+// `@juro/contracts/conformance/linear-navigation.json`, which execute against `@juro/behavior`. What
 // those cases cannot see is the BINDING around them, and that is where the defect was.
 //
 // The loop, in full:

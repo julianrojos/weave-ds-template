@@ -12,10 +12,10 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Tabs'] {
+[data-juro-component='Tabs'] {
   /* the scoping handle. Everything else is yours, for now. */
 }
 
-[data-ds-component='Tabs'] [data-ds-part='list'] {
+[data-juro-component='Tabs'] [data-juro-part='list'] {
   /* no declared layout for this part */
 }

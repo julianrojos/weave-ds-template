@@ -22,11 +22,11 @@ by the Vue backend. It was built anyway, for two reasons that 0004 names itself:
 
 ## Headline
 
-**Fifteen of fifteen compiled. `@ds/contracts` unchanged. `@ds/platform-web` unchanged.**
+**Fifteen of fifteen compiled. `@juro/contracts` unchanged. `@juro/platform-web` unchanged.**
 
 And the thing a third backend bought that a second could not:
 
-> **A defect in `@ds/platform-web` that React and Vue are both structurally incapable of seeing.**
+> **A defect in `@juro/platform-web` that React and Vue are both structurally incapable of seeing.**
 
 ## What three backends can say that two could not
 
@@ -69,8 +69,8 @@ done", which are different products.
 Everything else across the three is a spelling. This is a difference in kind.
 
 An Angular component **attaches** to an element chosen by its selector rather than rendering one. So
-the binding's `element` compiles into `selector: 'button[dsSwitch]'`, every root attribute becomes a
-host binding, and **the consumer writes the element**: `<button dsSwitch>`.
+the binding's `element` compiles into `selector: 'button[juroSwitch]'`, every root attribute becomes a
+host binding, and **the consumer writes the element**: `<button juroSwitch>`.
 
 What that pressure found:
 
@@ -81,7 +81,7 @@ What that pressure found:
   emitter refuses such a contract rather than rendering a wrapper and pretending — a wrapper is a
   different DOM and `semantics.role` would land on the wrong node. No contract exercises it today,
   so this is a limit recorded rather than a blocker hit.
-- **The cost is the consumer's.** `<div dsCheckbox>` where the binding says `button` matches no
+- **The cost is the consumer's.** `<div juroCheckbox>` where the binding says `button` matches no
   selector, renders an empty `div`, and reports nothing. That happened while writing the sandbox.
 
 ### 4. Two backends now collapse `control: shared` to one declaration
@@ -106,7 +106,7 @@ mistaken for a considered answer.
 
 ## The defect only a third backend could find
 
-`channelFor` in `@ds/platform-web` returns, for every native channel:
+`channelFor` in `@juro/platform-web` returns, for every native channel:
 
 ```js
 if (native) return { channel: 'native', attribute: native, rendersFalse: true };
@@ -190,7 +190,7 @@ a second:
 | Web components        | that the contract assumes a virtual DOM and a component-function render model |       no       |
 | React Native, Flutter | that the contract assumes CSS, a cascade, and a document at all               |     **no**     |
 
-All three backends emit two **stylesheets**, read `@ds/platform-web`, and resolve `visibleWhen` to a
+All three backends emit two **stylesheets**, read `@juro/platform-web`, and resolve `visibleWhen` to a
 `hidden` attribute. The sharp test is untouched, and three web frameworks agreeing is exactly what
 you would expect whether or not the contract is genuinely platform-neutral.
 
@@ -199,7 +199,7 @@ README were exercised in Chrome and passed; that is less than the React page's b
 
 ## Open questions
 
-1. ~~**Fix `rendersFalse` on the native channel in `@ds/platform-web`.**~~ **CLOSED**, in its own
+1. ~~**Fix `rendersFalse` on the native channel in `@juro/platform-web`.**~~ **CLOSED**, in its own
    commit immediately after this report was written. The fix is a fourth attribute-keyed table in
    `profile.json` rather than a corrected literal in `resolve.mjs` — a literal there is what the bug
    was. The blast radius turned out to be eight lines of generated output across React and Vue and
@@ -209,10 +209,10 @@ README were exercised in Chrome and passed; that is less than the React page's b
    packages.**~~ **CLOSED**, in its own commit. The answer was three homes rather than one, and the
    suspicion in this question is what decided the split:
 
-   - **`@ds/behavior`** — the three pure cores and their conformance suites, in one copy. NOT in
-     `@ds/platform-web`: none of them needs a DOM and all would be true in React Native, so they are
+   - **`@juro/behavior`** — the three pure cores and their conformance suites, in one copy. NOT in
+     `@juro/platform-web`: none of them needs a DOM and all would be true in React Native, so they are
      _more_ agnostic than the web profile and a home inside it would have been a demotion.
-   - **`@ds/emit-web`** — contract reading and the two stylesheets. This is the fourth layer this
+   - **`@juro/emit-web`** — contract reading and the two stylesheets. This is the fourth layer this
      question guessed at. Its README is explicit that every selector it writes is a light-DOM
      descendant selector, and that it stops at a shadow boundary.
    - **The bindings' `element` stays duplicated and gated**, because a shadow-DOM backend introduces

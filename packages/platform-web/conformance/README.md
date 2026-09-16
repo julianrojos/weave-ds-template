@@ -2,7 +2,7 @@
 
 Framework-neutral test definitions for the **web platform mapping**, as data.
 
-The sibling of [`@ds/contracts/conformance`](../../contracts/conformance/README.md), and the same
+The sibling of [`@juro/contracts/conformance`](../../contracts/conformance/README.md), and the same
 arrangement: the cases are data, each backend drives them against its own resolver, and a second
 backend is credible only when it passes the same file.
 

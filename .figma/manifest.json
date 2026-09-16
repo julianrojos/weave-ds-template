@@ -95,9 +95,9 @@
         "interactive/selectedBg -> codeSyntax.WEB: weave-ds-interactive-selectedbg"
       ],
       "examples": [
-        "space/3          -> --ds-space-3          -> space.3",
-        "radius/m         -> --ds-radius-m         -> radius.m",
-        "surface/primary  -> --ds-surface-primary  -> surface.primary"
+        "space/3          -> --juro-space-3          -> space.3",
+        "radius/m         -> --juro-radius-m         -> radius.m",
+        "surface/primary  -> --juro-surface-primary  -> surface.primary"
       ],
       "knownProblems": [
         "PREFIX CONFLICT, UNDECIDED. `codeSyntax.WEB` carries a `weave-ds-` prefix while /ds.config.json produces the CSS namespace `--<tokenPrefix>-*`. Those forms do not agree. Settle which is canonical before generating tokens, and settle it in ds.config.json — never by hand-editing one side.",

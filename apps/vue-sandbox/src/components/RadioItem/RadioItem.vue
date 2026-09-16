@@ -97,14 +97,14 @@ function onRootClick(event: MouseEvent) {
     :aria-disabled="disabled || undefined"
     :aria-checked="selected"
     :tabindex="collection.isTabStop(value) ? 0 : -1"
-    data-ds-component="RadioItem"
-    data-ds-part="root"
+    data-juro-component="RadioItem"
+    data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-ds-part="control">
-      <div :hidden="!selected" data-ds-part="mark" />
+    <div data-juro-part="control">
+      <div :hidden="!selected" data-juro-part="mark" />
     </div>
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <slot name="label" />
     </div>
     <slot />

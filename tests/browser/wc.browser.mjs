@@ -6,9 +6,9 @@ navigationRegressions();
 activationRegressions();
 
 for (const [tag, role] of [
-  ['ds-text-field', 'textbox'],
-  ['ds-button', 'button'],
-  ['ds-slider', 'slider'],
+  ['juro-text-field', 'textbox'],
+  ['juro-button', 'button'],
+  ['juro-slider', 'slider'],
 ]) {
   test(`${tag} forwards a literal accessible name, updates, and removal`, async ({ page }) => {
     await page.goto('/browser-tests.html');
@@ -37,15 +37,15 @@ test('consumer labels preserve contract-owned dialog naming and control roles', 
 }) => {
   await page.goto('/browser-tests.html');
   await page.evaluate(async () => {
-    await customElements.whenDefined('ds-dialog');
-    const host = document.createElement('ds-dialog');
+    await customElements.whenDefined('juro-dialog');
+    const host = document.createElement('juro-dialog');
     host.innerHTML = '<span slot="title">Contract title</span>';
     host.setAttribute('aria-label', 'Fallback name');
     host.setAttribute('role', 'alert');
     document.body.append(host);
     host.open = true;
   });
-  await expect(page.locator('ds-dialog').getByRole('dialog')).toHaveAccessibleName(
+  await expect(page.locator('juro-dialog').getByRole('dialog')).toHaveAccessibleName(
     'Contract title',
   );
 });
@@ -57,8 +57,8 @@ test('dialog accepts open state while detached and presents again after reconnec
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/browser-tests.html');
   await page.evaluate(async () => {
-    await customElements.whenDefined('ds-dialog');
-    const dialog = document.createElement('ds-dialog');
+    await customElements.whenDefined('juro-dialog');
+    const dialog = document.createElement('juro-dialog');
     dialog.id = 'dialog';
     dialog.innerHTML = '<span slot="title">Confirmation</span><button>Continue</button>';
     dialog.open = true;
@@ -109,12 +109,12 @@ editingRegressions();
 test('known relationship gaps remain explicitly non-conforming (ADR 0005)', async ({ page }) => {
   await page.goto('/browser-tests.html');
   await page.evaluate(() => {
-    const field = document.createElement('ds-field');
+    const field = document.createElement('juro-field');
     field.id = 'relationship-field';
     field.innerHTML =
       '<span slot="label">Account</span><input slot="control"><span slot="description">Help</span>';
     document.body.append(field);
-    const panel = document.createElement('ds-tab-panel');
+    const panel = document.createElement('juro-tab-panel');
     panel.value = 'a';
     panel.id = 'relationship-panel';
     document.querySelector('#tabs').append(panel);
@@ -129,7 +129,7 @@ test('known relationship gaps remain explicitly non-conforming (ADR 0005)', asyn
 
   // Even element reflection rejects a sibling's internal semantic element.
   const scope = await page.evaluate(() => {
-    const tabHost = document.querySelector('#tabs ds-tab-item');
+    const tabHost = document.querySelector('#tabs juro-tab-item');
     const panelHost = document.querySelector('#relationship-panel');
     const tab = tabHost.shadowRoot.querySelector('[part="root"]');
     const panel = panelHost.shadowRoot.querySelector('[part="root"]');

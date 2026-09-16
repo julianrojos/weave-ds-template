@@ -1,7 +1,7 @@
-// Public barrel for @ds/wc/behavior — the interaction primitives emitted components import.
+// Public barrel for @juro/wc/behavior — the interaction primitives emitted components import.
 //
 // THE SAME THREE PRIMITIVES AS EVERY OTHER BACKEND, WITH THE SAME NAMES, wrapping the same shared
-// decision logic in @ds/behavior. `pnpm verify:parity` asserts this list matches the others, because
+// decision logic in @juro/behavior. `pnpm verify:parity` asserts this list matches the others, because
 // a barrel that drifts makes an emitted component compile against one backend and not another.
 //
 // This is the shortest of the four bindings, and the reason is worth stating: there is no reactivity

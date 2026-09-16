@@ -1,8 +1,8 @@
 import { ref, watchEffect } from 'vue';
-import { dismissesOnKey, dismissesOnPress } from '@ds/behavior/dismissal';
-import type { DismissalOptions } from '@ds/behavior/dismissal';
+import { dismissesOnKey, dismissesOnPress } from '@juro/behavior/dismissal';
+import type { DismissalOptions } from '@juro/behavior/dismissal';
 
-export type { DismissalCause, DismissalOptions, PressTarget } from '@ds/behavior/dismissal';
+export type { DismissalCause, DismissalOptions, PressTarget } from '@juro/behavior/dismissal';
 
 export interface Dismissal {
   /** Goes on the region's root. Catches Escape from anywhere inside it. */
@@ -18,8 +18,8 @@ export interface Dismissal {
 /**
  * Closing a region with a key or a press that is not activation.
  *
- * The decision logic is in @ds/behavior as pure functions, so the cases in
- * `@ds/contracts/conformance/dismissal.json` execute against it. This composable is the Vue
+ * The decision logic is in @juro/behavior as pure functions, so the cases in
+ * `@juro/contracts/conformance/dismissal.json` execute against it. This composable is the Vue
  * binding: reading the event, and calling the state writer.
  *
  * `isOpen` IS A GETTER, NOT A VALUE, and that is the whole shape difference from the React hook.

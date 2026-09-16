@@ -8,11 +8,11 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@ds/wc/behavior',
+        find: '@juro/wc/behavior',
         replacement: resolve(__dirname, '../../packages/wc/src/behavior/index.ts'),
       },
       {
-        find: '@ds/wc',
+        find: '@juro/wc',
         replacement: resolve(__dirname, '../../packages/wc/src/index.ts'),
       },
     ],

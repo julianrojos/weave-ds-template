@@ -23,13 +23,13 @@ node packages/angular/src/emit/emit.mjs Switch --out apps/angular-sandbox/src/co
 
 That produced `Switch/`, and the same command produced `Field/`, `Accordion/`, `AccordionItem/`,
 `RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`,
-`Tabs/`, `TabItem/` and `TabPanel/`. Nothing comes from `@ds/angular`, which exports no components.
+`Tabs/`, `TabItem/` and `TabPanel/`. Nothing comes from `@juro/angular`, which exports no components.
 
 ## The markup looks different, and that is the whole finding
 
 ```text
 React and Vue    <Button hierarchy="primary">Save</Button>
-Angular          <button dsButton hierarchy="primary">Save</button>
+Angular          <button juroButton hierarchy="primary">Save</button>
 ```
 
 An Angular component attaches to an element rather than rendering one, so **the consumer writes the
@@ -37,7 +37,7 @@ element**. Read `src/App.ts` next to `apps/vue-sandbox/src/App.vue` and the diff
 line.
 
 Its cost showed up immediately while this page was being written: `Checkbox`'s binding declares
-`button`, the first draft wrote `<div dsCheckbox>`, and Angular matched no selector, rendered an
+`button`, the first draft wrote `<div juroCheckbox>`, and Angular matched no selector, rendered an
 empty `<div>`, and reported nothing at all. React and Vue cannot make that mistake, because the
 component chooses its own element.
 
@@ -63,7 +63,7 @@ What HAS been exercised in a browser, and passed: the switch toggles and follows
 read-only switch refuses; a disabled button is genuinely disabled and an enabled one carries no
 `disabled` attribute at all; the tri-state checkbox resolves `mixed` to `checked`; the accordion
 expands and unhides its panel; tab arrow-keys move focus, carry the selection and the roving tab
-stop with them; the slider steps by arrow and by `pageStep` and publishes `--ds-fraction`; the
+stop with them; the slider steps by arrow and by `pageStep` and publishes `--juro-fraction`; the
 dialog opens with `showModal()`, contains focus, makes the page behind inert, closes on Escape,
 **syncs its model back and reopens**; radio arrows skip the disabled member and wrap; typing reaches
 the model through the DOM's own `input` event and the Field's error appears.
@@ -88,7 +88,7 @@ once, empty, and then belongs to whoever fills it.
 
 ## Adding a component to it
 
-`vite.config.ts` aliases `@ds/angular/behavior` to `packages/angular/src/behavior/index.ts` for hot
+`vite.config.ts` aliases `@juro/angular/behavior` to `packages/angular/src/behavior/index.ts` for hot
 reload against source. That alias is for the behaviour runtime; components are generated into
 `src/components/` and imported from there.
 

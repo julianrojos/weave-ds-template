@@ -23,7 +23,7 @@ index.ts                local barrel
 The same four files every other backend produces. The stylesheets are **not** the same two —
 see below.
 
-## `css-shadow.mjs` is the decision `@ds/emit-web` deferred
+## `css-shadow.mjs` is the decision `@juro/emit-web` deferred
 
 That package's README says, of its light-DOM stylesheet pair:
 
@@ -36,10 +36,10 @@ writes, and the two grammars do not line up selector for selector:
 
 ```text
 light DOM                                           shadow DOM
-[data-ds-component='Button']                        :host
-[data-ds-component='Button'] [data-ds-part='x']     [part='x']
-[data-ds-component='Button'][data-ds-hierarchy=..]  :host([hierarchy='...'])
-[data-ds-component='Button'][data-ds-state-open]    :host([open])
+[data-juro-component='Button']                        :host
+[data-juro-component='Button'] [data-juro-part='x']     [part='x']
+[data-juro-component='Button'][data-juro-hierarchy=..]  :host([hierarchy='...'])
+[data-juro-component='Button'][data-juro-state-open]    :host([open])
 ```
 
 Three of the four families on the left **vanish**. That is a different shape of output, not a
@@ -72,7 +72,7 @@ platform does the scoping.
 
 ### 2. States use the platform's own mechanism where one exists
 
-Resolved by [`@ds/platform-web`](../../../platform-web/README.md), with no table of this backend's
+Resolved by [`@juro/platform-web`](../../../platform-web/README.md), with no table of this backend's
 own — the fourth to add none.
 
 **And then written twice.** The ARIA attribute goes on the inner element, where assistive technology

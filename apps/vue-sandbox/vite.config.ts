@@ -6,20 +6,20 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     // An ARRAY, not an object, because order matters: the more specific subpath must be tried
-    // before the bare package name, or `@ds/vue/behavior` resolves to the barrel plus a stray
+    // before the bare package name, or `@juro/vue/behavior` resolves to the barrel plus a stray
     // `/behavior` and fails with a confusing missing-file error.
     alias: [
       {
         // The interaction primitives emitted components import. Generated code says
-        // `from '@ds/vue/behavior'` — the same specifier a real consumer writes — so nothing in
+        // `from '@juro/vue/behavior'` — the same specifier a real consumer writes — so nothing in
         // the emitted output is sandbox-specific.
-        find: '@ds/vue/behavior',
+        find: '@juro/vue/behavior',
         replacement: resolve(__dirname, '../../packages/vue/src/behavior/index.ts'),
       },
       {
         // Point at SOURCE, not dist. The sandbox is a live harness: edit a component and it
         // hot-reloads, with no build step between you and the change.
-        find: '@ds/vue',
+        find: '@juro/vue',
         replacement: resolve(__dirname, '../../packages/vue/src/index.ts'),
       },
     ],

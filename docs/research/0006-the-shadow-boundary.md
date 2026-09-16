@@ -27,7 +27,7 @@ falsified.
 
 ## Headline
 
-**Fifteen of fifteen compiled. `@ds/contracts` unchanged. `@ds/platform-web` unchanged.**
+**Fifteen of fifteen compiled. `@juro/contracts` unchanged. `@juro/platform-web` unchanged.**
 
 And the finding that only a shadow root could produce:
 
@@ -37,11 +37,11 @@ And the finding that only a shadow root could produce:
 
 ## What the platform gave back
 
-| Three emitters each invented  | Here                  | Because                                              |
-| ----------------------------- | --------------------- | ---------------------------------------------------- |
-| `data-ds-component="Button"`  | —                     | the shadow root is the scope                         |
-| `data-ds-part="label"`        | `part="label"`        | a real platform attribute, with `::part()` behind it |
-| `data-ds-hierarchy="primary"` | `hierarchy="primary"` | the host's attributes are scoped by its tag          |
+| Three emitters each invented    | Here                  | Because                                              |
+| ------------------------------- | --------------------- | ---------------------------------------------------- |
+| `data-juro-component="Button"`  | —                     | the shadow root is the scope                         |
+| `data-juro-part="label"`        | `part="label"`        | a real platform attribute, with `::part()` behind it |
+| `data-juro-hierarchy="primary"` | `hierarchy="primary"` | the host's attributes are scoped by its tag          |
 
 0005 called `data-<prefix>-<axis>` _"the one invention a fourth backend is most likely to get wrong
 while passing every gate"_. The fourth backend did not get it wrong. It did not need it.
@@ -79,8 +79,8 @@ The headline cost, and the reason this backend was built. Translating
 
 | Translation                                            | Count |
 | ------------------------------------------------------ | ----: |
-| `[data-ds-part='x']` → `[part='x']`                    |    53 |
-| `[data-ds-<axis>='v']` → `:host([<axis>='v'])`         |    20 |
+| `[data-juro-part='x']` → `[part='x']`                  |    53 |
+| `[data-juro-<axis>='v']` → `:host([<axis>='v'])`       |    20 |
 | native `:disabled` → `:host([disabled])`               |    18 |
 | `:hover` / `:focus-visible` / `:active` → `:host(...)` |    16 |
 | ARIA state → host attribute                            |    13 |
@@ -92,7 +92,7 @@ The headline cost, and the reason this backend was built. Translating
 the shadow boundary costs is the _selectors_ and nothing else — which is a much better result than
 "it does not work", and a much worse one than the other three had.
 
-Note what does **not** break: custom properties inherit into a shadow root, so `--ds-*` tokens reach
+Note what does **not** break: custom properties inherit into a shadow root, so `--juro-*` tokens reach
 inside untouched. The token pipeline is unaffected.
 
 ### 2. One fact, two places
@@ -185,7 +185,7 @@ The contract said `control: shared` to all four, and none of them argued.
    pixel — it was Chrome becoming unresponsive.
 
    **Where it could not have been caught, which is the useful part.** The conformance cases execute
-   against `@ds/behavior` and passed throughout: they test what an arrow key MEANS, and this was the
+   against `@juro/behavior` and passed throughout: they test what an arrow key MEANS, and this was the
    binding around them. `pnpm verify` was green, and so were `tsc` and `vue-tsc`. The other three
    backends never had it, because each compares the incoming entry against the stored one to decide
    whether to bump its reactivity counter — this binding has no counter, so the comparison was
@@ -221,7 +221,7 @@ Two things 0005 left open are now answered by contrast rather than argument:
 - **`element` in a binding is two questions, not one.** 0005 declined to move the duplicated
   `element` field into a shared package because _"a shadow-DOM backend introduces a host tag
   alongside the internal element, and a shared map designed before anyone has seen that shape is a
-  guess."_ That guess is now unnecessary: a shadow binding genuinely has **two** — `<ds-switch>` and
+  guess."_ That guess is now unnecessary: a shadow binding genuinely has **two** — `<juro-switch>` and
   the `<button part="root">` inside it — where the other three have one. A shared per-component map
   would have to hold both.
 
@@ -234,7 +234,7 @@ Two things 0005 left open are now answered by contrast rather than argument:
 | React Native, Flutter | that the contract assumes CSS, a cascade, and a document at all               |     **no**     |
 
 The third row is still untouched and is still the sharp one. Every backend so far emits **CSS**,
-reads `@ds/platform-web`, and resolves `visibleWhen` to a `hidden` attribute. What this one did
+reads `@juro/platform-web`, and resolves `visibleWhen` to a `hidden` attribute. What this one did
 change is the _shape_ of the CSS question: it is now demonstrated that the styling grammar is a
 backend concern rather than a contract one, which is a step toward a target that has no stylesheet at
 all — but only a step.

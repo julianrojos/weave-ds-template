@@ -26,7 +26,7 @@ That produced `Switch/`, and the same command produced `Field/`, `Accordion/`, `
 `RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`,
 `Tabs/`, `TabItem/` and `TabPanel/` — each one a `.vue` single-file component, its structural CSS, a
 theme file and a barrel, from the matching contract in `packages/contracts/components/`. Note what
-the imports in `src/App.vue` do **not** say: nothing comes from `@ds/vue`, because that package
+the imports in `src/App.vue` do **not** say: nothing comes from `@juro/vue`, because that package
 exports no components.
 
 ## The theme files are copied from the React sandbox, byte for byte
@@ -51,7 +51,7 @@ What HAS been exercised in a browser, and passed: the switch toggles and follows
 a read-only switch refuses; the tri-state checkbox resolves `mixed` to `checked`; the accordion
 expands and unhides its panel; tab arrow-keys move focus, carry the selection and the roving tab
 stop with them, and land on the disabled tab without selecting it; the slider steps by arrow and by
-`pageStep` and publishes `--ds-fraction`; the dialog opens with `showModal()`, contains focus,
+`pageStep` and publishes `--juro-fraction`; the dialog opens with `showModal()`, contains focus,
 makes the page behind genuinely inert, closes on Escape, **syncs its model back and reopens**; radio
 arrows skip the disabled member and wrap; typing reaches the model through `@input`.
 
@@ -73,7 +73,7 @@ component — was caught here and nowhere else.
 
 ## Adding a component to it
 
-`vite.config.ts` aliases `@ds/vue/behavior` to `packages/vue/src/behavior/index.ts` for hot reload
+`vite.config.ts` aliases `@juro/vue/behavior` to `packages/vue/src/behavior/index.ts` for hot reload
 against source with no build step in between. That alias is for the behaviour runtime; components
 are generated into `src/components/` and imported from there.
 

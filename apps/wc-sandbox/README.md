@@ -27,11 +27,11 @@ a descendant selector over data attributes does not cross a shadow boundary. The
 same values in the shadow grammar —
 
 ```text
-[data-ds-component='Button']                       ->  :host
-[data-ds-component='Button'] [data-ds-part='x']    ->  [part='x']
-[data-ds-component='Button'][data-ds-size='s']     ->  :host([size='s'])
-[data-ds-component='Button'][aria-checked='true']  ->  :host([checked])
-[data-ds-component='Button']:disabled              ->  :host([disabled])
+[data-juro-component='Button']                       ->  :host
+[data-juro-component='Button'] [data-juro-part='x']    ->  [part='x']
+[data-juro-component='Button'][data-juro-size='s']     ->  :host([size='s'])
+[data-juro-component='Button'][aria-checked='true']  ->  :host([checked])
+[data-juro-component='Button']:disabled              ->  :host([disabled])
 ```
 
 — translated mechanically from `apps/react-sandbox` and then checked. **Not one declaration
@@ -54,7 +54,7 @@ node packages/wc/src/emit/emit.mjs Switch --out apps/wc-sandbox/src/components
 That produced `Switch/`, and the same command produced `Field/`, `Accordion/`, `AccordionItem/`,
 `RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`,
 `Tabs/`, `TabItem/` and `TabPanel/` — each one a `.ts` custom element, its structural CSS, a theme
-file and a barrel. Nothing comes from `@ds/wc`, which exports no components.
+file and a barrel. Nothing comes from `@juro/wc`, which exports no components.
 
 ## Driven, and what that took
 
@@ -104,7 +104,7 @@ Climbing needs two different moves because they are two different edges: `parent
 a node is in, and a ShadowRoot's `parentNode` is null — its `host` is how you leave it.
 
 It is worth recording where these could and could not have been caught. The conformance cases execute
-against `@ds/behavior` and passed throughout — they test what an arrow key MEANS, and this was the
+against `@juro/behavior` and passed throughout — they test what an arrow key MEANS, and this was the
 binding around them. `pnpm verify` was green. `vue-tsc` and `tsc` were green. **The only thing that
 could have found it was opening the page**, which is the same lesson `docs/research/0002` drew about
 generated components and is apparently one this repo has to keep relearning.

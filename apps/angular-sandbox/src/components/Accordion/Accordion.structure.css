@@ -12,6 +12,6 @@
  * which is the wrong place for it. See docs/research/0002.
  */
 
-[data-ds-component='Accordion'] {
+[data-juro-component='Accordion'] {
   /* the scoping handle. Everything else is yours, for now. */
 }

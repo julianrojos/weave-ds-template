@@ -3,8 +3,8 @@
 //
 // Holds which one of several sections is showing, in a fixed area, so a person can move between them without losing their place on the page.
 
-import { useLinearNavigation } from '@ds/wc/behavior';
-import type { NavigationOptions } from '@ds/wc/behavior';
+import { useLinearNavigation } from '@juro/wc/behavior';
+import type { NavigationOptions } from '@juro/wc/behavior';
 
 // THE ONE BUNDLER-SPECIFIC TOKEN IN THIS FILE. `?inline` asks Vite for the stylesheet as
 // a string so it can be adopted into the shadow root rather than injected into the page —
@@ -42,14 +42,14 @@ const NAVIGATION: NavigationOptions = {
 };
 
 /** Fired on the collection whenever the selection or the roster changes. */
-export const TABS_CHANGE = 'ds-tabs-internal-change';
+export const TABS_CHANGE = 'juro-tabs-internal-change';
 
 export class Tabs extends HTMLElement {
-  static readonly tagName = 'ds-tabs';
+  static readonly tagName = 'juro-tabs';
   static readonly observedAttributes = ['disabled', 'value'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-tabs-' + nextId++;
+  readonly #baseId = 'juro-tabs-' + nextId++;
   readonly #nav;
 
   constructor() {
@@ -177,6 +177,6 @@ if (!customElements.get(Tabs.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-tabs': Tabs;
+    'juro-tabs': Tabs;
   }
 }

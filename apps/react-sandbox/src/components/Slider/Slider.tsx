@@ -5,13 +5,13 @@
 
 import { forwardRef, useState, useCallback } from 'react';
 import type { HTMLAttributes } from 'react';
-import { snap, useRangeControl, type RangeOptions } from '@ds/react/behavior';
+import { snap, useRangeControl, type RangeOptions } from '@juro/react/behavior';
 import './Slider.structure.css';
 import './Slider.theme.css';
 
 // Transcribed from Slider.contract.json: the `range` block, plus min/max/step from the
 // `value` state. The cases this commits us to are in
-// @ds/contracts/conformance/range-stepping.json.
+// @juro/contracts/conformance/range-stepping.json.
 const RANGE: RangeOptions = {
   min: 0,
   max: 100,
@@ -57,12 +57,12 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
       ref={ref}
       role="slider"
       aria-disabled={disabled || undefined}
-      data-ds-state-dragging={range.dragging || undefined}
+      data-juro-state-dragging={range.dragging || undefined}
       tabIndex={disabled ? -1 : 0}
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={snap(valueValue, RANGE)}
-      style={{ ...rest.style, ['--ds-fraction' as string]: range.fraction }}
+      style={{ ...rest.style, ['--juro-fraction' as string]: range.fraction }}
       onKeyDown={(event) => {
         rest.onKeyDown?.(event);
         range.onKeyDown(event);
@@ -83,13 +83,13 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(function Slider(
         rest.onPointerCancel?.(event);
         range.onPointerUp(event);
       }}
-      data-ds-component="Slider"
-      data-ds-part="root"
+      data-juro-component="Slider"
+      data-juro-part="root"
       className={className}
     >
-      <div ref={range.trackRef} data-ds-part="track" />
-      <div data-ds-part="fill" />
-      <div data-ds-part="thumb" />
+      <div ref={range.trackRef} data-juro-part="track" />
+      <div data-juro-part="fill" />
+      <div data-juro-part="thumb" />
     </div>
   );
 });

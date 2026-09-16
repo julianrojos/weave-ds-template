@@ -29,14 +29,14 @@ TEMPLATE.innerHTML = `
 let nextId = 0;
 
 /** Fired on the collection whenever the selection or the roster changes. */
-export const ACCORDION_CHANGE = 'ds-accordion-internal-change';
+export const ACCORDION_CHANGE = 'juro-accordion-internal-change';
 
 export class Accordion extends HTMLElement {
-  static readonly tagName = 'ds-accordion';
+  static readonly tagName = 'juro-accordion';
   static readonly observedAttributes = ['disabled', 'orientation', 'value'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-accordion-' + nextId++;
+  readonly #baseId = 'juro-accordion-' + nextId++;
 
   constructor() {
     super();
@@ -154,6 +154,6 @@ if (!customElements.get(Accordion.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-accordion': Accordion;
+    'juro-accordion': Accordion;
   }
 }

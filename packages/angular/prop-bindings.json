@@ -1,5 +1,5 @@
 {
-  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @ds/contracts/prop-canon.json and is framework-free. This file holds ONLY the places Angular's idiom differs from it.",
+  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @juro/contracts/prop-canon.json and is framework-free. This file holds ONLY the places Angular's idiom differs from it.",
   "_why": "A contract says a component has a selection that can be controlled. It does not say whether that is `value` + `onValueChange`, `modelValue` + `update:modelValue`, or `[(value)]`, because that is a framework's business and not the specification's. Three backends now spell it three ways and the contract was not edited for any of them.",
   "_regenerate": "Hand-maintained. Nothing generates this file.",
   "conventions": {
@@ -12,12 +12,12 @@
   "selectorRule": {
     "pattern": "<element>[ds<Name>]",
     "examples": {
-      "Button": "button[dsButton] — consumer writes <button dsButton hierarchy=\"primary\">",
-      "Accordion": "div[dsAccordion] — consumer writes <div dsAccordion>",
-      "TextField": "input[dsTextField] — consumer writes <input dsTextField>"
+      "Button": "button[juroButton] — consumer writes <button juroButton hierarchy=\"primary\">",
+      "Accordion": "div[juroAccordion] — consumer writes <div juroAccordion>",
+      "TextField": "input[juroTextField] — consumer writes <input juroTextField>"
     },
-    "note": "The alternative — an element selector like `ds-button` — was rejected and the reason is not taste. It would make the host a custom element, and a <ds-button> is not a button: no native focus, no native `disabled`, no implicit role, no form participation. @ds/platform-web records all four as facts about `button`, and a backend that quietly discarded them would be compiling a different component from the same contract. It would also break the shared stylesheet, because the theme file dresses the element the contract named.",
-    "cost": "A consumer types more than in React or Vue, and for a `div`-rooted component (`<div dsAccordion>`) it reads oddly. That is a real cost of keeping the DOM honest, and it is Angular's, not the contract's."
+    "note": "The alternative — an element selector like `juro-button` — was rejected and the reason is not taste. It would make the host a custom element, and a <juro-button> is not a button: no native focus, no native `disabled`, no implicit role, no form participation. @juro/platform-web records all four as facts about `button`, and a backend that quietly discarded them would be compiling a different component from the same contract. It would also break the shared stylesheet, because the theme file dresses the element the contract named.",
+    "cost": "A consumer types more than in React or Vue, and for a `div`-rooted component (`<div juroAccordion>`) it reads oddly. That is a real cost of keeping the DOM honest, and it is Angular's, not the contract's."
   },
   "_controlRulesDoc": "How Angular spells each `control` value from a contract's `states`. THESE ARE RULES, NOT A TABLE: one entry per control value covers every state in the library. `X` is the state name in camelCase.",
   "controlRules": {
@@ -49,9 +49,9 @@
   "axisOverrides": {},
   "_behaviorBindingDoc": "Behaviour vocabulary primitive -> the Angular implementation that satisfies it.",
   "behaviorBindings": {
-    "dismissal": "useDismissal from @ds/angular/behavior",
-    "linear-navigation": "useLinearNavigation from @ds/angular/behavior",
-    "range-stepping": "useRangeControl from @ds/angular/behavior"
+    "dismissal": "useDismissal from @juro/angular/behavior",
+    "linear-navigation": "useLinearNavigation from @juro/angular/behavior",
+    "range-stepping": "useRangeControl from @juro/angular/behavior"
   },
   "_whatAngularSuppliesThatTheOthersDoNot": "Recorded because each is emitter work the other two backends need and this one does not.",
   "suppliedByTheFramework": {

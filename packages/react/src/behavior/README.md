@@ -17,7 +17,7 @@ index.ts                    the public barrel
 The decision logic these wrap was written here and then **copied** into the Vue and Angular packages
 as those backends were built — deliberately, so that what a second and third backend cost could be
 measured before it was optimised away. It now lives once, in
-[`@ds/behavior`](../../../behavior/README.md).
+[`@juro/behavior`](../../../behavior/README.md).
 
 What is left here is React and nothing else: `useCallback`, `useRef`, `useMemo`, and reading an
 event.
@@ -81,7 +81,7 @@ vocabulary stops being closed.
 ## How agnosticism gets proved
 
 A primitive implemented here is only evidence about React. The conformance definitions live in
-`@ds/contracts` as framework-neutral data — "given linear navigation with wrap and skipDisabled,
+`@juro/contracts` as framework-neutral data — "given linear navigation with wrap and skipDisabled,
 ArrowRight from the last enabled item lands on the first enabled item" — and each backend ships a
 thin adapter that runs them against its emitted output in a real DOM.
 

@@ -7,13 +7,13 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <button dsSwitch>.
-  selector: 'button[dsSwitch]',
-  exportAs: 'dsSwitch',
+  // to an element rather than rendering one. A consumer writes <button juroSwitch>.
+  selector: 'button[juroSwitch]',
+  exportAs: 'juroSwitch',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -24,11 +24,11 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
     '[attr.aria-checked]': 'checked()',
     '[attr.disabled]': 'disabled() || null',
     '[attr.aria-readonly]': 'readOnly() || null',
-    'data-ds-component': 'Switch',
-    'data-ds-part': 'root',
+    'data-juro-component': 'Switch',
+    'data-juro-part': 'root',
     '(click)': 'activate($event)',
   },
-  template: ` <div data-ds-part="thumb"></div> `,
+  template: ` <div data-juro-part="thumb"></div> `,
 })
 export class Switch {
   /** The platform's own disabled state. Removed from the focus order and cannot be toggled. */

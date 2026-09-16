@@ -14,8 +14,8 @@
     "@angular/compiler": "^21.0.0",
     "@angular/core": "^21.0.0",
     "@angular/platform-browser": "^21.0.0",
-    "@ds/angular": "workspace:*",
-    "@ds/tokens": "workspace:*",
+    "@juro/angular": "workspace:*",
+    "@juro/tokens": "workspace:*",
     "rxjs": "^7.8.0",
     "zone.js": "^0.15.0"
   },

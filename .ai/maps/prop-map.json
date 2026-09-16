@@ -86,7 +86,7 @@
           ]
         },
         "size": {
-          "concept": "One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap.",
+          "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
             "xs",
             "s",
@@ -2146,7 +2146,7 @@
           ]
         },
         "size": {
-          "concept": "One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap.",
+          "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
             "xs",
             "s",
@@ -3256,7 +3256,7 @@
           ]
         },
         "size": {
-          "concept": "One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap.",
+          "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
             "xs",
             "s",
@@ -4366,7 +4366,7 @@
           ]
         },
         "size": {
-          "concept": "One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap.",
+          "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
             "xs",
             "s",
@@ -5088,7 +5088,7 @@
             "role": "model",
             "kind": "tokens",
             "default": [],
-            "event": "ds-value-change",
+            "event": "juro-value-change",
             "description": "The current selection, by member identity."
           }
         ],
@@ -5184,7 +5184,7 @@
             "description": "The answer. Three values, not two: `mixed` reports that a set of checkboxes below this one is partly checked, and is set by the implementation rather than chosen by a user.",
             "kind": "enum",
             "role": "model",
-            "event": "ds-checked-change"
+            "event": "juro-checked-change"
           },
           {
             "name": "disabled",
@@ -5253,7 +5253,7 @@
             "description": "The dialog is showing and holding focus.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-open-change"
+            "event": "juro-open-change"
           },
           {
             "name": "size",
@@ -5289,7 +5289,7 @@
             "description": "Validation has run and failed. Reaches assistive technology as aria-invalid and shows the error.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-invalid-change"
+            "event": "juro-invalid-change"
           },
           {
             "name": "touched",
@@ -5301,7 +5301,7 @@
             "description": "The control has been focused and then blurred at least once. Gates WHEN an error is allowed to show.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-touched-change"
+            "event": "juro-touched-change"
           },
           {
             "name": "dirty",
@@ -5313,7 +5313,7 @@
             "description": "The value differs from the value the field started with. Gates validation timing and enables a reset affordance.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-dirty-change"
+            "event": "juro-dirty-change"
           }
         ],
         "RadioGroup": [
@@ -5348,7 +5348,7 @@
             "role": "model",
             "kind": "string",
             "default": "",
-            "event": "ds-value-change",
+            "event": "juro-value-change",
             "description": "The current selection, by member identity."
           },
           {
@@ -5409,7 +5409,7 @@
             "description": "The chosen number. Bounded and stepped — facts that live nowhere else, and that no boolean or enumeration can carry.",
             "kind": "number",
             "role": "model",
-            "event": "ds-value-change"
+            "event": "juro-value-change"
           },
           {
             "name": "disabled",
@@ -5456,7 +5456,7 @@
             "description": "The switch is on. Tracked by the implementation and reflected to assistive technology.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-checked-change"
+            "event": "juro-checked-change"
           },
           {
             "name": "disabled",
@@ -5572,7 +5572,7 @@
             "role": "model",
             "kind": "string",
             "default": "",
-            "event": "ds-value-change",
+            "event": "juro-value-change",
             "description": "The current selection, by member identity."
           }
         ],
@@ -5587,7 +5587,7 @@
             "description": "The text itself. Free-form: not a boolean, and not one of a fixed set — which is what makes this the first state in the library that `values` cannot describe.",
             "kind": "string",
             "role": "model",
-            "event": "ds-value-change"
+            "event": "juro-value-change"
           },
           {
             "name": "disabled",
@@ -5667,7 +5667,7 @@
             "description": "The tooltip is showing. A consumer may control it; hover and focus on the trigger also change it.",
             "kind": "boolean",
             "role": "model",
-            "event": "ds-open-change"
+            "event": "juro-open-change"
           },
           {
             "name": "disabled",

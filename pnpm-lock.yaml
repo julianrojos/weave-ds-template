@@ -44,10 +44,10 @@ importers:
       '@angular/platform-browser':
         specifier: ^21.0.0
         version: 21.2.23(@angular/common@21.2.23(@angular/core@21.2.23(@angular/compiler@21.2.23)(rxjs@7.8.2)(zone.js@0.15.1))(rxjs@7.8.2))(@angular/core@21.2.23(@angular/compiler@21.2.23)(rxjs@7.8.2)(zone.js@0.15.1))
-      '@ds/angular':
+      '@juro/angular':
         specifier: workspace:*
         version: link:../../packages/angular
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       rxjs:
@@ -72,10 +72,10 @@ importers:
 
   apps/react-sandbox:
     dependencies:
-      '@ds/react':
+      '@juro/react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
       react:
@@ -100,10 +100,10 @@ importers:
 
   apps/vue-sandbox:
     dependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@ds/vue':
+      '@juro/vue':
         specifier: workspace:*
         version: link:../../packages/vue
       vue:
@@ -122,10 +122,10 @@ importers:
 
   apps/wc-sandbox:
     dependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../../packages/tokens
-      '@ds/wc':
+      '@juro/wc':
         specifier: workspace:*
         version: link:../../packages/wc
     devDependencies:
@@ -135,20 +135,20 @@ importers:
 
   packages/angular:
     dependencies:
-      '@ds/behavior':
+      '@juro/behavior':
         specifier: workspace:*
         version: link:../behavior
-      '@ds/emit-web':
+      '@juro/emit-web':
         specifier: workspace:*
         version: link:../emit-web
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
     devDependencies:
       '@angular/core':
         specifier: ^21.0.0
         version: 21.2.23(@angular/compiler@21.2.23)(rxjs@7.8.2)(zone.js@0.15.1)
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../tokens
       rxjs:
@@ -163,7 +163,7 @@ importers:
 
   packages/behavior:
     devDependencies:
-      '@ds/contracts':
+      '@juro/contracts':
         specifier: workspace:*
         version: link:../contracts
 
@@ -171,7 +171,7 @@ importers:
 
   packages/emit-web:
     dependencies:
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
 
@@ -179,13 +179,13 @@ importers:
 
   packages/react:
     dependencies:
-      '@ds/behavior':
+      '@juro/behavior':
         specifier: workspace:*
         version: link:../behavior
-      '@ds/emit-web':
+      '@juro/emit-web':
         specifier: workspace:*
         version: link:../emit-web
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
       class-variance-authority:
@@ -195,7 +195,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
     devDependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../tokens
       '@types/react':
@@ -228,17 +228,17 @@ importers:
 
   packages/vue:
     dependencies:
-      '@ds/behavior':
+      '@juro/behavior':
         specifier: workspace:*
         version: link:../behavior
-      '@ds/emit-web':
+      '@juro/emit-web':
         specifier: workspace:*
         version: link:../emit-web
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
     devDependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../tokens
       '@vitejs/plugin-vue':
@@ -256,17 +256,17 @@ importers:
 
   packages/wc:
     dependencies:
-      '@ds/behavior':
+      '@juro/behavior':
         specifier: workspace:*
         version: link:../behavior
-      '@ds/emit-web':
+      '@juro/emit-web':
         specifier: workspace:*
         version: link:../emit-web
-      '@ds/platform-web':
+      '@juro/platform-web':
         specifier: workspace:*
         version: link:../platform-web
     devDependencies:
-      '@ds/tokens':
+      '@juro/tokens':
         specifier: workspace:*
         version: link:../tokens
       vite:

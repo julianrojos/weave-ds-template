@@ -101,14 +101,14 @@ function onRootClick(event: MouseEvent) {
     :aria-selected="selected"
     :tabindex="collection.isTabStop(value) ? 0 : -1"
     :aria-controls="`${collection.baseId}-TabPanel-${props.value}`"
-    data-ds-component="TabItem"
-    data-ds-part="root"
+    data-juro-component="TabItem"
+    data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <slot name="label" />
     </div>
-    <div :hidden="!selected" data-ds-part="indicator" />
+    <div :hidden="!selected" data-juro-part="indicator" />
     <slot />
   </button>
 </template>

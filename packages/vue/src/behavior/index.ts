@@ -1,14 +1,14 @@
-// Public barrel for @ds/vue/behavior — the interaction primitives emitted components import.
+// Public barrel for @juro/vue/behavior — the interaction primitives emitted components import.
 //
 // This is the ONE place this package ships runtime JavaScript, and the one place the "you own your
 // generated component" rule bends. In short: what you can see, you own — markup, structure, theme.
 // What must be correct, you depend on — focus, keyboard, selection.
 //
-// THE SAME THREE PRIMITIVES AS @ds/react/behavior, WITH THE SAME NAMES, and that is not a
+// THE SAME THREE PRIMITIVES AS @juro/react/behavior, WITH THE SAME NAMES, and that is not a
 // coincidence worth admiring: the names come from the contract's behaviour vocabulary, and each maps
 // to a behaviour the W3C ARIA APG defines normatively. The decision logic underneath is literally
 // the same code (see the banner on dismissal.ts), and both packages run it against the same
-// conformance cases in @ds/contracts/conformance/.
+// conformance cases in @juro/contracts/conformance/.
 //
 // What differs is the binding, and it differs in one consistent way: every primitive here takes
 // REACTIVE INPUTS AS GETTERS where the React hook takes plain values. React re-runs the component

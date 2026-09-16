@@ -7,13 +7,13 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <input dsTextField>.
-  selector: 'input[dsTextField]',
-  exportAs: 'dsTextField',
+  // to an element rather than rendering one. A consumer writes <input juroTextField>.
+  selector: 'input[juroTextField]',
+  exportAs: 'juroTextField',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -22,11 +22,11 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
     '[attr.disabled]': 'disabled() || null',
     '[attr.aria-readonly]': 'readOnly() || null',
     '[attr.aria-invalid]': 'invalid() || null',
-    '[attr.data-ds-size]': 'size()',
+    '[attr.data-juro-size]': 'size()',
     '[value]': 'value()',
     '[attr.readonly]': 'readOnly() || null',
-    'data-ds-component': 'TextField',
-    'data-ds-part': 'root',
+    'data-juro-component': 'TextField',
+    'data-juro-part': 'root',
     '(input)': 'handleInput($event)',
   },
   // A void element has no content model, so there is no template at all.

@@ -1,5 +1,5 @@
-import { intentFor, navigable, resolve, tabStop } from '@ds/behavior/linear-navigation';
-import type { Member, NavigationOptions } from '@ds/behavior/linear-navigation';
+import { intentFor, navigable, resolve, tabStop } from '@juro/behavior/linear-navigation';
+import type { Member, NavigationOptions } from '@juro/behavior/linear-navigation';
 
 export type {
   DisabledItems,
@@ -7,7 +7,7 @@ export type {
   Member,
   NavigationOptions,
   Orientation,
-} from '@ds/behavior/linear-navigation';
+} from '@juro/behavior/linear-navigation';
 
 export interface MemberRegistration {
   element: HTMLElement | null;
@@ -35,7 +35,7 @@ export interface LinearNavigation {
  * Moving between the members of a collection with the arrow keys, and keeping exactly one of them
  * in the page's tab sequence.
  *
- * The decision logic is in @ds/behavior as pure functions. This is the vanilla binding: a Map, a
+ * The decision logic is in @juro/behavior as pure functions. This is the vanilla binding: a Map, a
  * document-order sort, and `focus()`.
  *
  * NO VERSION COUNTER. The React, Vue and Angular bindings each keep one so their reactivity system

@@ -7,7 +7,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import Ajv from 'ajv/dist/2020.js';
-import { elementFor } from '@ds/platform-web';
+import { elementFor } from '@juro/platform-web';
 
 export const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 
@@ -27,7 +27,7 @@ export const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase
  * Every anatomy node, depth first, with the key it is declared under.
  *
  * The key and the `part` are different strings and both matter: the key is what a contract
- * REFERENCES (`controls: "panel"`), the part is what reaches the DOM (`data-ds-part="panel"`).
+ * REFERENCES (`controls: "panel"`), the part is what reaches the DOM (`data-juro-part="panel"`).
  * They usually match and a contract is free to make them differ.
  */
 export function partsOf(node, out = [], key = 'root') {

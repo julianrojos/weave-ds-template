@@ -1,4 +1,4 @@
-// Drives the conformance cases in @ds/contracts against the one shared implementation.
+// Drives the conformance cases in @juro/contracts against the one shared implementation.
 //
 // The cases are DATA, transcribed from the W3C ARIA APG and owned by the contracts package. This
 // file is the React adapter for them: it reads the same JSON a Vue backend would read and asserts
@@ -46,7 +46,7 @@ interface Case {
 }
 
 const SUITE = JSON.parse(
-  readFileSync(require.resolve('@ds/contracts/conformance/linear-navigation.json'), 'utf8'),
+  readFileSync(require.resolve('@juro/contracts/conformance/linear-navigation.json'), 'utf8'),
 ) as { primitive: string; cases: Case[] };
 
 /**

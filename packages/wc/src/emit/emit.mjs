@@ -31,7 +31,7 @@ import {
   rendersFalse,
   submitsByDefault,
   visibilityOf,
-} from '@ds/platform-web';
+} from '@juro/platform-web';
 
 const WEB = loadProfile();
 
@@ -43,7 +43,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
-} from '@ds/emit-web';
+} from '@juro/emit-web';
 import { emitStructureShadow, emitThemeShadow } from './css-shadow.mjs';
 import { camel, kebab, pascal, slotsFrom, surfaceFrom, tagFor } from './surface.mjs';
 
@@ -107,12 +107,12 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   const acceptsLabel = Boolean(rootRole || implicitRole(el, WEB));
   const tag = tagFor(name, prefix);
   // THE CLASS IS NOT PREFIXED, and only the TAG is. A custom element name is required to contain a
-  // hyphen, which is the platform reserving every single-word tag for itself — so `<ds-button>` has
+  // hyphen, which is the platform reserving every single-word tag for itself — so `<juro-button>` has
   // to carry the prefix. A class has no such constraint, it is module-scoped, and React and Angular
   // both emit a bare `Button`.
   //
   // It was `DsButton` for one commit, and that was a latent half-rename: `pnpm init-ds` rewrites
-  // `dsButton` (the Angular selector) but not `DsButton`, so a renamed repo kept 117 references to
+  // `juroButton` (the Angular selector) but not `DsButton`, so a renamed repo kept 117 references to
   // a class the emitter would next produce as `WeaveButton`. It built green, and CI's straggler
   // grep does not look for it. Dropping the prefix removes the thing to rename rather than adding a
   // sixth rule to rename it.
@@ -207,7 +207,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   assume(
     'the element the contract names lives INSIDE the shadow root',
     `<${tag}> hosts a <${el} part="root">`,
-    'A custom element carries no implicit role, no native focus, no native `disabled` and no form participation — @ds/platform-web records all four as facts about the element the contract names, and a host that replaced it would be compiling a different component. So the host is the API and the element is inside it. THE COST IS A SPLIT: the ARIA attribute has to go on the inner element, where assistive technology reads it, AND the same state has to be reflected onto the host, where CSS can select it. One fact, two places — which is exactly the duplication packages/react/src/emit/README.md §2 warns about, forced by the shadow boundary rather than chosen.',
+    'A custom element carries no implicit role, no native focus, no native `disabled` and no form participation — @juro/platform-web records all four as facts about the element the contract names, and a host that replaced it would be compiling a different component. So the host is the API and the element is inside it. THE COST IS A SPLIT: the ARIA attribute has to go on the inner element, where assistive technology reads it, AND the same state has to be reflected onto the host, where CSS can select it. One fact, two places — which is exactly the duplication packages/react/src/emit/README.md §2 warns about, forced by the shadow boundary rather than chosen.',
   );
   assume(
     'a `shared` state needs three mechanisms',
@@ -300,8 +300,10 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     if (range) types.push('RangeOptions');
     if (dismissCauses.length) types.push('DismissalOptions');
     if (navigation) types.push('NavigationOptions');
-    s.push(`import { ${[...new Set(behaviorImports)].sort().join(', ')} } from '@ds/wc/behavior';`);
-    s.push(`import type { ${types.sort().join(', ')} } from '@ds/wc/behavior';`);
+    s.push(
+      `import { ${[...new Set(behaviorImports)].sort().join(', ')} } from '@juro/wc/behavior';`,
+    );
+    s.push(`import type { ${types.sort().join(', ')} } from '@juro/wc/behavior';`);
   }
   if (member) {
     // The collection's change-event name is imported rather than re-derived, so a rename cannot
@@ -344,7 +346,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   }
   if (dismissCauses.length) {
     s.push(`// Transcribed from ${name}.contract.json > dismisses. Cases in`);
-    s.push(`// @ds/contracts/conformance/dismissal.json.`);
+    s.push(`// @juro/contracts/conformance/dismissal.json.`);
     if (dismissCauses.length !== dismisses.on.length) {
       const left = dismisses.on.filter((c) => !dismissCauses.includes(c));
       s.push(`// The contract also declares ${left.join(' and ')}, supplied by the platform.`);
@@ -949,7 +951,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     }
     if (decision.channel === 'native') {
       // `toggleAttribute` is RIGHT here and only here: a native boolean attribute is presence-only,
-      // which is what @ds/platform-web's `native` table records.
+      // which is what @juro/platform-web's `native` table records.
       s.push(`    root.toggleAttribute('${decision.attribute}', ${expr});`);
     } else if (decision.channel === 'aria') {
       // AN ARIA STATE IS NOT A PRESENCE-ONLY BOOLEAN, and `rendersFalse: false` does not make it

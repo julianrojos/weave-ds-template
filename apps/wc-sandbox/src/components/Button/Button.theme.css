@@ -5,11 +5,11 @@
  * the light DOM and a descendant selector over data attributes reaches all of them. A shadow root
  * ends that. This is the same values in the shadow grammar:
  *
- *   [data-ds-component='Button']                       ->  :host
- *   [data-ds-component='Button'] [data-ds-part='x']    ->  [part='x']
- *   [data-ds-component='Button'][data-ds-size='s']     ->  :host([size='s'])
- *   [data-ds-component='Button'][aria-checked='true']  ->  :host([checked])
- *   [data-ds-component='Button']:disabled              ->  :host([disabled])
+ *   [data-juro-component='Button']                       ->  :host
+ *   [data-juro-component='Button'] [data-juro-part='x']    ->  [part='x']
+ *   [data-juro-component='Button'][data-juro-size='s']     ->  :host([size='s'])
+ *   [data-juro-component='Button'][aria-checked='true']  ->  :host([checked])
+ *   [data-juro-component='Button']:disabled              ->  :host([disabled])
  *
  * NOT ONE DECLARATION CHANGED. Every value, every colour and every length is the React sandbox's,
  * unedited — which is the useful half of the result: what the shadow boundary costs is the
@@ -140,10 +140,10 @@
   border: 2px solid currentColor;
   border-block-start-color: transparent;
   border-radius: 999px;
-  animation: ds-button-spin 620ms linear infinite;
+  animation: juro-button-spin 620ms linear infinite;
 }
 
-@keyframes ds-button-spin {
+@keyframes juro-button-spin {
   to {
     transform: rotate(360deg);
   }

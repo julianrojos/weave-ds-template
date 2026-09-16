@@ -64,11 +64,11 @@ const fallthrough = computed(() => ({ ...attrs }));
     v-bind="fallthrough"
     :id="baseId"
     :aria-disabled="disabled || undefined"
-    :data-ds-state-open="selected || undefined"
-    data-ds-component="AccordionItem"
-    data-ds-part="root"
+    :data-juro-state-open="selected || undefined"
+    data-juro-component="AccordionItem"
+    data-juro-part="root"
   >
-    <div data-ds-part="header">
+    <div data-juro-part="header">
       <button
         :id="`${baseId}-trigger`"
         :aria-controls="`${baseId}-panel`"
@@ -76,10 +76,10 @@ const fallthrough = computed(() => ({ ...attrs }));
         type="button"
         :disabled="isDisabled"
         :aria-expanded="selected"
-        data-ds-part="trigger"
+        data-juro-part="trigger"
       >
         <slot name="heading" />
-        <div data-ds-part="indicator" />
+        <div data-juro-part="indicator" />
       </button>
     </div>
     <div
@@ -87,7 +87,7 @@ const fallthrough = computed(() => ({ ...attrs }));
       :id="`${baseId}-panel`"
       :aria-labelledby="`${baseId}-trigger`"
       :hidden="!selected"
-      data-ds-part="panel"
+      data-juro-part="panel"
     >
       <slot name="panel" />
     </div>

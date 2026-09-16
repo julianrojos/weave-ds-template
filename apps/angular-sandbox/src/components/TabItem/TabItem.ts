@@ -17,13 +17,13 @@ import { TABS, type TabsContext } from '../Tabs/Tabs';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <button dsTabItem>.
-  selector: 'button[dsTabItem]',
-  exportAs: 'dsTabItem',
+  // to an element rather than rendering one. A consumer writes <button juroTabItem>.
+  selector: 'button[juroTabItem]',
+  exportAs: 'juroTabItem',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -36,15 +36,15 @@ import { TABS, type TabsContext } from '../Tabs/Tabs';
     '[attr.aria-selected]': 'selected()',
     '[attr.tabindex]': 'collection.isTabStop(value()) ? 0 : -1',
     '[attr.aria-controls]': "collection.baseId + '-TabPanel-' + value()",
-    'data-ds-component': 'TabItem',
-    'data-ds-part': 'root',
+    'data-juro-component': 'TabItem',
+    'data-juro-part': 'root',
     '(click)': 'activate($event)',
   },
   template: `
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <ng-content select="[slot=label]" />
     </div>
-    <div [attr.hidden]="selected() ? null : ''" data-ds-part="indicator"></div>
+    <div [attr.hidden]="selected() ? null : ''" data-juro-part="indicator"></div>
     <ng-content />
   `,
 })

@@ -1,5 +1,5 @@
 {
-  "name": "@ds/emit-web",
+  "name": "@juro/emit-web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -15,6 +15,6 @@
     "css.mjs"
   ],
   "dependencies": {
-    "@ds/platform-web": "workspace:*"
+    "@juro/platform-web": "workspace:*"
   }
 }

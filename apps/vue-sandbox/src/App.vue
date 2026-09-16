@@ -6,7 +6,7 @@
 
     node packages/vue/src/emit/emit.mjs <Name> --out apps/vue-sandbox/src/components
 
-  Nothing is imported from @ds/vue, which exports no components and never will. The components live
+  Nothing is imported from @juro/vue, which exports no components and never will. The components live
   here, in the consumer's own tree, which is the architecture in one import path.
 
   WHAT THIS PAGE IS FOR, and it is not the same as what the React page is for. That page grades
@@ -135,7 +135,7 @@ const invalid = computed(() => email.value.length > 0 && !email.value.includes('
     <Specimen
       name="Slider"
       of="Slider"
-      note="Arrow keys, Page Up/Down, Home/End and pointer drag, all from the same pure range-stepping core the React build runs — literally the same file, duplicated with a banner saying so. The fill and the thumb are positioned from --ds-fraction, published on the component's own root."
+      note="Arrow keys, Page Up/Down, Home/End and pointer drag, all from the same pure range-stepping core the React build runs — literally the same file, duplicated with a banner saying so. The fill and the thumb are positioned from --juro-fraction, published on the component's own root."
     >
       <Slider v-model:value="volume" aria-label="Volume" />
       <span class="readout">value: {{ volume }}</span>
@@ -170,7 +170,7 @@ const invalid = computed(() => email.value.length > 0 && !email.value.includes('
     <Specimen
       name="Dialog"
       of="Dialog"
-      note="A native <dialog> opened with showModal(). React needs its first useEffect here; Vue needs its first flush: 'post' watcher — the framework primitive differs, the platform obligation does not. Both learn from @ds/platform-web that the element supplies focus containment, inertness and Escape, and both sync the open state back from the element's own attribute with a MutationObserver."
+      note="A native <dialog> opened with showModal(). React needs its first useEffect here; Vue needs its first flush: 'post' watcher — the framework primitive differs, the platform obligation does not. Both learn from @juro/platform-web that the element supplies focus containment, inertness and Escape, and both sync the open state back from the element's own attribute with a MutationObserver."
     >
       <Button hierarchy="primary" @click="dialogOpen = true">Open the dialog</Button>
       <Dialog v-model:open="dialogOpen">

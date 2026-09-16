@@ -18,8 +18,8 @@ export interface TooltipProps {
 
 <script setup lang="ts">
 import { computed, useAttrs, useId } from 'vue';
-import { useDismissal } from '@ds/vue/behavior';
-import type { DismissalOptions } from '@ds/vue/behavior';
+import { useDismissal } from '@juro/vue/behavior';
+import type { DismissalOptions } from '@juro/vue/behavior';
 import './Tooltip.structure.css';
 import './Tooltip.theme.css';
 
@@ -46,7 +46,7 @@ defineSlots<{
 const baseId = useId();
 
 // Transcribed from Tooltip.contract.json > dismisses. The cases this commits us to
-// are in @ds/contracts/conformance/dismissal.json.
+// are in @juro/contracts/conformance/dismissal.json.
 const DISMISSAL: DismissalOptions = {
   on: ['escape'],
 };
@@ -76,21 +76,21 @@ function onRootKeydown(event: KeyboardEvent) {
   <div
     v-bind="fallthrough"
     :id="baseId"
-    :data-ds-state-open="open || undefined"
+    :data-juro-state-open="open || undefined"
     :aria-disabled="disabled || undefined"
-    :data-ds-placement="placement"
-    data-ds-component="Tooltip"
-    data-ds-part="root"
+    :data-juro-placement="placement"
+    data-juro-component="Tooltip"
+    data-juro-part="root"
     @keydown="onRootKeydown"
   >
     <div
       :id="`${baseId}-trigger`"
       :aria-describedby="[open ? `${baseId}-popup` : null].filter(Boolean).join(' ') || undefined"
-      data-ds-part="trigger"
+      data-juro-part="trigger"
     >
       <slot name="trigger" />
     </div>
-    <div role="tooltip" :id="`${baseId}-popup`" :hidden="!open" data-ds-part="popup">
+    <div role="tooltip" :id="`${baseId}-popup`" :hidden="!open" data-juro-part="popup">
       <slot name="content" />
     </div>
     <slot />

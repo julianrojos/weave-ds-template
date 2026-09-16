@@ -39,7 +39,7 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -305,7 +305,7 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -505,7 +505,7 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -705,7 +705,7 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--ds-space-*, --ds-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -761,7 +761,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
 | orientation | axis | 'vertical' | orientation | ? |
-| value | model | string[] | value | ds-value-change |
+| value | model | string[] | value | juro-value-change |
 
 ### AccordionItem
 
@@ -784,7 +784,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| checked | model | 'unchecked' \| 'checked' \| 'mixed' | checked | ds-checked-change |
+| checked | model | 'unchecked' \| 'checked' \| 'mixed' | checked | juro-checked-change |
 | disabled | input | boolean | disabled | ? |
 | invalid | input | boolean | invalid | ? |
 | name | input | string | name | ? |
@@ -795,7 +795,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| open | model | boolean | open | ds-open-change |
+| open | model | boolean | open | juro-open-change |
 | size | axis | 's' \| 'm' \| 'l' | size | ? |
 
 ### Field
@@ -803,9 +803,9 @@ One spelling, one meaning. A new value is added here in the same change that int
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
-| invalid | model | boolean | invalid | ds-invalid-change |
-| touched | model | boolean | touched | ds-touched-change |
-| dirty | model | boolean | dirty | ds-dirty-change |
+| invalid | model | boolean | invalid | juro-invalid-change |
+| touched | model | boolean | touched | juro-touched-change |
+| dirty | model | boolean | dirty | juro-dirty-change |
 
 ### RadioGroup
 
@@ -813,7 +813,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
 | readOnly | input | boolean | read-only | ? |
-| value | model | string | value | ds-value-change |
+| value | model | string | value | juro-value-change |
 | name | input | string | name | ? |
 | required | input | boolean | required | ? |
 
@@ -828,7 +828,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| value | model | number | value | ds-value-change |
+| value | model | number | value | juro-value-change |
 | disabled | input | boolean | disabled | ? |
 | name | input | string | name | ? |
 | required | input | boolean | required | ? |
@@ -837,7 +837,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| checked | model | boolean | checked | ds-checked-change |
+| checked | model | boolean | checked | juro-checked-change |
 | disabled | input | boolean | disabled | ? |
 | readOnly | input | boolean | read-only | ? |
 | name | input | string | name | ? |
@@ -862,13 +862,13 @@ One spelling, one meaning. A new value is added here in the same change that int
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
-| value | model | string | value | ds-value-change |
+| value | model | string | value | juro-value-change |
 
 ### TextField
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| value | model | string | value | ds-value-change |
+| value | model | string | value | juro-value-change |
 | disabled | input | boolean | disabled | ? |
 | readOnly | input | boolean | read-only | ? |
 | invalid | input | boolean | invalid | ? |
@@ -880,6 +880,6 @@ One spelling, one meaning. A new value is added here in the same change that int
 
 | Name | Role | Type | Attribute | Event |
 | --- | --- | --- | --- | --- |
-| open | model | boolean | open | ds-open-change |
+| open | model | boolean | open | juro-open-change |
 | disabled | input | boolean | disabled | ? |
 | placement | axis | 'top' \| 'top-start' \| 'top-end' \| 'bottom' \| 'bottom-start' \| 'bottom-end' \| 'left' \| 'right' | placement | ? |

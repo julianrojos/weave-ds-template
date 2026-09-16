@@ -76,15 +76,15 @@ function onRootClick(event: MouseEvent) {
     "
     :disabled="disabled || undefined"
     :aria-invalid="invalid || undefined"
-    data-ds-component="Checkbox"
-    data-ds-part="root"
+    data-juro-component="Checkbox"
+    data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-ds-part="box">
-      <div :hidden="!(checked === 'checked')" data-ds-part="tick" />
-      <div :hidden="!(checked === 'mixed')" data-ds-part="dash" />
+    <div data-juro-part="box">
+      <div :hidden="!(checked === 'checked')" data-juro-part="tick" />
+      <div :hidden="!(checked === 'mixed')" data-juro-part="dash" />
     </div>
-    <div data-ds-part="label">
+    <div data-juro-part="label">
       <slot name="label" />
     </div>
     <slot />

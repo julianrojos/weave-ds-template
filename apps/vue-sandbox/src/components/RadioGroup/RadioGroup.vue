@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import type { ComputedRef, InjectionKey } from 'vue';
-import type { MemberRegistration } from '@ds/vue/behavior';
+import type { MemberRegistration } from '@juro/vue/behavior';
 
 /** What a consumer may pass. `v-model` bindings are declared separately below. */
 export interface RadioGroupProps {
@@ -43,8 +43,8 @@ export const RadioGroupKey: InjectionKey<RadioGroupContextValue> = Symbol('Radio
 
 <script setup lang="ts">
 import { computed, provide, useAttrs, useId } from 'vue';
-import { useLinearNavigation } from '@ds/vue/behavior';
-import type { NavigationOptions } from '@ds/vue/behavior';
+import { useLinearNavigation } from '@juro/vue/behavior';
+import type { NavigationOptions } from '@juro/vue/behavior';
 import './RadioGroup.structure.css';
 import './RadioGroup.theme.css';
 
@@ -72,7 +72,7 @@ function toggle(memberValue: string) {
 
 // Transcribed field for field from RadioGroup.contract.json > collection.navigation.
 // The cases this commits us to are in
-// @ds/contracts/conformance/linear-navigation.json.
+// @juro/contracts/conformance/linear-navigation.json.
 const NAVIGATION: NavigationOptions = {
   orientation: 'both',
   wrap: true,
@@ -118,8 +118,8 @@ function onRootKeydown(event: KeyboardEvent) {
     :id="baseId"
     :aria-disabled="disabled || undefined"
     :aria-readonly="readOnly || undefined"
-    data-ds-component="RadioGroup"
-    data-ds-part="root"
+    data-juro-component="RadioGroup"
+    data-juro-part="root"
     @keydown="onRootKeydown"
   >
     <slot />

@@ -80,6 +80,6 @@ across the backdrop. Positive controls verify that activation/dismissal handlers
 Manual tabs are generated through the emitter with `followsFocus: false` on a fixture contract.
 
 There is a sibling of this directory for the WEB PLATFORM mapping — which ARIA attribute a state
-reaches the DOM through — in [`@ds/platform-web/conformance`](../../platform-web/conformance/). It
+reaches the DOM through — in [`@juro/platform-web/conformance`](../../platform-web/conformance/). It
 is separate because these cases are agnostic and those are not: `ArrowRight` means something on any
 platform, and `aria-checked` does not.

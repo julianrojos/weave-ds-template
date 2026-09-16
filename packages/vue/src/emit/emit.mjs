@@ -9,7 +9,7 @@
 //   node packages/vue/src/emit/emit.mjs <Name> --out <dir>
 //
 // WHAT THIS FILE IS NOT. Reading a contract and emitting the two stylesheets used to be in here,
-// identical in all three emitters. They moved to `@ds/emit-web` once what a second and third
+// identical in all three emitters. They moved to `@juro/emit-web` once what a second and third
 // backend cost had been measured — see docs/research/0005 and packages/emit-web/README.md. What is
 // left is this framework and nothing else.
 
@@ -23,7 +23,7 @@ const CONTRACTS = join(REPO_ROOT, 'packages/contracts');
 const BINDINGS = join(REPO_ROOT, 'packages/vue/bindings');
 
 // The WEB PLATFORM, as data. THE SAME PACKAGE THE REACT EMITTER READS, unchanged — which is the
-// single most load-bearing line in this file. `@ds/platform-web` was extracted from the React
+// single most load-bearing line in this file. `@juro/platform-web` was extracted from the React
 // emitter on the claim that eleven of its thirteen lookup tables were web knowledge rather than
 // React knowledge, and that claim was untestable with one backend. This import is the test.
 import {
@@ -41,7 +41,7 @@ import {
   rendersFalse,
   submitsByDefault,
   visibilityOf,
-} from '@ds/platform-web';
+} from '@juro/platform-web';
 
 const WEB = loadProfile();
 
@@ -58,7 +58,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
-} from '@ds/emit-web';
+} from '@juro/emit-web';
 
 import { camel, pascal, slotsFrom, surfaceFrom } from './surface.mjs';
 
@@ -221,7 +221,7 @@ export function emitSfc(name, contract, binding, prefix) {
   assume(
     'how a state reaches the DOM',
     'ARIA attribute where one is conventional AND the element has a role, native attribute for disabled, otherwise data-<prefix>-state',
-    'Resolved by @ds/platform-web, NOT by this emitter — which is the whole point of the extraction. This backend added no table of its own and changed none of the profile.',
+    'Resolved by @juro/platform-web, NOT by this emitter — which is the whole point of the extraction. This backend added no table of its own and changed none of the profile.',
   );
 
   const range = contract.range ?? null;
@@ -293,7 +293,7 @@ export function emitSfc(name, contract, binding, prefix) {
     assume(
       'how a modal opens and closes',
       'a post-flush watcher calls showModal()/close(), and a MutationObserver on the `open` attribute keeps the model in sync',
-      "The React emitter needed its first useEffect here; this one needs its first `flush: 'post'` watcher, for the identical reason — a <dialog> cannot be opened by rendering an attribute, so the call has to happen after the DOM exists. The framework primitive differs, the platform obligation does not. @ds/platform-web supplied both the method names and the fact that the platform answers Escape.",
+      "The React emitter needed its first useEffect here; this one needs its first `flush: 'post'` watcher, for the identical reason — a <dialog> cannot be opened by rendering an attribute, so the call has to happen after the DOM exists. The framework primitive differs, the platform obligation does not. @juro/platform-web supplied both the method names and the fact that the platform answers Escape.",
     );
   }
   if (dismisses) {
@@ -303,13 +303,13 @@ export function emitSfc(name, contract, binding, prefix) {
       dismissCauses.length
         ? `generated ${dismissCauses.join(' and ')}${skipped.length ? `; ${skipped.join(' and ')} left to the platform` : ''}`
         : `nothing generated — the platform supplies ${skipped.join(' and ')}`,
-      'Read straight out of @ds/platform-web > visibility.supplies, with no Vue-specific reasoning at any point.',
+      'Read straight out of @juro/platform-web > visibility.supplies, with no Vue-specific reasoning at any point.',
     );
   }
   if (navigation) {
     assume(
       'how a collection moves focus between its members',
-      'a member registration protocol over provide/inject, plus useLinearNavigation from @ds/vue/behavior',
+      'a member registration protocol over provide/inject, plus useLinearNavigation from @juro/vue/behavior',
       'The React emitter logged this assumption predicting that "Vue would use provide/inject". It does. The contract declares WHAT the keyboard does and says nothing about how a backend learns which DOM nodes its members are, which is exactly the room the two protocols needed.',
     );
   }
@@ -381,7 +381,7 @@ export function emitSfc(name, contract, binding, prefix) {
     if (collection) typeImports.push('ComputedRef', 'InjectionKey');
     if (typeImports.length) head.push(`import type { ${typeImports.join(', ')} } from 'vue';`);
     if (collection && navigation) {
-      head.push(`import type { MemberRegistration } from '@ds/vue/behavior';`);
+      head.push(`import type { MemberRegistration } from '@juro/vue/behavior';`);
     }
     if (typeImports.length) head.push(``);
 
@@ -464,8 +464,8 @@ export function emitSfc(name, contract, binding, prefix) {
     if (range) types.push('RangeOptions');
     if (dismissCauses.length) types.push('DismissalOptions');
     if (navigation) types.push('NavigationOptions');
-    s.push(`import { ${behaviorImports.sort().join(', ')} } from '@ds/vue/behavior';`);
-    s.push(`import type { ${types.sort().join(', ')} } from '@ds/vue/behavior';`);
+    s.push(`import { ${behaviorImports.sort().join(', ')} } from '@juro/vue/behavior';`);
+    s.push(`import type { ${types.sort().join(', ')} } from '@juro/vue/behavior';`);
   }
   if (member) {
     s.push(
@@ -642,12 +642,14 @@ export function emitSfc(name, contract, binding, prefix) {
   if (dismissCauses.length) {
     const v = camel(dismisses.state);
     s.push(`// Transcribed from ${name}.contract.json > dismisses. The cases this commits us to`);
-    s.push(`// are in @ds/contracts/conformance/dismissal.json.`);
+    s.push(`// are in @juro/contracts/conformance/dismissal.json.`);
     if (dismissCauses.length !== dismisses.on.length) {
       const left = dismisses.on.filter((c) => !dismissCauses.includes(c));
       s.push(`//`);
       s.push(`// The contract also declares ${left.join(' and ')}, which is NOT generated: the`);
-      s.push(`// platform supplies it for a <${el}>. See @ds/platform-web > visibility.supplies.`);
+      s.push(
+        `// platform supplies it for a <${el}>. See @juro/platform-web > visibility.supplies.`,
+      );
     }
     s.push(`const DISMISSAL: DismissalOptions = {`);
     s.push(`  on: [${dismissCauses.map((c) => `'${c}'`).join(', ')}],`);
@@ -680,7 +682,7 @@ export function emitSfc(name, contract, binding, prefix) {
       `// Transcribed from ${name}.contract.json: the \`range\` block, plus min/max/step from`,
     );
     s.push(`// the \`${range.state}\` state. The cases this commits us to are in`);
-    s.push(`// @ds/contracts/conformance/range-stepping.json.`);
+    s.push(`// @juro/contracts/conformance/range-stepping.json.`);
     s.push(`const RANGE: RangeOptions = {`);
     s.push(`  min: ${rangeState.min},`);
     s.push(`  max: ${rangeState.max},`);
@@ -729,7 +731,7 @@ export function emitSfc(name, contract, binding, prefix) {
     if (navigation) {
       s.push(`// Transcribed field for field from ${name}.contract.json > collection.navigation.`);
       s.push(`// The cases this commits us to are in`);
-      s.push(`// @ds/contracts/conformance/linear-navigation.json.`);
+      s.push(`// @juro/contracts/conformance/linear-navigation.json.`);
       s.push(`const NAVIGATION: NavigationOptions = {`);
       for (const [k, val] of Object.entries(navigation)) {
         s.push(`  ${k}: ${typeof val === 'string' ? `'${val}'` : String(val)},`);
@@ -868,7 +870,7 @@ export function emitSfc(name, contract, binding, prefix) {
       assume(
         'a member state whose ARIA attribute its role does not support',
         `${member.reflects} does not reach ${declared} on role="${rootRole}" — emitted data-${prefix}-state-${member.reflects} instead`,
-        'Answered by @ds/platform-web > aria, not by this emitter. The React backend reports the identical decision for the identical component, which is what the shared profile exists to guarantee.',
+        'Answered by @juro/platform-web > aria, not by this emitter. The React backend reports the identical decision for the identical component, which is what the shared profile exists to guarantee.',
       );
     }
     if (attr) {
@@ -880,7 +882,7 @@ export function emitSfc(name, contract, binding, prefix) {
       assume(
         'a member state outside the ARIA table',
         `emitted data-${prefix}-state-${member.reflects} instead`,
-        'The state-to-attribute table is a closed list in @ds/platform-web. A state name it does not know reaches no ARIA attribute at all, and nothing detects that a component needs one.',
+        'The state-to-attribute table is a closed list in @juro/platform-web. A state name it does not know reaches no ARIA attribute at all, and nothing detects that a component needs one.',
       );
     }
   }

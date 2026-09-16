@@ -20,14 +20,14 @@
  * ============================================================================================
  */
 
-[data-ds-component='Accordion'] {
+[data-juro-component='Accordion'] {
   inline-size: 46ch;
   display: block;
 }
 
 /* ==== end of misplaced structure. Everything below is genuinely paint. ==================== */
 
-[data-ds-component='Accordion'] {
+[data-juro-component='Accordion'] {
   border: 1px solid #3a3a3f;
   border-radius: 0.5rem;
   overflow: hidden;

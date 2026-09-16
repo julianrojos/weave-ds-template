@@ -41,11 +41,11 @@ TEMPLATE.innerHTML = `
 let nextId = 0;
 
 export class Field extends HTMLElement {
-  static readonly tagName = 'ds-field';
+  static readonly tagName = 'juro-field';
   static readonly observedAttributes = ['disabled', 'invalid', 'touched', 'dirty'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-field-' + nextId++;
+  readonly #baseId = 'juro-field-' + nextId++;
 
   constructor() {
     super();
@@ -161,6 +161,6 @@ if (!customElements.get(Field.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-field': Field;
+    'juro-field': Field;
   }
 }

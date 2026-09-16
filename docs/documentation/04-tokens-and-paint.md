@@ -21,9 +21,9 @@ perfectly valid code.
 
 ```json
 "paints": {
-  "background-color": "--ds-color-fill-",
-  "border-radius": "--ds-radius-",
-  "padding-inline": "--ds-space-"
+  "background-color": "--juro-color-fill-",
+  "border-radius": "--juro-radius-",
+  "padding-inline": "--juro-space-"
 }
 ```
 
@@ -57,8 +57,8 @@ pnpm report:paints
 ```
 
 ```
-Button: root: `background-color: #5146e6` does not satisfy `--ds-color-fill-`
-Button: root: `border-radius: var(--ds-color-brand-primary)` does not satisfy `--ds-radius-`
+Button: root: `background-color: #5146e6` does not satisfy `--juro-color-fill-`
+Button: root: `border-radius: var(--juro-color-brand-primary)` does not satisfy `--juro-radius-`
 ```
 
 The first is the hardcoded hex. Expected.
@@ -79,11 +79,11 @@ naming?"_
 
 ## What a value may be
 
-|                                     | Means                                                     |
-| ----------------------------------- | --------------------------------------------------------- |
-| `"--ds-space-"`                     | from the spacing tokens                                   |
-| `"literal"`                         | deliberately not a token — `transparent`, `0`, a hairline |
-| `["--ds-color-border-", "literal"]` | either is fine here                                       |
+|                                       | Means                                                     |
+| ------------------------------------- | --------------------------------------------------------- |
+| `"--juro-space-"`                     | from the spacing tokens                                   |
+| `"literal"`                           | deliberately not a token — `transparent`, `0`, a hairline |
+| `["--juro-color-border-", "literal"]` | either is fine here                                       |
 
 The last is not a fudge: a border is genuinely transparent at rest and a token when outlined. But
 keep the list short — three or four sources usually means the piece should have been two pieces.
@@ -97,8 +97,8 @@ value" look identical.
 
 ```mermaid
 flowchart LR
-  G["✅ --ds-color-fill-*<br/><i>a role</i>"] --> GR["every variant works free"]
-  B["❌ --ds-color-brand-*<br/><i>a colour</i>"] --> BR["welded to purple"]
+  G["✅ --juro-color-fill-*<br/><i>a role</i>"] --> GR["every variant works free"]
+  B["❌ --juro-color-brand-*<br/><i>a colour</i>"] --> BR["welded to purple"]
   style G fill:#1f3a2a,stroke:#26e589,color:#fff
   style B fill:#3a2020,stroke:#e56161,color:#fff
 ```

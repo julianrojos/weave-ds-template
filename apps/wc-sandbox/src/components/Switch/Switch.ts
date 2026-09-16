@@ -25,7 +25,7 @@ TEMPLATE.innerHTML = `
 `;
 
 export class Switch extends HTMLElement {
-  static readonly tagName = 'ds-switch';
+  static readonly tagName = 'juro-switch';
   static readonly formAssociated = true;
   static readonly observedAttributes = [
     'disabled',
@@ -249,6 +249,6 @@ if (!customElements.get(Switch.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-switch': Switch;
+    'juro-switch': Switch;
   }
 }

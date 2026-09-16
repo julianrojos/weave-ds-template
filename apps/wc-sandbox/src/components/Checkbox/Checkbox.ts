@@ -32,7 +32,7 @@ TEMPLATE.innerHTML = `
 `;
 
 export class Checkbox extends HTMLElement {
-  static readonly tagName = 'ds-checkbox';
+  static readonly tagName = 'juro-checkbox';
   static readonly formAssociated = true;
   static readonly observedAttributes = [
     'disabled',
@@ -297,6 +297,6 @@ if (!customElements.get(Checkbox.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-checkbox': Checkbox;
+    'juro-checkbox': Checkbox;
   }
 }

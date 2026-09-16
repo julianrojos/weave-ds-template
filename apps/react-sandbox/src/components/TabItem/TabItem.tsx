@@ -79,12 +79,12 @@ export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabI
         rest.onClick?.(event);
         activate(event);
       }}
-      data-ds-component="TabItem"
-      data-ds-part="root"
+      data-juro-component="TabItem"
+      data-juro-part="root"
       className={className}
     >
-      <div data-ds-part="label">{label}</div>
-      <div hidden={!selected} data-ds-part="indicator" />
+      <div data-juro-part="label">{label}</div>
+      <div hidden={!selected} data-juro-part="indicator" />
       {children}
     </button>
   );

@@ -8,8 +8,8 @@
     "useDefineForClassFields": false,
     "baseUrl": ".",
     "paths": {
-      "@ds/angular/behavior": ["../../packages/angular/src/behavior/index.ts"],
-      "@ds/angular": ["../../packages/angular/src/index.ts"]
+      "@juro/angular/behavior": ["../../packages/angular/src/behavior/index.ts"],
+      "@juro/angular": ["../../packages/angular/src/index.ts"]
     }
   },
   "include": ["src/**/*.ts"]

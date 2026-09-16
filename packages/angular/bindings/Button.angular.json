@@ -4,7 +4,7 @@
   "contract": "../../contracts/components/Button/Button.contract.json",
   "framework": "angular",
   "notes": [
-    "Attaches to a native <button type=\"button\">: `selector: 'button[dsButton]'`. A consumer writes <button dsButton hierarchy=\"primary\">.",
+    "Attaches to a native <button type=\"button\">: `selector: 'button[juroButton]'`. A consumer writes <button juroButton hierarchy=\"primary\">.",
     "The `hierarchy` axis is spelled `hierarchy`, not `role`, for the reason the React binding gives — `role` is a real HTML attribute and a button carrying role=\"primary\" would stop being announced as a button. That reason is about HTML, so all three backends reach it independently.",
     "`loading` is `control: consumer` and the contract says it must reach assistive technology as well as the eye. Nothing in the contract says HOW; `aria-busy` is the conventional answer and no emitter can know that."
   ]

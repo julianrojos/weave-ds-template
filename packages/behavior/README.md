@@ -1,10 +1,10 @@
-# `@ds/behavior`
+# `@juro/behavior`
 
 **The decision logic behind the interaction primitives. No framework, no DOM, no side effects.**
 
 Three modules — what Escape means, which member an arrow key moves to, where a number lands when you
 step it — plus the conformance suites that execute them against
-[`@ds/contracts/conformance/`](../contracts/conformance/README.md).
+[`@juro/contracts/conformance/`](../contracts/conformance/README.md).
 
 ## Why it exists, and why it did not exist sooner
 
@@ -23,13 +23,13 @@ copies the reason had run out. This package is the move those reports named.
 
 Two packages were plausible and both are wrong, in opposite directions.
 
-**Not [`@ds/platform-web`](../platform-web/README.md).** Its rule is _"if it would still be true in a
+**Not [`@juro/platform-web`](../platform-web/README.md).** Its rule is _"if it would still be true in a
 Vue, Svelte or Lit backend rendering the same DOM, it belongs here"_. These pass that test and then
 keep going: none of them needs a DOM at all, and all of them would be true in React Native or
 Flutter. They are **more** agnostic than the web profile, so a home inside it would have been a
 demotion — and would have quietly told a future non-web backend that it could not use them.
 
-**Not [`@ds/contracts`](../contracts/README.md).** That package is the specification and ships JSON.
+**Not [`@juro/contracts`](../contracts/README.md).** That package is the specification and ships JSON.
 The conformance cases these satisfy already live there. This is the executable **reference
 implementation** of those cases, which is a different kind of artifact, and keeping it out is what
 lets a consumer hold the contract set without holding any code at all.
@@ -53,13 +53,13 @@ parameters are the contract's own blocks, one for one: `dismisses`, `collection.
 ## What a framework package does with it
 
 A backend wraps these in its own binding and **re-exports them under the same names**, so an emitted
-component imports `@ds/react/behavior` and never reaches in here:
+component imports `@juro/react/behavior` and never reaches in here:
 
-|                        | reads the shared core | adds                                                             |
-| ---------------------- | --------------------- | ---------------------------------------------------------------- |
-| `@ds/react/behavior`   | ✓                     | `useCallback`/`useRef` plumbing, plain-value inputs              |
-| `@ds/vue/behavior`     | ✓                     | refs, getter inputs, a `reactive` return for template unwrapping |
-| `@ds/angular/behavior` | ✓                     | signals, getter inputs, a getter for the track element           |
+|                          | reads the shared core | adds                                                             |
+| ------------------------ | --------------------- | ---------------------------------------------------------------- |
+| `@juro/react/behavior`   | ✓                     | `useCallback`/`useRef` plumbing, plain-value inputs              |
+| `@juro/vue/behavior`     | ✓                     | refs, getter inputs, a `reactive` return for template unwrapping |
+| `@juro/angular/behavior` | ✓                     | signals, getter inputs, a getter for the track element           |
 
 `pnpm verify:parity` asserts those three barrels export the same set of names. That check replaced
 the drift check: with one copy there is nothing to drift, but a barrel that gains or loses a name

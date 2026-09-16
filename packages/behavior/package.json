@@ -1,9 +1,9 @@
 {
-  "name": "@ds/behavior",
+  "name": "@juro/behavior",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "The decision logic behind the interaction primitives, with no framework and no DOM. One copy, executed against the agnostic conformance cases in @ds/contracts.",
+  "description": "The decision logic behind the interaction primitives, with no framework and no DOM. One copy, executed against the agnostic conformance cases in @juro/contracts.",
   "exports": {
     ".": "./src/index.ts",
     "./dismissal": "./src/dismissal.ts",
@@ -14,6 +14,6 @@
     "src"
   ],
   "devDependencies": {
-    "@ds/contracts": "workspace:*"
+    "@juro/contracts": "workspace:*"
   }
 }

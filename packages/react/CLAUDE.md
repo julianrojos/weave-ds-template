@@ -1,4 +1,4 @@
-# CLAUDE.md — `@ds/react`
+# CLAUDE.md — `@juro/react`
 
 **The authority for library internals.** The root `CLAUDE.md` covers the monorepo, the token
 pipeline and the governance layer; this file covers authoring components and the contract system.
@@ -89,7 +89,7 @@ look.
 Everything above depends on these. They are stated with their reasons in
 [`packages/contracts/components/README.md`](../contracts/components/README.md) §3 and §5; in short:
 
-1. A named node carries `data-ds-part="x"` **and** `className={styles.x}`, same name.
+1. A named node carries `data-juro-part="x"` **and** `className={styles.x}`, same name.
 2. Every variant axis is a `cva` axis with a `defaultVariants` entry.
 3. No generic wrapper around a variant type.
 

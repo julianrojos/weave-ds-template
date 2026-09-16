@@ -3,8 +3,8 @@
 //
 // Holds one choice from a small set of mutually exclusive options, all visible at once. It exists so the chosen option has exactly one home: the items compare against it rather than each holding a copy.
 
-import { useLinearNavigation } from '@ds/wc/behavior';
-import type { NavigationOptions } from '@ds/wc/behavior';
+import { useLinearNavigation } from '@juro/wc/behavior';
+import type { NavigationOptions } from '@juro/wc/behavior';
 
 // THE ONE BUNDLER-SPECIFIC TOKEN IN THIS FILE. `?inline` asks Vite for the stylesheet as
 // a string so it can be adopted into the shadow root rather than injected into the page —
@@ -40,10 +40,10 @@ const NAVIGATION: NavigationOptions = {
 };
 
 /** Fired on the collection whenever the selection or the roster changes. */
-export const RADIOGROUP_CHANGE = 'ds-radio-group-internal-change';
+export const RADIOGROUP_CHANGE = 'juro-radio-group-internal-change';
 
 export class RadioGroup extends HTMLElement {
-  static readonly tagName = 'ds-radio-group';
+  static readonly tagName = 'juro-radio-group';
   static readonly formAssociated = true;
   static readonly observedAttributes = [
     'disabled',
@@ -59,7 +59,7 @@ export class RadioGroup extends HTMLElement {
   #customValidity = '';
   #initialFormValue: string | undefined;
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-radio-group-' + nextId++;
+  readonly #baseId = 'juro-radio-group-' + nextId++;
   #interactionVersion = 0;
   readonly #nav;
 
@@ -274,6 +274,6 @@ if (!customElements.get(RadioGroup.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-radio-group': RadioGroup;
+    'juro-radio-group': RadioGroup;
   }
 }

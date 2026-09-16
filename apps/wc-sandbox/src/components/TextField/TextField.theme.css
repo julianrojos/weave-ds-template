@@ -5,11 +5,11 @@
  * the light DOM and a descendant selector over data attributes reaches all of them. A shadow root
  * ends that. This is the same values in the shadow grammar:
  *
- *   [data-ds-component='TextField']                       ->  :host
- *   [data-ds-component='TextField'] [data-ds-part='x']    ->  [part='x']
- *   [data-ds-component='TextField'][data-ds-size='s']     ->  :host([size='s'])
- *   [data-ds-component='TextField'][aria-checked='true']  ->  :host([checked])
- *   [data-ds-component='TextField']:disabled              ->  :host([disabled])
+ *   [data-juro-component='TextField']                       ->  :host
+ *   [data-juro-component='TextField'] [data-juro-part='x']    ->  [part='x']
+ *   [data-juro-component='TextField'][data-juro-size='s']     ->  :host([size='s'])
+ *   [data-juro-component='TextField'][aria-checked='true']  ->  :host([checked])
+ *   [data-juro-component='TextField']:disabled              ->  :host([disabled])
  *
  * NOT ONE DECLARATION CHANGED. Every value, every colour and every length is the React sandbox's,
  * unedited — which is the useful half of the result: what the shadow boundary costs is the

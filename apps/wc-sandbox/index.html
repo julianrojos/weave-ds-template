@@ -38,16 +38,16 @@
         <p class="specimen-note">
           Three axes become three attributes on the host, and the theme selects them with
           <code>:host([hierarchy='primary'])</code>. The other three backends invented a
-          <code>data-ds-&lt;axis&gt;</code> family to do this; a shadow root makes it unnecessary,
+          <code>data-juro-&lt;axis&gt;</code> family to do this; a shadow root makes it unnecessary,
           because the host's own attributes are already scoped by its tag.
         </p>
         <div class="specimen-row">
-          <ds-button hierarchy="primary">Save changes</ds-button>
-          <ds-button hierarchy="secondary">Cancel</ds-button>
-          <ds-button hierarchy="tertiary">Learn more</ds-button>
-          <ds-button hierarchy="primary" variant="danger">Delete project</ds-button>
-          <ds-button hierarchy="secondary" variant="danger">Delete</ds-button>
-          <ds-button hierarchy="secondary" variant="brand">Upgrade</ds-button>
+          <juro-button hierarchy="primary">Save changes</juro-button>
+          <juro-button hierarchy="secondary">Cancel</juro-button>
+          <juro-button hierarchy="tertiary">Learn more</juro-button>
+          <juro-button hierarchy="primary" variant="danger">Delete project</juro-button>
+          <juro-button hierarchy="secondary" variant="danger">Delete</juro-button>
+          <juro-button hierarchy="secondary" variant="brand">Upgrade</juro-button>
         </div>
       </section>
 
@@ -60,12 +60,12 @@
           <code>has-icon-start</code> on a <code>slotchange</code> instead.
         </p>
         <div class="specimen-row">
-          <ds-button size="s">Small</ds-button>
-          <ds-button size="m">Medium</ds-button>
-          <ds-button size="l">Large</ds-button>
-          <ds-button hierarchy="primary" loading>Saving</ds-button>
-          <ds-button disabled>Disabled</ds-button>
-          <ds-button hierarchy="primary"><span slot="icon-start">+</span>With icon</ds-button>
+          <juro-button size="s">Small</juro-button>
+          <juro-button size="m">Medium</juro-button>
+          <juro-button size="l">Large</juro-button>
+          <juro-button hierarchy="primary" loading>Saving</juro-button>
+          <juro-button disabled>Disabled</juro-button>
+          <juro-button hierarchy="primary"><span slot="icon-start">+</span>With icon</juro-button>
         </div>
       </section>
 
@@ -78,12 +78,16 @@
           is what the shadow boundary costs.
         </p>
         <div class="specimen-row">
-          <ds-checkbox id="terms" checked="mixed"><span slot="label">Select all</span></ds-checkbox>
-          <ds-checkbox checked="checked"><span slot="label">Marketing email</span></ds-checkbox>
-          <ds-checkbox><span slot="label">Product updates</span></ds-checkbox>
-          <ds-checkbox checked="mixed"><span slot="label">Partly chosen</span></ds-checkbox>
-          <ds-checkbox invalid><span slot="label">Required, and unanswered</span></ds-checkbox>
-          <ds-checkbox disabled checked="checked"><span slot="label">Disabled</span></ds-checkbox>
+          <juro-checkbox id="terms" checked="mixed"
+            ><span slot="label">Select all</span></juro-checkbox
+          >
+          <juro-checkbox checked="checked"><span slot="label">Marketing email</span></juro-checkbox>
+          <juro-checkbox><span slot="label">Product updates</span></juro-checkbox>
+          <juro-checkbox checked="mixed"><span slot="label">Partly chosen</span></juro-checkbox>
+          <juro-checkbox invalid><span slot="label">Required, and unanswered</span></juro-checkbox>
+          <juro-checkbox disabled checked="checked"
+            ><span slot="label">Disabled</span></juro-checkbox
+          >
         </div>
       </section>
 
@@ -95,12 +99,12 @@
           real gap, recorded rather than solved.
         </p>
         <div class="specimen-row">
-          <ds-text-field placeholder="Uncontrolled"></ds-text-field>
-          <ds-text-field size="s" placeholder="Small"></ds-text-field>
-          <ds-text-field size="l" placeholder="Large"></ds-text-field>
-          <ds-text-field invalid value="not an email"></ds-text-field>
-          <ds-text-field read-only value="Read-only"></ds-text-field>
-          <ds-text-field disabled placeholder="Disabled"></ds-text-field>
+          <juro-text-field placeholder="Uncontrolled"></juro-text-field>
+          <juro-text-field size="s" placeholder="Small"></juro-text-field>
+          <juro-text-field size="l" placeholder="Large"></juro-text-field>
+          <juro-text-field invalid value="not an email"></juro-text-field>
+          <juro-text-field read-only value="Read-only"></juro-text-field>
+          <juro-text-field disabled placeholder="Disabled"></juro-text-field>
         </div>
       </section>
 
@@ -109,10 +113,10 @@
         <p class="specimen-note">
           Arrow keys, Page Up/Down, Home/End and pointer drag, from the same pure range-stepping
           core every other backend runs — now literally the same file, in
-          <code>@ds/behavior</code>.
+          <code>@juro/behavior</code>.
         </p>
         <div class="specimen-row">
-          <ds-slider id="volume" value="40" aria-label="Volume"></ds-slider>
+          <juro-slider id="volume" value="40" aria-label="Volume"></juro-slider>
           <span class="readout" id="volume-readout">value: 40</span>
           <button type="button" class="ghost" id="volume-down">−10</button>
           <button type="button" class="ghost" id="volume-up">+10</button>
@@ -127,22 +131,24 @@
           the four that works across a framework boundary.
         </p>
         <div class="specimen-row">
-          <ds-tabs value="overview" aria-label="Project sections">
-            <ds-tab-item value="overview"><span slot="label">Overview</span></ds-tab-item>
-            <ds-tab-item value="activity"><span slot="label">Activity</span></ds-tab-item>
-            <ds-tab-item value="settings" disabled><span slot="label">Settings</span></ds-tab-item>
-            <ds-tab-panel value="overview">
+          <juro-tabs value="overview" aria-label="Project sections">
+            <juro-tab-item value="overview"><span slot="label">Overview</span></juro-tab-item>
+            <juro-tab-item value="activity"><span slot="label">Activity</span></juro-tab-item>
+            <juro-tab-item value="settings" disabled
+              ><span slot="label">Settings</span></juro-tab-item
+            >
+            <juro-tab-panel value="overview">
               A collection with two kinds of member. This panel and its tab compare against the same
               value; neither holds it.
-            </ds-tab-panel>
-            <ds-tab-panel value="activity">
+            </juro-tab-panel>
+            <juro-tab-panel value="activity">
               Selection follows focus in this pattern, which suits panels already in memory and is
               the wrong default for one that fetches. The contract cannot say which was chosen.
-            </ds-tab-panel>
-            <ds-tab-panel value="settings">
+            </juro-tab-panel>
+            <juro-tab-panel value="settings">
               A panel for the disabled tab, so the tab's aria-controls has something to name.
-            </ds-tab-panel>
-          </ds-tabs>
+            </juro-tab-panel>
+          </juro-tabs>
         </div>
       </section>
 
@@ -154,18 +160,18 @@
           effect, no watcher, no change detection, just a method call in <code>#update()</code>.
         </p>
         <div class="specimen-row">
-          <ds-button hierarchy="primary" id="open-dialog">Open the dialog</ds-button>
-          <ds-dialog id="dialog">
+          <juro-button hierarchy="primary" id="open-dialog">Open the dialog</juro-button>
+          <juro-dialog id="dialog">
             <span slot="title">Delete this project?</span>
             <span slot="body">
               Everything in it goes with it. Escape and the backdrop both close this, and neither is
               code the emitter wrote by choice.
             </span>
             <span slot="actions">
-              <ds-button hierarchy="secondary" data-close>Cancel</ds-button>
-              <ds-button hierarchy="primary" variant="danger" data-close>Delete</ds-button>
+              <juro-button hierarchy="secondary" data-close>Cancel</juro-button>
+              <juro-button hierarchy="primary" variant="danger" data-close>Delete</juro-button>
             </span>
-          </ds-dialog>
+          </juro-dialog>
         </div>
       </section>
 
@@ -179,20 +185,20 @@
         </p>
         <div class="specimen-row">
           <span class="labelled">
-            <ds-switch id="s1" checked></ds-switch>
+            <juro-switch id="s1" checked></juro-switch>
             <label for="s1">Notifications</label>
           </span>
           <span class="labelled">
-            <ds-switch id="s2" checked></ds-switch>
+            <juro-switch id="s2" checked></juro-switch>
             <label for="s2">Wi-Fi</label>
           </span>
           <button type="button" class="ghost" id="toggle-wifi">Toggle from outside</button>
           <span class="labelled">
-            <ds-switch id="s3" disabled checked></ds-switch>
+            <juro-switch id="s3" disabled checked></juro-switch>
             <label for="s3">Disabled</label>
           </span>
           <span class="labelled">
-            <ds-switch id="s4" read-only checked></ds-switch>
+            <juro-switch id="s4" read-only checked></juro-switch>
             <label for="s4">Read-only</label>
           </span>
         </div>
@@ -206,26 +212,26 @@
           token list the platform already has.
         </p>
         <div class="specimen-row">
-          <ds-accordion value="what">
-            <ds-accordion-item value="what">
+          <juro-accordion value="what">
+            <juro-accordion-item value="what">
               <span slot="heading">What is a contract?</span>
               <span slot="panel">
                 The agnostic specification a component is generated from. It is the thing this
                 library ships; the component is output.
               </span>
-            </ds-accordion-item>
-            <ds-accordion-item value="why">
+            </juro-accordion-item>
+            <juro-accordion-item value="why">
               <span slot="heading">Why does this one open?</span>
               <span slot="panel">
                 Because the contract says what opening means: the accordion holds a selection, this
                 item is a member of it, and the trigger toggles that membership.
               </span>
-            </ds-accordion-item>
-            <ds-accordion-item value="disabled" disabled>
+            </juro-accordion-item>
+            <juro-accordion-item value="disabled" disabled>
               <span slot="heading">This one is disabled</span>
               <span slot="panel">You should not be able to read this.</span>
-            </ds-accordion-item>
-          </ds-accordion>
+            </juro-accordion-item>
+          </juro-accordion>
         </div>
       </section>
 
@@ -236,15 +242,15 @@
           than kept focusable — the one place these contracts disagree with the tabs.
         </p>
         <div class="specimen-row">
-          <ds-radio-group id="plan" value="monthly" aria-label="Billing period" class="radio-row">
-            <ds-radio-item value="monthly"><span slot="label">Monthly</span></ds-radio-item>
-            <ds-radio-item value="yearly"
-              ><span slot="label">Yearly (2 months free)</span></ds-radio-item
+          <juro-radio-group id="plan" value="monthly" aria-label="Billing period" class="radio-row">
+            <juro-radio-item value="monthly"><span slot="label">Monthly</span></juro-radio-item>
+            <juro-radio-item value="yearly"
+              ><span slot="label">Yearly (2 months free)</span></juro-radio-item
             >
-            <ds-radio-item value="lifetime" disabled
-              ><span slot="label">Lifetime (sold out)</span></ds-radio-item
+            <juro-radio-item value="lifetime" disabled
+              ><span slot="label">Lifetime (sold out)</span></juro-radio-item
             >
-          </ds-radio-group>
+          </juro-radio-group>
           <span class="readout" id="plan-readout">chosen: monthly</span>
         </div>
       </section>
@@ -257,7 +263,7 @@
           it is not an emitter's fault.
         </p>
         <div class="specimen-row">
-          <ds-tooltip id="tip">
+          <juro-tooltip id="tip">
             <span slot="trigger">
               <button type="button" class="ghost" id="toggle-tip">
                 Toggle the tooltip from outside
@@ -267,7 +273,7 @@
               A contract can describe this bubble. It cannot yet say what opens it, or where it
               goes.
             </span>
-          </ds-tooltip>
+          </juro-tooltip>
         </div>
       </section>
 
@@ -281,12 +287,16 @@
           reflection API, which is not in every browser yet.
         </p>
         <div class="specimen-row">
-          <ds-field id="field">
+          <juro-field id="field">
             <span slot="label">Email address</span>
             <span slot="description">We only use this to send receipts.</span>
             <span slot="error">That does not look like an email address.</span>
-            <ds-text-field slot="control" id="email" placeholder="you@example.com"></ds-text-field>
-          </ds-field>
+            <juro-text-field
+              slot="control"
+              id="email"
+              placeholder="you@example.com"
+            ></juro-text-field>
+          </juro-field>
         </div>
       </section>
     </main>

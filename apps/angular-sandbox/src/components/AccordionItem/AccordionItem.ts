@@ -8,13 +8,13 @@ import { ACCORDION, type AccordionContext } from '../Accordion/Accordion';
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <div dsAccordionItem>.
-  selector: 'div[dsAccordionItem]',
-  exportAs: 'dsAccordionItem',
+  // to an element rather than rendering one. A consumer writes <div juroAccordionItem>.
+  selector: 'div[juroAccordionItem]',
+  exportAs: 'juroAccordionItem',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -22,12 +22,12 @@ import { ACCORDION, type AccordionContext } from '../Accordion/Accordion';
   host: {
     '[attr.id]': 'baseId()',
     '[attr.aria-disabled]': 'disabled() || null',
-    '[attr.data-ds-state-open]': 'selected() || null',
-    'data-ds-component': 'AccordionItem',
-    'data-ds-part': 'root',
+    '[attr.data-juro-state-open]': 'selected() || null',
+    'data-juro-component': 'AccordionItem',
+    'data-juro-part': 'root',
   },
   template: `
-    <div data-ds-part="header">
+    <div data-juro-part="header">
       <button
         [attr.id]="baseId() + '-trigger'"
         [attr.aria-controls]="baseId() + '-panel'"
@@ -35,10 +35,10 @@ import { ACCORDION, type AccordionContext } from '../Accordion/Accordion';
         type="button"
         [attr.disabled]="isDisabled() || null"
         [attr.aria-expanded]="selected()"
-        data-ds-part="trigger"
+        data-juro-part="trigger"
       >
         <ng-content select="[slot=heading]" />
-        <div data-ds-part="indicator"></div>
+        <div data-juro-part="indicator"></div>
       </button>
     </div>
     <div
@@ -46,7 +46,7 @@ import { ACCORDION, type AccordionContext } from '../Accordion/Accordion';
       [attr.id]="baseId() + '-panel'"
       [attr.aria-labelledby]="baseId() + '-trigger'"
       [attr.hidden]="selected() ? null : ''"
-      data-ds-part="panel"
+      data-juro-part="panel"
     >
       <ng-content select="[slot=panel]" />
     </div>

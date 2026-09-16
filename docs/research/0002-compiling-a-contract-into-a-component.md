@@ -60,14 +60,14 @@ single word `shared`.
 It printed these itself:
 
 **1. How a state reaches the DOM.** The contract says `checked` exists and who may set it. It never
-says whether that becomes `aria-checked`, a `data-ds-state`, or a native attribute. The emitter chose
+says whether that becomes `aria-checked`, a `data-juro-state`, or a native attribute. The emitter chose
 ARIA where one exists, the native attribute for `disabled`, and `data-<prefix>-state` otherwise.
 
 **2. Structural CSS.** Nothing in the contract states that the thumb must be out of flow. The
 emitter hardcodes `position: absolute` on every non-root part.
 
-**3. A scoping selector.** With no CSS Modules there is no hashing, so `[data-ds-part='root']` would
-match every component on a page. The emitter invented `data-ds-component="Switch"` on the root.
+**3. A scoping selector.** With no CSS Modules there is no hashing, so `[data-juro-part='root']` would
+match every component on a page. The emitter invented `data-juro-component="Switch"` on the root.
 
 ### The theme file is a complete list of sockets
 
@@ -418,7 +418,7 @@ which means the one thing that makes a slider a slider is the consumer's to impl
 **Four emitter bugs, all the same root cause:** the emitter did not know enough about HTML.
 `role="textbox"` restated on an `<input>`; `tabIndex` added to a natively focusable element;
 `aria-disabled` used where the native `disabled` attribute exists; and — the one that matters —
-**whatever the person typed mirrored into `data-ds-state-value`**. A boolean or enumerated state is
+**whatever the person typed mirrored into `data-juro-state-value`**. A boolean or enumerated state is
 a styling hook; free text is content, and copying it into an attribute leaks it into the DOM.
 
 Also in this pass: `Field` now composes a generated `TextField` rather than a raw input — the first
@@ -484,7 +484,7 @@ contract's stated promise depends is currently a property of the emitter, per co
 and ungated. The `inset-inline-start` line that ended up in the consumer's theme file is the same
 problem leaking one layer further out.
 
-**`data-ds-component` looks like a real gap in the anatomy convention, not just this spike's
+**`data-juro-component` looks like a real gap in the anatomy convention, not just this spike's
 shortcut.** The repo documents `data-<prefix>-part` and `data-<prefix>-state` and stops there. Any
 unstyled library that abandons CSS Modules needs a component-level handle, and inventing one per
 backend would break the promise that part attributes are a stable styling surface.
@@ -624,7 +624,7 @@ not know it was needed. A consumer who deletes their theme file gets a broken co
 unstyled one, which is not the promise.
 
 **4. There is no component-level styling handle in the convention.**
-The emitter invented `data-ds-component`. It works, and it is undocumented, unversioned and unowned.
+The emitter invented `data-juro-component`. It works, and it is undocumented, unversioned and unowned.
 
 **5. Nothing marks generated files as generated, mechanically.**
 `Switch.tsx` and `Switch.structure.css` carry a comment. `prop-map.md` solves the same problem with a
@@ -675,7 +675,7 @@ Only child parts were checked, so a panel that hides itself and a dialog that ap
 permanently visible.
 
 **18. A free-form value was mirrored into the DOM as a data attribute.**
-Whatever a person typed appeared in `data-ds-state-value`, visible in devtools and in any serialised
+Whatever a person typed appeared in `data-juro-state-value`, visible in devtools and in any serialised
 markup. The emitter treated every state as a styling hook; free text is content. Fixed, and nothing
 would have caught it.
 

@@ -13,7 +13,7 @@
     "component": {
       "type": "string",
       "pattern": "^[A-Z][A-Za-z0-9]*$",
-      "description": "Must match the contract's `component` and the file name. The custom element's TAG is derived from it — `TabItem` becomes `<ds-tab-item>` — rather than stored, because a tag that disagreed with the component name would be a second name for one thing."
+      "description": "Must match the contract's `component` and the file name. The custom element's TAG is derived from it — `TabItem` becomes `<juro-tab-item>` — rather than stored, because a tag that disagreed with the component name would be a second name for one thing."
     },
     "contract": {
       "type": "string",

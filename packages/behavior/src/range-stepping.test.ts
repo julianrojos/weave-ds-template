@@ -1,4 +1,4 @@
-// Drives the conformance cases in @ds/contracts against the one shared implementation.
+// Drives the conformance cases in @juro/contracts against the one shared implementation.
 //
 // Same shape as linear-navigation.test.ts: the cases are DATA owned by the contracts package, and
 // this file is the React backend's adapter for them. Unlike that suite, nothing here is deferred to
@@ -33,7 +33,7 @@ interface Case {
 }
 
 const SUITE = JSON.parse(
-  readFileSync(require.resolve('@ds/contracts/conformance/range-stepping.json'), 'utf8'),
+  readFileSync(require.resolve('@juro/contracts/conformance/range-stepping.json'), 'utf8'),
 ) as { primitive: string; cases: Case[] };
 
 function optionsFor(c: Case): RangeOptions {

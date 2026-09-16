@@ -3,8 +3,8 @@
 //
 // Shows a short label for a control whose own presentation cannot carry it — an icon button, a truncated name — on hover and on focus, without taking focus itself.
 
-import { useDismissal } from '@ds/wc/behavior';
-import type { DismissalOptions } from '@ds/wc/behavior';
+import { useDismissal } from '@juro/wc/behavior';
+import type { DismissalOptions } from '@juro/wc/behavior';
 
 // THE ONE BUNDLER-SPECIFIC TOKEN IN THIS FILE. `?inline` asks Vite for the stylesheet as
 // a string so it can be adopted into the shadow root rather than injected into the page —
@@ -38,15 +38,15 @@ TEMPLATE.innerHTML = `
 let nextId = 0;
 
 // Transcribed from Tooltip.contract.json > dismisses. Cases in
-// @ds/contracts/conformance/dismissal.json.
+// @juro/contracts/conformance/dismissal.json.
 const DISMISSAL: DismissalOptions = { on: ['escape'] };
 
 export class Tooltip extends HTMLElement {
-  static readonly tagName = 'ds-tooltip';
+  static readonly tagName = 'juro-tooltip';
   static readonly observedAttributes = ['disabled', 'placement', 'open'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-tooltip-' + nextId++;
+  readonly #baseId = 'juro-tooltip-' + nextId++;
   readonly #dismissal;
 
   constructor() {
@@ -184,6 +184,6 @@ if (!customElements.get(Tooltip.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-tooltip': Tooltip;
+    'juro-tooltip': Tooltip;
   }
 }

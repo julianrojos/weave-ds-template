@@ -2,15 +2,15 @@
  * AccordionItem — THE CONSUMER'S FILE. Emitted once, empty, never regenerated.
  */
 
-[data-ds-component='AccordionItem'] {
+[data-juro-component='AccordionItem'] {
   border-block-end: 1px solid #3a3a3f;
 }
 
-[data-ds-component='AccordionItem']:last-child {
+[data-juro-component='AccordionItem']:last-child {
   border-block-end: none;
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='trigger'] {
+[data-juro-component='AccordionItem'] [data-juro-part='trigger'] {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -26,21 +26,21 @@
   cursor: pointer;
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='trigger']:hover:not(:disabled) {
+[data-juro-component='AccordionItem'] [data-juro-part='trigger']:hover:not(:disabled) {
   background: #26262b;
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='trigger']:disabled {
+[data-juro-component='AccordionItem'] [data-juro-part='trigger']:disabled {
   color: #5a5a62;
   cursor: not-allowed;
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='trigger']:focus-visible {
+[data-juro-component='AccordionItem'] [data-juro-part='trigger']:focus-visible {
   outline: 2px solid #8b83f0;
   outline-offset: -2px;
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='indicator'] {
+[data-juro-component='AccordionItem'] [data-juro-part='indicator'] {
   inline-size: 0.55rem;
   block-size: 0.55rem;
   border-inline-end: 2px solid currentColor;
@@ -50,13 +50,13 @@
   flex-shrink: 0;
 }
 
-[data-ds-component='AccordionItem']
-  [data-ds-part='trigger'][aria-expanded='true']
-  [data-ds-part='indicator'] {
+[data-juro-component='AccordionItem']
+  [data-juro-part='trigger'][aria-expanded='true']
+  [data-juro-part='indicator'] {
   transform: rotate(-135deg);
 }
 
-[data-ds-component='AccordionItem'] [data-ds-part='panel'] {
+[data-juro-component='AccordionItem'] [data-juro-part='panel'] {
   padding: 0 0.9rem 0.8rem;
   color: #a3a3ab;
   font-size: 0.85rem;

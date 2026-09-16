@@ -16,7 +16,7 @@ useRangeControl.ts      /
 index.ts                    the public barrel
 ```
 
-The decision logic they wrap lives once, in [`@ds/behavior`](../../../behavior/README.md).
+The decision logic they wrap lives once, in [`@juro/behavior`](../../../behavior/README.md).
 
 ## Why it is the shortest of the four
 

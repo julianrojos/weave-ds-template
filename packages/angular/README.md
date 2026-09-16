@@ -1,8 +1,8 @@
-# `@ds/angular`
+# `@juro/angular`
 
 **The third backend.** Angular bindings, an Angular emitter, and the interaction primitives emitted
-components import. It ships **no components**, exactly as [`@ds/react`](../react/README.md) and
-[`@ds/vue`](../vue/README.md) ship none.
+components import. It ships **no components**, exactly as [`@juro/react`](../react/README.md) and
+[`@juro/vue`](../vue/README.md) ship none.
 
 ## Why a third one
 
@@ -13,8 +13,8 @@ specifications from a coincidence about Vue.
 
 What it found is in
 [`docs/research/0005`](../../docs/research/0005-a-third-backend-and-what-only-it-could-find.md).
-Fifteen contracts compiled, `@ds/contracts` unchanged, `@ds/platform-web` unchanged — and **one real
-defect in `@ds/platform-web` that the first two backends could not see**, because both happened to
+Fifteen contracts compiled, `@juro/contracts` unchanged, `@juro/platform-web` unchanged — and **one real
+defect in `@juro/platform-web` that the first two backends could not see**, because both happened to
 do the right thing for reasons of their own.
 
 ## The one structural difference
@@ -24,20 +24,20 @@ do the right thing for reasons of their own.
 Every other difference between the three backends is a spelling. This one is not, and it changes the
 shape of the binding, the emitter and the consumer's markup:
 
-|                                 | React                          | Vue                            | Angular                                 |
-| ------------------------------- | ------------------------------ | ------------------------------ | --------------------------------------- |
-| the binding's `element` becomes | markup                         | markup                         | a **selector**                          |
-| a consumer writes               | `<Button hierarchy="primary">` | `<Button hierarchy="primary">` | `<button dsButton hierarchy="primary">` |
-| root attributes are             | JSX attributes                 | template attributes            | **host bindings**                       |
+|                                 | React                          | Vue                            | Angular                                   |
+| ------------------------------- | ------------------------------ | ------------------------------ | ----------------------------------------- |
+| the binding's `element` becomes | markup                         | markup                         | a **selector**                            |
+| a consumer writes               | `<Button hierarchy="primary">` | `<Button hierarchy="primary">` | `<button juroButton hierarchy="primary">` |
+| root attributes are             | JSX attributes                 | template attributes            | **host bindings**                         |
 
-The alternative — an element selector like `<ds-button>` — was rejected and the reason is not taste.
-The host would then be a custom element, and a `<ds-button>` is not a button: no native focus, no
-native `disabled`, no implicit role, no form participation. `@ds/platform-web` records all four as
+The alternative — an element selector like `<juro-button>` — was rejected and the reason is not taste.
+The host would then be a custom element, and a `<juro-button>` is not a button: no native focus, no
+native `disabled`, no implicit role, no form participation. `@juro/platform-web` records all four as
 facts about `button`, so a backend that quietly discarded them would be compiling a different
 component from the same contract.
 
 The cost is real and it is Angular's, not the contract's: a consumer types more, must know which
-element each component wants, and gets **nothing at all** if they guess wrong — `<div dsCheckbox>`
+element each component wants, and gets **nothing at all** if they guess wrong — `<div juroCheckbox>`
 matches no selector, renders an empty div, and reports no error. That happened while this sandbox
 was being written.
 

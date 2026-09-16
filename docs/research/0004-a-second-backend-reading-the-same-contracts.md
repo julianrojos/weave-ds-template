@@ -15,17 +15,17 @@
 ADR 0002 states the test it is waiting for, and states it as a specific test rather than a feeling:
 
 > The proof is a second backend: a compiler for another target reads the same contracts and the same
-> conformance definitions, and changes NOTHING inside `@ds/contracts` to do it.
+> conformance definitions, and changes NOTHING inside `@juro/contracts` to do it.
 
-It also names the amendment it earned when `@ds/platform-web` was extracted:
+It also names the amendment it earned when `@juro/platform-web` was extracted:
 
-> **Adding a web framework must not require a change inside `@ds/platform-web` either.**
+> **Adding a web framework must not require a change inside `@juro/platform-web` either.**
 
 This report measures both.
 
 ## Headline
 
-**Fifteen of fifteen contracts compiled. `@ds/contracts` was not edited. `@ds/platform-web` was not
+**Fifteen of fifteen contracts compiled. `@juro/contracts` was not edited. `@juro/platform-web` was not
 edited.**
 
 ```
@@ -64,7 +64,7 @@ any Vue backend existed.
 
 `apps/vue-sandbox`'s `<Name>.theme.css` files are copied **byte for byte** from
 `apps/react-sandbox`, and the Vue components render identically. A theme file selects on
-`[data-ds-component]`, `[data-ds-part]`, `[data-ds-<axis>]`, ARIA attributes and native
+`[data-juro-component]`, `[data-juro-part]`, `[data-juro-<axis>]`, ARIA attributes and native
 pseudo-classes — and not one of those is a framework.
 
 The independently emitted `<Name>.structure.css` files are stronger still:
@@ -78,7 +78,7 @@ $ diff <(cat apps/react-sandbox/src/components/*/*.structure.css) \
 Two emitters written months apart produced the same CSS from the same contracts. Nothing enforced
 that; it fell out.
 
-### 3. `@ds/platform-web` did the job it was extracted to do
+### 3. `@juro/platform-web` did the job it was extracted to do
 
 Eleven lookup tables were pulled out of the React emitter on the claim that they were web-platform
 knowledge rather than React knowledge. That claim was untestable with one backend, and ADR 0002 said
@@ -102,7 +102,7 @@ previously unavailable at any price.
 | a member contract is not self-contained (cardinality lives on the ancestor) |     ●      |       ●        | contract-set property, confirmed               |
 | `data-<prefix>-<axis>` for axis values                                      |     ●      |       ●        | a shared invention nothing defines — see below |
 | a valued state with no `between` cycles its values                          |     ●      |       ●        | contract gap, confirmed                        |
-| the state→DOM channel                                                       |     ●      |       ●        | both defer to `@ds/platform-web`               |
+| the state→DOM channel                                                       |     ●      |       ●        | both defer to `@juro/platform-web`             |
 | how a collection moves focus between members                                |  context   | provide/inject | backend invention, as expected                 |
 | what changes a natively edited value                                        | `onChange` |    `@input`    | **see §6**                                     |
 
@@ -119,7 +119,7 @@ undocumented part of the contract system, and it is now load-bearing in two plac
 framework, no DOM — and they now exist twice, identically, in `packages/react/src/behavior/` and
 `packages/vue/src/behavior/`. So do `emitStructure` and `emitTheme`, which emit CSS.
 
-By `@ds/platform-web`'s own stated rule (_would this still be true in a Vue, Svelte or Lit backend
+By `@juro/platform-web`'s own stated rule (_would this still be true in a Vue, Svelte or Lit backend
 rendering the same DOM?_) all of it belongs in the platform package.
 
 **It was copied rather than moved on purpose**, and the reason is methodological: moving shared code
@@ -147,7 +147,7 @@ products. Today the answer is whatever each emitter's author chose.
 All fifteen `element` values in `packages/vue/bindings/` are identical to the fifteen in
 `packages/react/bindings/`, because which element carries a role is a web-platform fact. Fifteen
 contracts × N backends repeating the same string is the same class of misfiling that produced
-`@ds/platform-web` in the first place, one level down.
+`@juro/platform-web` in the first place, one level down.
 
 Gated for now (`pnpm verify:parity` fails when two bindings disagree), not moved, for the reason in
 §5.
@@ -195,7 +195,7 @@ Restating ADR 0002's own table, because a green result invites over-reading:
 | React Native, Flutter | that the contract assumes CSS, a cascade, and a document at all               |   no    |
 
 The third row is the sharp one and is untouched. Both backends emit two **stylesheets**; there is no
-stylesheet in Flutter. Both read `@ds/platform-web`, which is element names and ARIA attributes and
+stylesheet in Flutter. Both read `@juro/platform-web`, which is element names and ARIA attributes and
 would be useless to either. Both resolve `visibleWhen` to a `hidden` attribute. None of that was
 challenged here, and this report should not be cited as though it had been.
 
@@ -212,11 +212,11 @@ Two more limits worth naming:
 ## Open questions
 
 1. ~~**Do the three pure cores, `emitStructure`/`emitTheme`, and the bindings' `element` move into
-   `@ds/platform-web`?**~~ **ANSWERED, and the answer was "no, and not to one place either."** The
+   `@juro/platform-web`?**~~ **ANSWERED, and the answer was "no, and not to one place either."** The
    suspicion in the second half of this question decided it: `emitStructure` emits CSS, so a platform
    package holding it would have quietly decided that every backend targets a document. Three homes
-   rather than one — `@ds/behavior` for the pure cores (more agnostic than the web profile, not
-   less), `@ds/emit-web` for the CSS and the contract reading (the fourth layer this question guessed
+   rather than one — `@juro/behavior` for the pure cores (more agnostic than the web profile, not
+   less), `@juro/emit-web` for the CSS and the contract reading (the fourth layer this question guessed
    at), and the bindings' `element` left where it is, gated. See open question 2 in
    [0005](./0005-a-third-backend-and-what-only-it-could-find.md).
 2. **Where does "as the user types" versus "when they are done" get said?** §6. It is a product

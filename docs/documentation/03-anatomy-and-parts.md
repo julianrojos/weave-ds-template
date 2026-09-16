@@ -20,20 +20,20 @@ flowchart TD
 Same instinct as naming layers in Figma. The difference: here a name is a **promise**.
 
 ```html
-<button data-ds-part="root">
-  <span data-ds-part="icon-start">…</span>
-  <span data-ds-part="label">Start recording</span>
+<button data-juro-part="root">
+  <span data-juro-part="icon-start">…</span>
+  <span data-juro-part="label">Start recording</span>
 </button>
 ```
 
 ## Why it earns its keep
 
 **1. Real class names are unreadable.** Behind the scenes `.root` becomes
-`Button__root___a1b2c`, and the `a1b2c` changes when the file changes. `[data-ds-part="root"]`
+`Button__root___a1b2c`, and the `a1b2c` changes when the file changes. `[data-juro-part="root"]`
 does not move — it is the part we actually promise to keep. So this is supported:
 
 ```css
-.myToolbar [data-ds-part='label'] {
+.myToolbar [data-juro-part='label'] {
   letter-spacing: 0.02em;
 }
 ```
@@ -52,7 +52,7 @@ what the contract claims against what actually renders:
 
 ## The rule
 
-> **A named piece carries `data-ds-part="x"` and is styled by a rule with the same name.**
+> **A named piece carries `data-juro-part="x"` and is styled by a rule with the same name.**
 
 Break the pairing and nothing crashes. The component works, tests pass. The token check just
 quietly stops being able to see that piece — it degrades from a check into a comment, and nobody
@@ -85,7 +85,7 @@ translation.
 
 | You want to                       | Do this                                          |
 | --------------------------------- | ------------------------------------------------ |
-| Restyle one bit from outside      | target `[data-ds-part="…"]`                      |
+| Restyle one bit from outside      | target `[data-juro-part="…"]`                    |
 | Know what pieces exist            | `pnpm contract Button`                           |
 | Argue a component should be split | talk in piece names — they are shared vocabulary |
 | Style a hover state               | nothing. It already works.                       |

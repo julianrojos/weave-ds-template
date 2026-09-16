@@ -31,27 +31,29 @@ export function updateRoster(
   selector: 'browser-fixtures',
   imports: [Button, Accordion, AccordionItem, Tabs, TabItem, RadioGroup, RadioItem],
   template: `
-    <button dsButton>Style probe</button>
+    <button juroButton>Style probe</button>
     <button id="rename-accordion" (click)="identity.set('renamed')">Rename section</button>
-    <div dsAccordion>
-      <div dsAccordionItem [value]="identity()">
+    <div juroAccordion>
+      <div juroAccordionItem [value]="identity()">
         <span slot="heading">Section heading</span>
         <p slot="panel">Section contents</p>
       </div>
     </div>
-    <div data-testid="tabs" dsTabs [(value)]="tabs.value">
+    <div data-testid="tabs" juroTabs [(value)]="tabs.value">
       @if (tabs.visible()) {
-        <button dsTabItem [value]="tabs.identity()" [disabled]="tabs.disabled()">First tabs</button>
+        <button juroTabItem [value]="tabs.identity()" [disabled]="tabs.disabled()">
+          First tabs
+        </button>
       }
-      <button dsTabItem value="b">Second tabs</button>
+      <button juroTabItem value="b">Second tabs</button>
     </div>
-    <div data-testid="radios" dsRadioGroup [(value)]="radios.value">
+    <div data-testid="radios" juroRadioGroup [(value)]="radios.value">
       @if (radios.visible()) {
-        <div dsRadioItem [value]="radios.identity()" [disabled]="radios.disabled()">
+        <div juroRadioItem [value]="radios.identity()" [disabled]="radios.disabled()">
           First radios
         </div>
       }
-      <div dsRadioItem value="b">Second radios</div>
+      <div juroRadioItem value="b">Second radios</div>
     </div>
   `,
 })

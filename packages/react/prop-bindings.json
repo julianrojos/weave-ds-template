@@ -1,5 +1,5 @@
 {
-  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @ds/contracts/prop-canon.json and is framework-free. This file holds ONLY the places React's idiom differs from it.",
+  "_doc": "How this framework spells the agnostic vocabulary. The canon — which axes exist, their canonical values, the anti-synonym glossary — lives in @juro/contracts/prop-canon.json and is framework-free. This file holds ONLY the places React's idiom differs from it.",
   "_why": "A contract says a component has a selection that can be controlled. It does not say whether that is `value` + `onValueChange`, `modelValue` + `update:modelValue`, or a two-way binding, because that is a framework's business and not the specification's. Putting those spellings in the contract is the most common way an 'agnostic' spec turns out to be one framework with extra steps.",
   "_regenerate": "Hand-maintained. Nothing generates this file.",
   "conventions": {

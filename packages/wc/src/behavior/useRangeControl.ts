@@ -1,7 +1,7 @@
-import { apply, fractionOf, intentFor, snap, valueAt } from '@ds/behavior/range-stepping';
-import type { RangeOptions } from '@ds/behavior/range-stepping';
+import { apply, fractionOf, intentFor, snap, valueAt } from '@juro/behavior/range-stepping';
+import type { RangeOptions } from '@juro/behavior/range-stepping';
 
-export type { RangeIntent, RangeOptions, RangeOrientation } from '@ds/behavior/range-stepping';
+export type { RangeIntent, RangeOptions, RangeOrientation } from '@juro/behavior/range-stepping';
 
 export interface RangeControl {
   onKeyDown: (event: KeyboardEvent) => void;
@@ -17,7 +17,7 @@ export interface RangeControl {
 /**
  * A number in a range, operated by keyboard and pointer.
  *
- * The arithmetic lives in @ds/behavior as pure functions. This is the vanilla binding: the track's
+ * The arithmetic lives in @juro/behavior as pure functions. This is the vanilla binding: the track's
  * box, pointer capture, and the drag.
  *
  * IT TAKES AN `onDirty` CALLBACK, and it is the only one of the four that does. React re-renders

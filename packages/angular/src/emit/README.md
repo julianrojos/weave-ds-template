@@ -31,10 +31,10 @@ true in Angular. What follows is only where Angular differs — read that file f
 This has no counterpart in the other two backends and it drives everything below.
 
 ```ts
-selector: 'button[dsSwitch]'; // the binding's `element` plus the prefix and the component name
+selector: 'button[juroSwitch]'; // the binding's `element` plus the prefix and the component name
 ```
 
-A consumer writes `<button dsSwitch>`. Because the host element is theirs, the component has no root
+A consumer writes `<button juroSwitch>`. Because the host element is theirs, the component has no root
 node in its own template — so every attribute the other two emitters put in markup becomes a **host
 binding** here.
 
@@ -49,12 +49,12 @@ is a plain template attribute.
 **`ViewEncapsulation.None` is not optional.** Angular's default rewrites every selector in
 `styleUrls` to include a generated `_ngcontent` attribute, scoping them to this component. That would
 break the one property the whole system rests on — that a theme file selecting on
-`[data-ds-component]` dresses the React, Vue and Angular builds alike — and it breaks it silently:
+`[data-juro-component]` dresses the React, Vue and Angular builds alike — and it breaks it silently:
 the CSS loads, matches nothing, the component renders unstyled.
 
 ### 2. States use the platform's own mechanism where one exists
 
-Resolved by [`@ds/platform-web`](../../../platform-web/README.md), with **one deliberate departure**
+Resolved by [`@juro/platform-web`](../../../platform-web/README.md), with **one deliberate departure**
 that is the most interesting thing this backend found.
 
 `channelFor` returns `rendersFalse: true` for every `native` channel, hardcoded. As a statement
@@ -125,7 +125,7 @@ constructor and closes over it.
 `emitStructure`, `emitTheme`, `stateSelector`, `partsOf` and the contract loader are **not in this
 file**. They were identical in all three emitters — one half reads JSON, the other emits CSS, and
 neither knows what a framework is — and they now live in
-[`@ds/emit-web`](../../../emit-web/README.md).
+[`@juro/emit-web`](../../../emit-web/README.md).
 
 They were duplicated on purpose while a second and third backend were built, so that what a backend
 costs could be measured before it was optimised away. The proof the move was faithful: all three

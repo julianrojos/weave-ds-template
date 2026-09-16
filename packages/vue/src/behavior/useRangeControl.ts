@@ -1,8 +1,8 @@
 import { computed, reactive, ref } from 'vue';
-import { apply, fractionOf, intentFor, snap, valueAt } from '@ds/behavior/range-stepping';
-import type { RangeOptions } from '@ds/behavior/range-stepping';
+import { apply, fractionOf, intentFor, snap, valueAt } from '@juro/behavior/range-stepping';
+import type { RangeOptions } from '@juro/behavior/range-stepping';
 
-export type { RangeIntent, RangeOptions, RangeOrientation } from '@ds/behavior/range-stepping';
+export type { RangeIntent, RangeOptions, RangeOrientation } from '@juro/behavior/range-stepping';
 
 export interface RangeControl {
   /** Goes on the part the contract names as the `track`. It is what a pointer is measured against. */
@@ -21,8 +21,8 @@ export interface RangeControl {
 /**
  * A number in a range, operated by keyboard and pointer.
  *
- * The arithmetic lives in @ds/behavior as pure functions, so it can be executed against the
- * conformance cases in `@ds/contracts/conformance/range-stepping.json`. This composable is the Vue
+ * The arithmetic lives in @juro/behavior as pure functions, so it can be executed against the
+ * conformance cases in `@juro/contracts/conformance/range-stepping.json`. This composable is the Vue
  * binding around it: the track's box, pointer capture, and the drag.
  *
  * RETURNS A `reactive` OBJECT, not a plain one holding refs. Vue unwraps a ref reached through a

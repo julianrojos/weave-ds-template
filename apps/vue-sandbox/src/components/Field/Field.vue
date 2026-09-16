@@ -57,13 +57,13 @@ const fallthrough = computed(() => ({ ...attrs }));
     v-bind="fallthrough"
     :id="baseId"
     :aria-disabled="disabled || undefined"
-    :data-ds-state-invalid="invalid || undefined"
-    :data-ds-state-touched="touched || undefined"
-    :data-ds-state-dirty="dirty || undefined"
-    data-ds-component="Field"
-    data-ds-part="root"
+    :data-juro-state-invalid="invalid || undefined"
+    :data-juro-state-touched="touched || undefined"
+    :data-juro-state-dirty="dirty || undefined"
+    data-juro-component="Field"
+    data-juro-part="root"
   >
-    <div :id="`${baseId}-label`" data-ds-part="label">
+    <div :id="`${baseId}-label`" data-juro-part="label">
       <slot name="label" />
     </div>
     <div
@@ -73,14 +73,14 @@ const fallthrough = computed(() => ({ ...attrs }));
         [`${baseId}-description`, invalid ? `${baseId}-error` : null].filter(Boolean).join(' ') ||
         undefined
       "
-      data-ds-part="control"
+      data-juro-part="control"
     >
       <slot name="control" />
     </div>
-    <div :id="`${baseId}-description`" data-ds-part="description">
+    <div :id="`${baseId}-description`" data-juro-part="description">
       <slot name="description" />
     </div>
-    <div :id="`${baseId}-error`" :hidden="!invalid" data-ds-part="error">
+    <div :id="`${baseId}-error`" :hidden="!invalid" data-juro-part="error">
       <slot name="error" />
     </div>
     <slot />

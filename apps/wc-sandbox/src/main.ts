@@ -10,7 +10,7 @@
 // DOM code, and the events are CustomEvents that crossed the shadow boundary because the emitter
 // marked them `composed`.
 
-import '@ds/tokens/css';
+import '@juro/tokens/css';
 import './sandbox.css';
 
 import './components/Button';

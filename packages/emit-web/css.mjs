@@ -8,17 +8,17 @@
 // LIGHT DOM IS IN THE NAME OF EVERY SELECTOR HERE, and that is the limit of this module rather than
 // an oversight. Every rule below is a descendant selector over data attributes:
 //
-//     [data-ds-component='Button'] [data-ds-part='label']
+//     [data-juro-component='Button'] [data-juro-part='label']
 //
 // A descendant selector cannot cross a shadow boundary. A backend that puts its parts inside a
-// shadow root needs `::part(label)` and `:host([data-ds-hierarchy='primary'])` instead — a
+// shadow root needs `::part(label)` and `:host([data-juro-hierarchy='primary'])` instead — a
 // different selector grammar for the same contract, not a different value in the same one.
 //
 // Whether that becomes a parameter on these functions or a second module beside them is NOT decided
 // here, because nothing has built it yet and a shape invented for a backend that does not exist is
 // a guess. It is stated so that the first person to hit it knows it was expected.
 
-import { ariaAttributeFor, pseudoClassFor, visibilityOf } from '@ds/platform-web';
+import { ariaAttributeFor, pseudoClassFor, visibilityOf } from '@juro/platform-web';
 import { kebab, partsOf } from './contract.mjs';
 
 /**
@@ -103,7 +103,7 @@ export function emitStructure(name, contract, element, prefix, profile, assume) 
   // `!important` is deliberate and is the point. Whether a part is SHOWING is a claim the contract
   // makes, not an appearance choice, so it is not the consumer's to override by accident.
   if (hides) {
-    L.push(`/* Hiding is a contract claim, not a style. See the note in @ds/emit-web. */`);
+    L.push(`/* Hiding is a contract claim, not a style. See the note in @juro/emit-web. */`);
     if (platformHidden) L.push(`[data-${prefix}-component='${name}']${platformHidden},`);
     L.push(`[data-${prefix}-component='${name}'][hidden],`);
     L.push(`[data-${prefix}-component='${name}'] [hidden] {`);

@@ -10,7 +10,7 @@ import { formFor } from '../packages/emit-web/contract.mjs';
  * FAILS
  *   copies    a framework package contains a copy of a shared behaviour core. These lived in three
  *             places while a second and third backend were measured against them, and moved into
- *             `@ds/behavior` once that measurement was complete (docs/research/0005). A reappearing
+ *             `@juro/behavior` once that measurement was complete (docs/research/0005). A reappearing
  *             copy is a silent fork of the decision logic: that backend's components would answer a
  *             key differently from every other backend's, and every package would still compile.
  *   surface   two backends' `behavior` barrels export a different set of names. Each backend wraps

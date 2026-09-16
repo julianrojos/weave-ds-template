@@ -5,7 +5,7 @@
  * declares with no source. Everything below is the sandbox playing consumer and wiring them.
  *
  * The values are raw on purpose. A real consumer would reach for their own token set here —
- * @ds/tokens is one worked example — and the point of this file is that the library has no
+ * @juro/tokens is one worked example — and the point of this file is that the library has no
  * opinion about which. Nothing above this line knows what colour a switch is.
  */
 
@@ -23,7 +23,7 @@
  * ============================================================================================
  */
 
-[data-ds-component='Switch'] {
+[data-juro-component='Switch'] {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -31,11 +31,11 @@
   cursor: pointer;
 }
 
-[data-ds-component='Switch']:disabled {
+[data-juro-component='Switch']:disabled {
   cursor: not-allowed;
 }
 
-[data-ds-component='Switch'] [data-ds-part='thumb'] {
+[data-juro-component='Switch'] [data-juro-part='thumb'] {
   position: absolute;
   pointer-events: none;
   inset-inline-start: 2px;
@@ -43,7 +43,7 @@
 
 /* ==== end of misplaced structure. Everything below is genuinely paint. ==================== */
 
-[data-ds-component='Switch'] {
+[data-juro-component='Switch'] {
   inline-size: 44px;
   block-size: 24px;
   background: #3a3a3f;
@@ -53,32 +53,32 @@
 }
 
 /* state: checked — the track takes its filled treatment */
-[data-ds-component='Switch'][aria-checked='true'] {
+[data-juro-component='Switch'][aria-checked='true'] {
   background: #5146e6;
   border-color: #5146e6;
 }
 
 /* state: hover — the track shifts one step */
-[data-ds-component='Switch']:hover:not(:disabled) {
+[data-juro-component='Switch']:hover:not(:disabled) {
   background: #46464d;
 }
 
-[data-ds-component='Switch'][aria-checked='true']:hover:not(:disabled) {
+[data-juro-component='Switch'][aria-checked='true']:hover:not(:disabled) {
   background: #5f55ea;
 }
 
 /* state: disabled */
-[data-ds-component='Switch']:disabled {
+[data-juro-component='Switch']:disabled {
   opacity: 0.4;
 }
 
 /* state: focus-visible */
-[data-ds-component='Switch']:focus-visible {
+[data-juro-component='Switch']:focus-visible {
   outline: 2px solid #8b83f0;
   outline-offset: 2px;
 }
 
-[data-ds-component='Switch'] [data-ds-part='thumb'] {
+[data-juro-component='Switch'] [data-juro-part='thumb'] {
   inline-size: 18px;
   block-size: 18px;
   background: #ffffff;
@@ -90,6 +90,6 @@
 }
 
 /* state: checked — the thumb travels to the end of the track */
-[data-ds-component='Switch'][aria-checked='true'] [data-ds-part='thumb'] {
+[data-juro-component='Switch'][aria-checked='true'] [data-juro-part='thumb'] {
   transform: translateX(20px);
 }

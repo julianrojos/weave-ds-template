@@ -1,9 +1,9 @@
-# `@ds/react`
+# `@juro/react`
 
 The React **backend**. One of potentially several.
 
 **It exports no components, and that is now permanent rather than a starting state.** A component is
-generated into a consumer's own repository from a contract in `@ds/contracts`, and belongs to them
+generated into a consumer's own repository from a contract in `@juro/contracts`, and belongs to them
 from that moment. This package holds the things that make that generation possible.
 
 ## What is here
@@ -44,7 +44,7 @@ Not yet possible. There is no CLI, no emitter and no primitive, so there is noth
 nothing to generate. The intended shape:
 
 ```bash
-npx @ds/react add Switch      # emits into the consumer's repo. Does not exist yet.
+npx @juro/react add Switch      # emits into the consumer's repo. Does not exist yet.
 ```
 
 ## Styling what it emits
@@ -53,7 +53,7 @@ Class names are hashed by CSS Modules and are not a public surface. Target the *
 stable, semantic, and the thing the library actually promises:
 
 ```css
-.myToolbar [data-ds-part='label'] {
+.myToolbar [data-juro-part='label'] {
   letter-spacing: 0.02em;
 }
 ```
@@ -61,7 +61,7 @@ stable, semantic, and the thing the library actually promises:
 The library is **unstyled**. An emitted component arrives with a token-free `structure.css` that
 holds the layout its contract's promises depend on, and an empty `theme.css` listing one commented
 socket per unbound channel. Wiring those sockets to a token system is the consumer's job;
-`@ds/tokens` is one worked example of doing it, not a dependency.
+`@juro/tokens` is one worked example of doing it, not a dependency.
 
 ## Working on it
 

@@ -1,4 +1,4 @@
-# `@ds/contracts`
+# `@juro/contracts`
 
 **The product.** A component contract is the agnostic specification a component is _generated from_ —
 not a description of one that already exists.
@@ -38,7 +38,7 @@ before it can be compiled at all.
 ## How this relates to its neighbours
 
 ```
-@ds/contracts          the specification.        Agnostic. Versioned. The thing that ships.
+@juro/contracts          the specification.        Agnostic. Versioned. The thing that ships.
    |
    v
 packages/react/        one backend. Holds the React binding per contract, the emitter,
@@ -47,7 +47,7 @@ packages/react/        one backend. Holds the React binding per contract, the em
    v
 consumer's repo        generated component source. Theirs to own, theirs to style.
 
-@ds/tokens             a REFERENCE IMPLEMENTATION of wiring tokens to a contract's unbound
+@juro/tokens             a REFERENCE IMPLEMENTATION of wiring tokens to a contract's unbound
                        channels. One worked example, not a dependency of anything here.
 ```
 

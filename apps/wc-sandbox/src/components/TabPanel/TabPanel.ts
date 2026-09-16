@@ -30,11 +30,11 @@ TEMPLATE.innerHTML = `
 let nextId = 0;
 
 export class TabPanel extends HTMLElement {
-  static readonly tagName = 'ds-tab-panel';
+  static readonly tagName = 'juro-tab-panel';
   static readonly observedAttributes = ['value', 'aria-label'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-tab-panel-' + nextId++;
+  readonly #baseId = 'juro-tab-panel-' + nextId++;
   #collection: Tabs | null = null;
 
   constructor() {
@@ -48,10 +48,10 @@ export class TabPanel extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.#collection = this.closest<Tabs>('ds-tabs');
+    this.#collection = this.closest<Tabs>('juro-tabs');
     if (!this.#collection) {
       throw new Error(
-        '<ds-tab-panel> must be inside a <ds-tabs>. There is no selection to compare against, and looking unselected would hide the mistake.',
+        '<juro-tab-panel> must be inside a <juro-tabs>. There is no selection to compare against, and looking unselected would hide the mistake.',
       );
     }
     this.#collection.addEventListener(TABS_CHANGE, this.#onCollectionChange);
@@ -119,6 +119,6 @@ if (!customElements.get(TabPanel.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-tab-panel': TabPanel;
+    'juro-tab-panel': TabPanel;
   }
 }

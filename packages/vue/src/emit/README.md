@@ -33,10 +33,10 @@ stop being true in Vue. What follows is only where the SPELLING differs — read
 ### 1. Every named node carries a part attribute
 
 ```vue
-<span data-ds-part="icon-start">
+<span data-juro-part="icon-start">
 ```
 
-Identical, and identically load-bearing: `[data-ds-part="root"]` is the styling handle the library
+Identical, and identically load-bearing: `[data-juro-part="root"]` is the styling handle the library
 offers, part names are read back out to check the contract, and the paint chain runs
 part → declarations → `var()` → declared channel.
 
@@ -57,7 +57,7 @@ to dress both.
 
 ### 2. States use the platform's own mechanism where one exists
 
-Resolved entirely by [`@ds/platform-web`](../../../platform-web/README.md). **This backend added no
+Resolved entirely by [`@juro/platform-web`](../../../platform-web/README.md). **This backend added no
 table of its own and changed nothing in the profile**, which is the single strongest result in
 `docs/research/0004`: eleven lookup tables were extracted from the React emitter on the claim that
 they were web knowledge rather than React knowledge, and the claim was untestable with one backend.
@@ -111,7 +111,7 @@ comes from the same shared primitives, so it cannot diverge silently.
 `emitStructure`, `emitTheme`, `stateSelector`, `partsOf` and the contract loader are **not in this
 file**. They were identical in all three emitters — one half reads JSON, the other emits CSS, and
 neither knows what a framework is — and they now live in
-[`@ds/emit-web`](../../../emit-web/README.md).
+[`@juro/emit-web`](../../../emit-web/README.md).
 
 They were duplicated on purpose while a second and third backend were built, so that what a backend
 costs could be measured before it was optimised away. The proof the move was faithful: all three

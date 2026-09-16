@@ -26,7 +26,7 @@ export const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase
 /**
  * The custom element's tag.
  *
- * `TabItem` -> `ds-tab-item`. Derived rather than stored in the binding, because a tag that could
+ * `TabItem` -> `juro-tab-item`. Derived rather than stored in the binding, because a tag that could
  * disagree with the component name would be a second name for one thing. The hyphen is not a style
  * choice: a custom element name is REQUIRED to contain one, which is the platform reserving every
  * single-word tag for itself.

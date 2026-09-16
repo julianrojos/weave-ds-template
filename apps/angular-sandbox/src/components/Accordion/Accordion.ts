@@ -40,13 +40,13 @@ export const ACCORDION = new InjectionToken<AccordionContext>('Accordion');
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <div dsAccordion>.
-  selector: 'div[dsAccordion]',
-  exportAs: 'dsAccordion',
+  // to an element rather than rendering one. A consumer writes <div juroAccordion>.
+  selector: 'div[juroAccordion]',
+  exportAs: 'juroAccordion',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -55,9 +55,9 @@ export const ACCORDION = new InjectionToken<AccordionContext>('Accordion');
   host: {
     '[attr.id]': 'baseId',
     '[attr.aria-disabled]': 'disabled() || null',
-    '[attr.data-ds-orientation]': 'orientation()',
-    'data-ds-component': 'Accordion',
-    'data-ds-part': 'root',
+    '[attr.data-juro-orientation]': 'orientation()',
+    'data-juro-component': 'Accordion',
+    'data-juro-part': 'root',
   },
   template: ` <ng-content /> `,
 })
@@ -69,7 +69,7 @@ export class Accordion implements AccordionContext {
   /** The current selection, by member identity. Two-way: `[(value)]`. */
   readonly value = model<string[]>([]);
 
-  readonly baseId = 'ds-accordion-' + nextId++;
+  readonly baseId = 'juro-accordion-' + nextId++;
 
   readonly selection = this.value.asReadonly();
   readonly collectionDisabled = computed(() => Boolean(this.disabled()));

@@ -33,7 +33,7 @@ TEMPLATE.innerHTML = `
 `;
 
 export class RadioItem extends HTMLElement {
-  static readonly tagName = 'ds-radio-item';
+  static readonly tagName = 'juro-radio-item';
   static readonly observedAttributes = ['disabled', 'value', 'aria-label'];
 
   readonly #root: HTMLElement;
@@ -77,10 +77,10 @@ export class RadioItem extends HTMLElement {
   }
 
   connectedCallback(): void {
-    this.#collection = this.closest<RadioGroup>('ds-radio-group');
+    this.#collection = this.closest<RadioGroup>('juro-radio-group');
     if (!this.#collection) {
       throw new Error(
-        '<ds-radio-item> must be inside a <ds-radio-group>. There is no selection to compare against, and looking unselected would hide the mistake.',
+        '<juro-radio-item> must be inside a <juro-radio-group>. There is no selection to compare against, and looking unselected would hide the mistake.',
       );
     }
     this.#collection.addEventListener(RADIOGROUP_CHANGE, this.#onCollectionChange);
@@ -211,6 +211,6 @@ if (!customElements.get(RadioItem.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-radio-item': RadioItem;
+    'juro-radio-item': RadioItem;
   }
 }

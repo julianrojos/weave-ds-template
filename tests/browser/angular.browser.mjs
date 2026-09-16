@@ -8,7 +8,7 @@ test('accordion relationships resolve before and after a member identity changes
 }) => {
   await page.goto('/browser-tests.html');
   const trigger = page.getByRole('button', { name: 'Section heading' });
-  const panel = page.locator('[data-ds-component="AccordionItem"] [data-ds-part="panel"]');
+  const panel = page.locator('[data-juro-component="AccordionItem"] [data-juro-part="panel"]');
 
   async function expectRelationships() {
     await expect(trigger).toHaveAttribute('aria-controls', await panel.getAttribute('id'));

@@ -1,4 +1,4 @@
-# `@ds/wc`
+# `@juro/wc`
 
 **The fourth backend, and the first with no framework in it at all.** `class extends HTMLElement`, a
 shadow root, and the platform.
@@ -29,11 +29,11 @@ claim — the Lit version is the realistic production recipe and is different wo
 Three attribute families the other three emitters each had to invent, reproduce exactly, and
 document nowhere, are all **unnecessary** here:
 
-| Other three                   | Here                  | Why                                                  |
-| ----------------------------- | --------------------- | ---------------------------------------------------- |
-| `data-ds-component="Button"`  | —                     | the shadow root is the scope                         |
-| `data-ds-part="label"`        | `part="label"`        | a real platform attribute, with `::part()` behind it |
-| `data-ds-hierarchy="primary"` | `hierarchy="primary"` | the host's attributes are scoped by its tag          |
+| Other three                     | Here                  | Why                                                  |
+| ------------------------------- | --------------------- | ---------------------------------------------------- |
+| `data-juro-component="Button"`  | —                     | the shadow root is the scope                         |
+| `data-juro-part="label"`        | `part="label"`        | a real platform attribute, with `::part()` behind it |
+| `data-juro-hierarchy="primary"` | `hierarchy="primary"` | the host's attributes are scoped by its tag          |
 
 That is not this backend being clever. It is evidence that all three were standing in for scoping
 the platform can do itself — and that nothing in the contract system ever defined them.

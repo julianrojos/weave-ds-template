@@ -13,12 +13,12 @@ import {
   model,
 } from '@angular/core';
 import type { Signal } from '@angular/core';
-import { useLinearNavigation } from '@ds/angular/behavior';
-import type { MemberRegistration, NavigationOptions } from '@ds/angular/behavior';
+import { useLinearNavigation } from '@juro/angular/behavior';
+import type { MemberRegistration, NavigationOptions } from '@juro/angular/behavior';
 
 // Transcribed field for field from RadioGroup.contract.json > collection.navigation.
 // The cases this commits us to are in
-// @ds/contracts/conformance/linear-navigation.json.
+// @juro/contracts/conformance/linear-navigation.json.
 const NAVIGATION: NavigationOptions = {
   orientation: 'both',
   wrap: true,
@@ -57,13 +57,13 @@ export const RADIOGROUP = new InjectionToken<RadioGroupContext>('RadioGroup');
 
 @Component({
   // The binding's `element` becomes a SELECTOR, because an Angular component attaches
-  // to an element rather than rendering one. A consumer writes <div dsRadioGroup>.
-  selector: 'div[dsRadioGroup]',
-  exportAs: 'dsRadioGroup',
+  // to an element rather than rendering one. A consumer writes <div juroRadioGroup>.
+  selector: 'div[juroRadioGroup]',
+  exportAs: 'juroRadioGroup',
   // ViewEncapsulation.None IS LOAD-BEARING. Angular's default rewrites every selector in
   // these stylesheets to include a generated _ngcontent attribute, which would scope them
   // to this component and break the one property the whole system rests on: that a theme
-  // file selecting on [data-ds-component] dresses the React, Vue and Angular builds
+  // file selecting on [data-juro-component] dresses the React, Vue and Angular builds
   // alike. It fails silently — the CSS loads, matches nothing, and the component renders
   // unstyled.
   encapsulation: ViewEncapsulation.None,
@@ -74,8 +74,8 @@ export const RADIOGROUP = new InjectionToken<RadioGroupContext>('RadioGroup');
     '[attr.id]': 'baseId',
     '[attr.aria-disabled]': 'disabled() || null',
     '[attr.aria-readonly]': 'readOnly() || null',
-    'data-ds-component': 'RadioGroup',
-    'data-ds-part': 'root',
+    'data-juro-component': 'RadioGroup',
+    'data-juro-part': 'root',
     '(keydown)': 'nav.onKeyDown($event)',
   },
   template: ` <ng-content /> `,
@@ -88,7 +88,7 @@ export class RadioGroup implements RadioGroupContext {
   /** The current selection, by member identity. Two-way: `[(value)]`. */
   readonly value = model<string>('');
 
-  readonly baseId = 'ds-radio-group-' + nextId++;
+  readonly baseId = 'juro-radio-group-' + nextId++;
 
   readonly selection = this.value.asReadonly();
   readonly collectionDisabled = computed(() => Boolean(this.disabled()));

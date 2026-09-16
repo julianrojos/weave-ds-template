@@ -1,5 +1,5 @@
 {
-  "name": "@ds/angular",
+  "name": "@juro/angular",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -26,16 +26,16 @@
     "dev": "vite build --watch"
   },
   "dependencies": {
-    "@ds/behavior": "workspace:*",
-    "@ds/emit-web": "workspace:*",
-    "@ds/platform-web": "workspace:*"
+    "@juro/behavior": "workspace:*",
+    "@juro/emit-web": "workspace:*",
+    "@juro/platform-web": "workspace:*"
   },
   "peerDependencies": {
     "@angular/core": "^21.0.0"
   },
   "devDependencies": {
     "@angular/core": "^21.0.0",
-    "@ds/tokens": "workspace:*",
+    "@juro/tokens": "workspace:*",
     "rxjs": "^7.8.0",
     "vite": "^7.0.0",
     "vite-plugin-dts": "^4.5.0"

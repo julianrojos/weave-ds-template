@@ -61,10 +61,10 @@ function onRootClick(event: MouseEvent) {
     :aria-checked="checked"
     :disabled="disabled || undefined"
     :aria-readonly="readOnly || undefined"
-    data-ds-component="Switch"
-    data-ds-part="root"
+    data-juro-component="Switch"
+    data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-ds-part="thumb" />
+    <div data-juro-part="thumb" />
   </button>
 </template>

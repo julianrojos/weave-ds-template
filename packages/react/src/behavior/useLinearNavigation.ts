@@ -7,14 +7,14 @@ import {
   tabStop,
   type Member,
   type NavigationOptions,
-} from '@ds/behavior/linear-navigation';
+} from '@juro/behavior/linear-navigation';
 
 export type {
   DisabledItems,
   Member,
   NavigationOptions,
   Orientation,
-} from '@ds/behavior/linear-navigation';
+} from '@juro/behavior/linear-navigation';
 
 /**
  * What a member registers about itself.
@@ -49,8 +49,8 @@ export interface LinearNavigation {
  * Linear navigation for a collection's members: the arrow keys, the single tab stop, and — where
  * the contract says so — selection following focus.
  *
- * The decision logic lives in @ds/behavior as pure functions, so it can be executed
- * against the conformance cases in `@ds/contracts/conformance/linear-navigation.json`. This hook is
+ * The decision logic lives in @juro/behavior as pure functions, so it can be executed
+ * against the conformance cases in `@juro/contracts/conformance/linear-navigation.json`. This hook is
  * the React binding around it: registration, document order, and moving focus.
  *
  * @param options  the contract's `collection.navigation` block, one field for one

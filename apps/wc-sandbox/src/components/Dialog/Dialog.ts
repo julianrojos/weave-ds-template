@@ -3,8 +3,8 @@
 //
 // Interrupts what a person was doing to ask for something that cannot wait, and refuses to let them continue until they answer or leave.
 
-import { useDismissal } from '@ds/wc/behavior';
-import type { DismissalOptions } from '@ds/wc/behavior';
+import { useDismissal } from '@juro/wc/behavior';
+import type { DismissalOptions } from '@juro/wc/behavior';
 
 // THE ONE BUNDLER-SPECIFIC TOKEN IN THIS FILE. `?inline` asks Vite for the stylesheet as
 // a string so it can be adopted into the shadow root rather than injected into the page —
@@ -41,16 +41,16 @@ TEMPLATE.innerHTML = `
 let nextId = 0;
 
 // Transcribed from Dialog.contract.json > dismisses. Cases in
-// @ds/contracts/conformance/dismissal.json.
+// @juro/contracts/conformance/dismissal.json.
 // The contract also declares escape, supplied by the platform.
 const DISMISSAL: DismissalOptions = { on: ['outside-press'] };
 
 export class Dialog extends HTMLElement {
-  static readonly tagName = 'ds-dialog';
+  static readonly tagName = 'juro-dialog';
   static readonly observedAttributes = ['size', 'open', 'aria-label'];
 
   readonly #root: HTMLElement;
-  readonly #baseId = 'ds-dialog-' + nextId++;
+  readonly #baseId = 'juro-dialog-' + nextId++;
   readonly #dismissal;
 
   constructor() {
@@ -196,6 +196,6 @@ if (!customElements.get(Dialog.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-dialog': Dialog;
+    'juro-dialog': Dialog;
   }
 }

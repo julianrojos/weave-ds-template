@@ -45,13 +45,13 @@ these selectors directly; there is no required CSS Module class or `cva` object.
 `data-<prefix>-part` was the only one documented. Generated code emits **three**, and a consumer
 styling an unstyled library depends on all of them:
 
-| Attribute                 | Carries                                      | Example                       |
-| ------------------------- | -------------------------------------------- | ----------------------------- |
-| `data-<prefix>-component` | which component this is — the scoping handle | `data-ds-component="Button"`  |
-| `data-<prefix>-part`      | which named region                           | `data-ds-part="label"`        |
-| `data-<prefix>-<axis>`    | an axis value                                | `data-ds-hierarchy="primary"` |
+| Attribute                 | Carries                                      | Example                         |
+| ------------------------- | -------------------------------------------- | ------------------------------- |
+| `data-<prefix>-component` | which component this is — the scoping handle | `data-juro-component="Button"`  |
+| `data-<prefix>-part`      | which named region                           | `data-juro-part="label"`        |
+| `data-<prefix>-<axis>`    | an axis value                                | `data-juro-hierarchy="primary"` |
 
-**Why `component` exists.** Without CSS Modules there is no hashing, so `[data-ds-part="root"]`
+**Why `component` exists.** Without CSS Modules there is no hashing, so `[data-juro-part="root"]`
 would match every component on the page. Something has to scope it. This is specified in the shared web styling convention.
 
 **Why an axis needs an attribute at all.** A variant that reaches no attribute cannot be styled:
@@ -65,14 +65,14 @@ A state uses none of these where the platform already has an answer — see belo
 ### 2. States use the platform's own mechanism where one exists
 
 Native pseudo-class for anything the browser owns (`:hover`, `:focus-visible`, `:disabled`). A
-`data-ds-state` attribute **only** for a state the browser does not own. Reflecting hover as an
+`data-juro-state` attribute **only** for a state the browser does not own. Reflecting hover as an
 attribute forces JavaScript to track the pointer to do something CSS already does.
 
 Where an ARIA attribute already carries the state — `aria-selected`, `aria-expanded` — style against
 that attribute rather than emitting a second copy. Two attributes for one fact can disagree.
 
 **That rule is now executable, and it does not live here.** It is data in
-[`@ds/platform-web`](../../../platform-web/README.md) — which ARIA attribute a state maps to, which
+[`@juro/platform-web`](../../../platform-web/README.md) — which ARIA attribute a state maps to, which
 roles accept it, whether its `false` is meaningful, which elements have a native `disabled`, and the
 pseudo-class for each state the browser owns. The emitter reads it; a Vue or Angular emitter would
 read the same file. Twenty conformance cases pin the mapping down, every one of them derived from a
@@ -154,9 +154,9 @@ For the record, since deleting them silently would lose the reasoning:
 
 - **"Five files per component, hand-written."** Replaced: there are four emitted files and nobody
   writes them.
-- **"`<Name>.module.css`, tokens only, every value `var(--ds-*)`."** Replaced by the structure/theme
+- **"`<Name>.module.css`, tokens only, every value `var(--juro-*)`."** Replaced by the structure/theme
   split. Emitted CSS now contains _no_ token references at all — the tokens are the consumer's.
 - **"Style against group-less role families."** Now advice for a consumer wiring their own tokens,
-  not a rule the library can enforce. It moved to `@ds/tokens` as reference-implementation guidance.
+  not a rule the library can enforce. It moved to `@juro/tokens` as reference-implementation guidance.
 - **"Re-export from the package barrel, alphabetically."** Gone. Emitted components live in the
   consumer's repo and this package exports no components.

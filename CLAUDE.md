@@ -32,15 +32,15 @@ a record. The build step is contract-first: `ds-component` authors the specifica
 backend emitter into the consumer repository.
 
 ```
-packages/contracts/ @ds/contracts — THE PRODUCT. Agnostic component contracts + their schema
-packages/tokens/   @ds/tokens — DTCG JSON -> CSS custom properties + TS constants
-packages/behavior/  @ds/behavior — what Escape means, where an arrow goes. No framework, no DOM
-packages/platform-web/ @ds/platform-web — the web platform as data. Every WEB backend reads it
-packages/emit-web/ @ds/emit-web — what every DOM-emitting backend shares: contract reading + CSS
-packages/react/    @ds/react  — a backend: React bindings, emitter, behaviour primitives
-packages/vue/      @ds/vue    — a second backend, same shape. It exists to TEST the contract
-packages/angular/  @ds/angular — a third. Attaches to elements rather than rendering them
-packages/wc/       @ds/wc     — a fourth, with NO framework: custom elements + a shadow root
+packages/contracts/ @juro/contracts — THE PRODUCT. Agnostic component contracts + their schema
+packages/tokens/   @juro/tokens — DTCG JSON -> CSS custom properties + TS constants
+packages/behavior/  @juro/behavior — what Escape means, where an arrow goes. No framework, no DOM
+packages/platform-web/ @juro/platform-web — the web platform as data. Every WEB backend reads it
+packages/emit-web/ @juro/emit-web — what every DOM-emitting backend shares: contract reading + CSS
+packages/react/    @juro/react  — a backend: React bindings, emitter, behaviour primitives
+packages/vue/      @juro/vue    — a second backend, same shape. It exists to TEST the contract
+packages/angular/  @juro/angular — a third. Attaches to elements rather than rendering them
+packages/wc/       @juro/wc     — a fourth, with NO framework: custom elements + a shadow root
 apps/react-sandbox/  fast Vite harness at :4300, in the workspace
 apps/vue-sandbox/    the same fifteen contracts at :4301
 apps/angular-sandbox/ and again at :4302

@@ -68,7 +68,7 @@ StyleDictionary.registerFormat({
   },
 });
 
-/** `[["--ds-color-brand-primary", "#5146e6"], ...]`, sorted deterministically. */
+/** `[["--juro-color-brand-primary", "#5146e6"], ...]`, sorted deterministically. */
 function tokenEntries(dictionary) {
   return [...dictionary.allTokens]
     .map((t) => [`--${t.name}`, String(t.$value ?? t.value)])

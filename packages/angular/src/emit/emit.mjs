@@ -6,12 +6,12 @@
 // Written after the Vue emitter and deliberately NOT by porting it. The value of a third backend is
 // entirely in where it refuses to be the second one, and Angular refuses in one structural place:
 // a component here does not RENDER its root element, it ATTACHES to one chosen by its selector. So
-// a binding's `element` compiles into `selector: 'button[dsSwitch]'` and the consumer writes the
+// a binding's `element` compiles into `selector: 'button[juroSwitch]'` and the consumer writes the
 // element. Everything downstream of that — host bindings instead of markup attributes, no
 // handler composition to write, no ref to forward — follows from that one fact.
 //
 // WHAT THIS FILE IS NOT. Reading a contract and emitting the two stylesheets used to be in here,
-// identical in all three emitters. They moved to `@ds/emit-web` once what a second and third
+// identical in all three emitters. They moved to `@juro/emit-web` once what a second and third
 // backend cost had been measured — see docs/research/0005 and packages/emit-web/README.md. What is
 // left is this framework and nothing else.
 
@@ -40,7 +40,7 @@ import {
   rendersFalse,
   submitsByDefault,
   visibilityOf,
-} from '@ds/platform-web';
+} from '@juro/platform-web';
 
 const WEB = loadProfile();
 
@@ -57,7 +57,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
-} from '@ds/emit-web';
+} from '@juro/emit-web';
 
 import { camel, pascal, selectorFor, slotsFrom, surfaceFrom } from './surface.mjs';
 
@@ -224,7 +224,7 @@ export function emitComponent(name, contract, binding, prefix) {
 
   assume(
     'how a state reaches the DOM',
-    'resolved entirely by @ds/platform-web',
+    'resolved entirely by @juro/platform-web',
     'The third backend to add no table of its own and change nothing in profile.json.',
   );
 
@@ -309,7 +309,7 @@ export function emitComponent(name, contract, binding, prefix) {
     assume(
       'how a modal opens and closes',
       'an effect() calls showModal()/close(), and a MutationObserver on the `open` attribute keeps the model in sync',
-      'React needs useEffect, Vue needs a post-flush watcher, Angular needs effect(). Three primitives, one platform obligation, and @ds/platform-web supplied the method names to all three.',
+      'React needs useEffect, Vue needs a post-flush watcher, Angular needs effect(). Three primitives, one platform obligation, and @juro/platform-web supplied the method names to all three.',
     );
   }
   if (dismisses) {
@@ -319,13 +319,13 @@ export function emitComponent(name, contract, binding, prefix) {
       dismissCauses.length
         ? `generated ${dismissCauses.join(' and ')}${skipped.length ? `; ${skipped.join(' and ')} left to the platform` : ''}`
         : `nothing generated — the platform supplies ${skipped.join(' and ')}`,
-      'Read straight out of @ds/platform-web > visibility.supplies.',
+      'Read straight out of @juro/platform-web > visibility.supplies.',
     );
   }
   if (navigation) {
     assume(
       'how a collection moves focus between its members',
-      'a member registration protocol over the hierarchical injector, plus useLinearNavigation from @ds/angular/behavior',
+      'a member registration protocol over the hierarchical injector, plus useLinearNavigation from @juro/angular/behavior',
       'React context, Vue provide/inject, Angular DI. The contract declares WHAT the keyboard does and nothing about how a backend learns which DOM nodes its members are — which is exactly the room three different protocols needed.',
     );
   }
@@ -343,7 +343,7 @@ export function emitComponent(name, contract, binding, prefix) {
       prefix +
       '-' +
       name +
-      '` — was rejected because the host would then be a custom element, losing native focus, native `disabled`, the implicit role and form participation, all four of which @ds/platform-web records as facts about the element the contract named.',
+      '` — was rejected because the host would then be a custom element, losing native focus, native `disabled`, the implicit role and form participation, all four of which @juro/platform-web records as facts about the element the contract named.',
   );
   if (!member) {
     assume(
@@ -431,7 +431,7 @@ export function emitComponent(name, contract, binding, prefix) {
     }
     if (decision.channel === 'native' || decision.channel === 'aria') {
       // `rendersFalse` is read as written on BOTH channels now. It used to be ignored on the native
-      // channel because @ds/platform-web hardcoded it to `true`, which was false as a statement
+      // channel because @juro/platform-web hardcoded it to `true`, which was false as a statement
       // about the platform: an HTML boolean attribute is presence-only. The profile carries the
       // answer in its own `native` table since that was fixed, so this backend no longer has to
       // disagree with it.
@@ -450,7 +450,7 @@ export function emitComponent(name, contract, binding, prefix) {
       assume(
         'a member state whose ARIA attribute its role does not support',
         `${member.reflects} does not reach ${declared} on role="${rootRole}" — emitted data-${prefix}-state-${member.reflects} instead`,
-        'Answered by @ds/platform-web > aria. All three backends report the identical decision for the identical component.',
+        'Answered by @juro/platform-web > aria. All three backends report the identical decision for the identical component.',
       );
     }
     if (attr) {
@@ -462,7 +462,7 @@ export function emitComponent(name, contract, binding, prefix) {
       assume(
         'a member state outside the ARIA table',
         `emitted data-${prefix}-state-${member.reflects} instead`,
-        'The state-to-attribute table is a closed list in @ds/platform-web. A state name it does not know reaches no ARIA attribute at all.',
+        'The state-to-attribute table is a closed list in @juro/platform-web. A state name it does not know reaches no ARIA attribute at all.',
       );
     }
   }
@@ -632,10 +632,10 @@ export function emitComponent(name, contract, binding, prefix) {
   }
   if (collection && navigation) behaviorTypes.push('MemberRegistration');
   if (behaviorValues.length) {
-    s.push(`import { ${behaviorValues.sort().join(', ')} } from '@ds/angular/behavior';`);
+    s.push(`import { ${behaviorValues.sort().join(', ')} } from '@juro/angular/behavior';`);
   }
   if (behaviorTypes.length) {
-    s.push(`import type { ${behaviorTypes.sort().join(', ')} } from '@ds/angular/behavior';`);
+    s.push(`import type { ${behaviorTypes.sort().join(', ')} } from '@juro/angular/behavior';`);
   }
   if (member) {
     s.push(
@@ -647,12 +647,14 @@ export function emitComponent(name, contract, binding, prefix) {
   // ---- module-level declarations
   if (dismissCauses.length) {
     s.push(`// Transcribed from ${name}.contract.json > dismisses. The cases this commits us to`);
-    s.push(`// are in @ds/contracts/conformance/dismissal.json.`);
+    s.push(`// are in @juro/contracts/conformance/dismissal.json.`);
     if (dismissCauses.length !== dismisses.on.length) {
       const left = dismisses.on.filter((c) => !dismissCauses.includes(c));
       s.push(`//`);
       s.push(`// The contract also declares ${left.join(' and ')}, which is NOT generated: the`);
-      s.push(`// platform supplies it for a <${el}>. See @ds/platform-web > visibility.supplies.`);
+      s.push(
+        `// platform supplies it for a <${el}>. See @juro/platform-web > visibility.supplies.`,
+      );
     }
     s.push(`const DISMISSAL: DismissalOptions = {`);
     s.push(`  on: [${dismissCauses.map((c) => `'${c}'`).join(', ')}],`);
@@ -664,7 +666,7 @@ export function emitComponent(name, contract, binding, prefix) {
       `// Transcribed from ${name}.contract.json: the \`range\` block, plus min/max/step from`,
     );
     s.push(`// the \`${range.state}\` state. The cases this commits us to are in`);
-    s.push(`// @ds/contracts/conformance/range-stepping.json.`);
+    s.push(`// @juro/contracts/conformance/range-stepping.json.`);
     s.push(`const RANGE: RangeOptions = {`);
     s.push(`  min: ${rangeState.min},`);
     s.push(`  max: ${rangeState.max},`);
@@ -677,7 +679,7 @@ export function emitComponent(name, contract, binding, prefix) {
   if (navigation) {
     s.push(`// Transcribed field for field from ${name}.contract.json > collection.navigation.`);
     s.push(`// The cases this commits us to are in`);
-    s.push(`// @ds/contracts/conformance/linear-navigation.json.`);
+    s.push(`// @juro/contracts/conformance/linear-navigation.json.`);
     s.push(`const NAVIGATION: NavigationOptions = {`);
     for (const [k, v] of Object.entries(navigation)) {
       s.push(`  ${k}: ${typeof v === 'string' ? `'${v}'` : String(v)},`);

@@ -15,8 +15,8 @@ export interface SliderProps {
 
 <script setup lang="ts">
 import { computed, useAttrs } from 'vue';
-import { snap, useRangeControl } from '@ds/vue/behavior';
-import type { RangeOptions } from '@ds/vue/behavior';
+import { snap, useRangeControl } from '@juro/vue/behavior';
+import type { RangeOptions } from '@juro/vue/behavior';
 import './Slider.structure.css';
 import './Slider.theme.css';
 
@@ -31,7 +31,7 @@ const value = defineModel<number>('value', { default: 0 });
 
 // Transcribed from Slider.contract.json: the `range` block, plus min/max/step from
 // the `value` state. The cases this commits us to are in
-// @ds/contracts/conformance/range-stepping.json.
+// @juro/contracts/conformance/range-stepping.json.
 const RANGE: RangeOptions = {
   min: 0,
   max: 100,
@@ -67,7 +67,7 @@ const fallthrough = computed(() => {
 // The fill's length and the thumb's offset ARE the value, and a consumer's own inline
 // style still has to land — hence the array form, which merges where a second
 // `:style` would simply win.
-const rootStyle = computed(() => [attrs.style as never, { '--ds-fraction': range.fraction }]);
+const rootStyle = computed(() => [attrs.style as never, { '--juro-fraction': range.fraction }]);
 
 function onRootKeydown(event: KeyboardEvent) {
   (attrs['onKeydown'] as ((e: KeyboardEvent) => void) | undefined)?.(event);
@@ -100,22 +100,22 @@ function onRootPointercancel(event: PointerEvent) {
     v-bind="fallthrough"
     role="slider"
     :aria-disabled="disabled || undefined"
-    :data-ds-state-dragging="range.dragging || undefined"
+    :data-juro-state-dragging="range.dragging || undefined"
     :tabindex="disabled ? -1 : 0"
     :aria-valuemin="0"
     :aria-valuemax="100"
     :aria-valuenow="snap(value, RANGE)"
     :style="rootStyle"
-    data-ds-component="Slider"
-    data-ds-part="root"
+    data-juro-component="Slider"
+    data-juro-part="root"
     @keydown="onRootKeydown"
     @pointerdown="onRootPointerdown"
     @pointermove="onRootPointermove"
     @pointerup="onRootPointerup"
     @pointercancel="onRootPointercancel"
   >
-    <div :ref="range.setTrack" data-ds-part="track" />
-    <div data-ds-part="fill" />
-    <div data-ds-part="thumb" />
+    <div :ref="range.setTrack" data-juro-part="track" />
+    <div data-juro-part="fill" />
+    <div data-juro-part="thumb" />
   </div>
 </template>

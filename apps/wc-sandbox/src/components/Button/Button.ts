@@ -33,7 +33,7 @@ TEMPLATE.innerHTML = `
 `;
 
 export class Button extends HTMLElement {
-  static readonly tagName = 'ds-button';
+  static readonly tagName = 'juro-button';
   static readonly observedAttributes = [
     'disabled',
     'loading',
@@ -162,6 +162,6 @@ if (!customElements.get(Button.tagName)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'ds-button': Button;
+    'juro-button': Button;
   }
 }

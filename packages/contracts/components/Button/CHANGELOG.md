@@ -28,7 +28,7 @@
 
 ### Known gaps — measured, not guessed
 
-- **`loading` reaches the DOM as `data-ds-state-loading` and not as `aria-busy`.** The contract says
+- **`loading` reaches the DOM as `data-juro-state-loading` and not as `aria-busy`.** The contract says
   it must reach assistive technology, and cannot say how. A user who cannot see the spinner is told
   nothing.
 - **No submit button.** `type` is fixed to `button`, so this cannot submit a form. That is a

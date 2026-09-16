@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue(), dts({ include: ['src'], rollupTypes: false })],
   build: {
     lib: {
-      // TWO entries, mirroring @ds/react for the same reason.
+      // TWO entries, mirroring @juro/react for the same reason.
       //
       // `index` is the package barrel and exports no components — it never will, because a
       // component is generated into a consumer's own repository. `behavior` is the interaction

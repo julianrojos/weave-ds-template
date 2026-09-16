@@ -11,7 +11,7 @@ const config: StorybookConfig = {
     cfg.resolve.alias = {
       ...cfg.resolve.alias,
       // Source, not dist — same reasoning as the sandbox.
-      '@ds/react': resolve(__dirname, '../../../packages/react/src/index.ts'),
+      '@juro/react': resolve(__dirname, '../../../packages/react/src/index.ts'),
     };
     return cfg;
   },
