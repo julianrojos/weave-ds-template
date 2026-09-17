@@ -71,6 +71,12 @@
     "a": {
       "focusable": true,
       "_note": "Transcribed as unconditionally focusable. On the platform it is focusable only WITH an href. No binding renders an anchor, so the simplification has never been exercised."
+    },
+    "img": {
+      "implicitRole": "img",
+      "bearsRole": false,
+      "void": true,
+      "_note": "Renders an image resource from `src`. `alt` is its accessible name, and an empty `alt` marks it decorative — which is what an image inside an already-named root needs, so the name is not announced twice. The element reports its outcome through `load` and `error` events, which is what a `derivedFrom` state observes."
     }
   },
   "states": {

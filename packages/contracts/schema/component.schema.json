@@ -55,6 +55,17 @@
         }
       ]
     },
+    "emission": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How a contract treats an emitter that lacks a capability needed to express it. Omit this block to follow ADR 0005's normal diagnostic policy.",
+      "properties": {
+        "resourceObservation": {
+          "enum": ["diagnose", "reject"],
+          "description": "How an emitter without resource load/error observation handles image slots or states with `derivedFrom`. `diagnose` (and omission) emits a compilable `absent` fallback and records a non-conformance. `reject` stops before output because that fallback would make this contract's promise false."
+        }
+      }
+    },
     "intent": {
       "type": "object",
       "additionalProperties": false,
@@ -141,9 +152,44 @@
           "editing": {
             "enum": ["live", "commit"],
             "description": "When a shared free-text value becomes public. live reports each edit; commit keeps a local draft until the editing session ends (focus leaves on web). External value changes replace the draft."
+          },
+          "derivedFrom": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["slot"],
+            "properties": {
+              "slot": {
+                "type": "string",
+                "pattern": "^[a-z][a-zA-Z0-9]*$",
+                "description": "The slot whose supplied resource this state observes. It must accept `image`."
+              }
+            },
+            "description": "This state reports what happened to the resource supplied to a slot, rather than a value anyone sets. EXPERIMENTAL.\n\nThe values are fixed: `absent` while no resource is supplied or the current resource has not settled, `loaded` once the platform reports the resource ready, and `failed` when it reports an error. It is `internal` because an observation cannot be set: a consumer who could set it could claim a picture the platform never loaded.\n\nA backend that cannot observe the outcome records it as non-conforming under ADR 0005; it must not weaken the values to what it can produce. `emission.resourceObservation` lets this contract choose whether that backend emits a diagnostic fallback or rejects before output."
           }
         },
         "allOf": [
+          {
+            "if": {
+              "required": ["derivedFrom"]
+            },
+            "then": {
+              "required": ["values", "default"],
+              "properties": {
+                "control": {
+                  "const": "internal"
+                },
+                "kind": {
+                  "const": "authored"
+                },
+                "values": {
+                  "const": ["absent", "loaded", "failed"]
+                },
+                "default": {
+                  "const": "absent"
+                }
+              }
+            }
+          },
           {
             "if": {
               "required": ["editing"]
@@ -505,7 +551,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "description": "What content the slot takes. `text` is text. `image` is an image resource the platform loads — a source, and nothing a consumer renders — whose outcome a state may observe through `derivedFrom`. Other values name the element a consumer supplies."
         },
         "min": {
           "type": "integer",
@@ -735,8 +782,8 @@
         },
         "visibleWhen": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9-]*(=[a-z0-9-]+)?$",
-          "description": "Names a state; this part is hidden whenever that state is false. For a state with `values`, write `state=value` — a checkbox's tick is `checked=checked` and its dash is `checked=mixed`, two different marks for two different facts rather than one mark shown twice. EXPERIMENTAL.\n\nHidden, not removed: the part stays in the document so find-in-page can reach it and so anything measured inside it survives. A component that must unmount its hidden content is a different decision and has no home here yet."
+          "pattern": "^[a-z][a-z0-9-]*((!=|=)[a-z0-9-]+)?$",
+          "description": "Names a state; this part is hidden whenever that state is false. For a state with `values`, write `state=value` — a checkbox's tick is `checked=checked` and its dash is `checked=mixed`, two different marks for two different facts rather than one mark shown twice. Write `state!=value` for a part shown in every case but one — an avatar's initial is `image-status!=loaded`, which stays correct if a value is added, where listing the others would not. EXPERIMENTAL.\n\nHidden, not removed: the part stays in the document so find-in-page can reach it and so anything measured inside it survives. A component that must unmount its hidden content is a different decision and has no home here yet."
         },
         "paints": {
           "$ref": "#/$defs/paints"

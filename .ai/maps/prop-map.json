@@ -12,14 +12,14 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 15,
-      "propCount": 39,
+      "componentCount": 16,
+      "propCount": 42,
       "kindCounts": {
-        "axis": 5,
+        "axis": 6,
         "enum": 2,
         "boolean": 11,
-        "node": 13,
-        "local": 8
+        "node": 14,
+        "local": 9
       },
       "conventions": {
         "propCase": "camelCase",
@@ -85,6 +85,19 @@
             "Tooltip"
           ]
         },
+        "shape": {
+          "concept": "The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make.",
+          "canonicalValues": [
+            "circle",
+            "square"
+          ],
+          "profiles": null,
+          "default": "circle",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Avatar"
+          ]
+        },
         "size": {
           "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
@@ -96,8 +109,9 @@
           ],
           "profiles": null,
           "default": "m",
-          "usedOnCount": 3,
+          "usedOnCount": 4,
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
@@ -626,6 +640,27 @@
           ],
           "usedCount": 1
         },
+        "fallback": {
+          "kind": "node",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "ReactNode",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "ReactNode"
+          ],
+          "usedOn": [
+            "Avatar"
+          ],
+          "usedCount": 1
+        },
         "heading": {
           "kind": "node",
           "axis": null,
@@ -718,6 +753,27 @@
           ],
           "usedOn": [
             "Button"
+          ],
+          "usedCount": 1
+        },
+        "image": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "string",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "string"
+          ],
+          "usedOn": [
+            "Avatar"
           ],
           "usedCount": 1
         },
@@ -1119,6 +1175,37 @@
           ],
           "usedCount": 3
         },
+        "shape": {
+          "kind": "axis",
+          "axis": "shape",
+          "valueSets": [
+            {
+              "values": [
+                "circle",
+                "square"
+              ],
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'circle' | 'square'",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'circle' | 'square'"
+          ],
+          "usedOn": [
+            "Avatar"
+          ],
+          "usedCount": 1
+        },
         "size": {
           "kind": "axis",
           "axis": "size",
@@ -1130,6 +1217,7 @@
                 "l"
               ],
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -1140,6 +1228,7 @@
             {
               "type": "'s' | 'm' | 'l'",
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -1151,11 +1240,12 @@
             "'s' | 'm' | 'l'"
           ],
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
           ],
-          "usedCount": 3
+          "usedCount": 4
         },
         "title": {
           "kind": "node",
@@ -1352,8 +1442,8 @@
       ],
       "flagCount": 2,
       "extraction": {
-        "componentsScanned": 15,
-        "propsResolved": 39,
+        "componentsScanned": 16,
+        "propsResolved": 42,
         "degraded": false,
         "warnings": []
       },
@@ -1422,6 +1512,9 @@
             "from": "heading",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "trigger",
             "required": true,
             "description": "The section's name, rendered inside the trigger. Fills the `trigger` part."
@@ -1432,9 +1525,56 @@
             "from": "panel",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "panel",
             "required": true,
             "description": "The revealed content. Anything. Fills the `panel` part."
+          }
+        ],
+        "Avatar": [
+          {
+            "name": "size",
+            "type": "'s' | 'm' | 'l'",
+            "from": "size",
+            "origin": "axis",
+            "role": "axis",
+            "default": "m",
+            "description": "The frame's size. The design measures 24, 32 and 40."
+          },
+          {
+            "name": "shape",
+            "type": "'circle' | 'square'",
+            "from": "shape",
+            "origin": "axis",
+            "role": "axis",
+            "default": "circle",
+            "description": "The frame's silhouette. When each applies is not decided."
+          },
+          {
+            "name": "image",
+            "type": "string",
+            "from": "image",
+            "origin": "slot",
+            "role": "slot",
+            "accepts": [
+              "image"
+            ],
+            "part": "image",
+            "required": false,
+            "description": "The picture's source. Optional: without one, the initial shows."
+          },
+          {
+            "name": "fallback",
+            "type": "ReactNode",
+            "from": "fallback",
+            "origin": "slot",
+            "role": "slot",
+            "accepts": [
+              "text"
+            ],
+            "part": "fallback",
+            "required": false,
+            "description": "The initial. One character, per the design."
           }
         ],
         "Button": [
@@ -1487,6 +1627,7 @@
             "from": "iconStart",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "iconStart",
             "required": false,
             "description": "An icon before the label. Decorative: the label carries the meaning."
@@ -1497,6 +1638,7 @@
             "from": "iconEnd",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "iconEnd",
             "required": false,
             "description": "An icon after the label, for an action that leads somewhere — a disclosure caret, an external-link mark."
@@ -1547,6 +1689,9 @@
             "from": "label",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "label",
             "required": true,
             "description": "The question being answered. Fills the `label` part."
@@ -1590,6 +1735,9 @@
             "from": "title",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "title",
             "required": true,
             "description": "What the dialog is asking about. Required: it is the dialog's accessible name."
@@ -1600,6 +1748,7 @@
             "from": "body",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "body",
             "required": true,
             "description": "The content. Fills the `body` part."
@@ -1610,6 +1759,7 @@
             "from": "actions",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "actions",
             "required": false,
             "description": "The buttons that resolve it. Fills the `actions` part."
@@ -1696,6 +1846,9 @@
             "from": "label",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "label",
             "required": true,
             "description": "Names the control. Required — a field with no label is the defect this component exists to prevent."
@@ -1706,6 +1859,12 @@
             "from": "control",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "input",
+              "select",
+              "textarea",
+              "Switch"
+            ],
             "part": "control",
             "required": true,
             "description": "The control being wired up. Passed in rather than rendered."
@@ -1716,6 +1875,9 @@
             "from": "description",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "description",
             "required": false,
             "description": "Help text, announced with the control."
@@ -1726,6 +1888,9 @@
             "from": "error",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "error",
             "required": false,
             "description": "Why validation failed. Shown only when the field is invalid AND has been touched."
@@ -1794,6 +1959,9 @@
             "from": "label",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "label",
             "required": true,
             "description": "The option's name. Fills the `label` part."
@@ -1895,6 +2063,9 @@
             "from": "label",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "label",
             "required": true,
             "description": "The tab's name. Fills the label part."
@@ -2045,6 +2216,7 @@
             "from": "trigger",
             "origin": "slot",
             "role": "slot",
+            "accepts": [],
             "part": "trigger",
             "required": true,
             "description": "The control the tooltip describes. Fills the `trigger` part."
@@ -2055,6 +2227,9 @@
             "from": "content",
             "origin": "slot",
             "role": "slot",
+            "accepts": [
+              "text"
+            ],
             "part": "popup",
             "required": true,
             "description": "The label itself. Text only — anything interactive would be unreachable. Fills the `popup` part."
@@ -2072,10 +2247,10 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 15,
-      "propCount": 14,
+      "componentCount": 16,
+      "propCount": 15,
       "kindCounts": {
-        "axis": 5,
+        "axis": 6,
         "enum": 1,
         "boolean": 7,
         "node": 0,
@@ -2145,6 +2320,19 @@
             "Tooltip"
           ]
         },
+        "shape": {
+          "concept": "The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make.",
+          "canonicalValues": [
+            "circle",
+            "square"
+          ],
+          "profiles": null,
+          "default": "circle",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Avatar"
+          ]
+        },
         "size": {
           "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
@@ -2156,8 +2344,9 @@
           ],
           "profiles": null,
           "default": "m",
-          "usedOnCount": 3,
+          "usedOnCount": 4,
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
@@ -2562,6 +2751,37 @@
           ],
           "usedCount": 3
         },
+        "shape": {
+          "kind": "axis",
+          "axis": "shape",
+          "valueSets": [
+            {
+              "values": [
+                "circle",
+                "square"
+              ],
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'circle' | 'square'",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'circle' | 'square'"
+          ],
+          "usedOn": [
+            "Avatar"
+          ],
+          "usedCount": 1
+        },
         "size": {
           "kind": "axis",
           "axis": "size",
@@ -2573,6 +2793,7 @@
                 "l"
               ],
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -2583,6 +2804,7 @@
             {
               "type": "'s' | 'm' | 'l'",
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -2594,11 +2816,12 @@
             "'s' | 'm' | 'l'"
           ],
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
           ],
-          "usedCount": 3
+          "usedCount": 4
         },
         "touched": {
           "kind": "boolean",
@@ -2744,8 +2967,8 @@
       ],
       "flagCount": 1,
       "extraction": {
-        "componentsScanned": 15,
-        "propsResolved": 14,
+        "componentsScanned": 16,
+        "propsResolved": 15,
         "degraded": false,
         "warnings": []
       },
@@ -2798,6 +3021,26 @@
             "role": "identity",
             "required": true,
             "description": "Distinguishes this AccordionItem from its siblings. The ancestor Accordion compares against it to decide whether this one is in the selection."
+          }
+        ],
+        "Avatar": [
+          {
+            "name": "size",
+            "type": "'s' | 'm' | 'l'",
+            "from": "size",
+            "origin": "axis",
+            "role": "axis",
+            "default": "m",
+            "description": "The frame's size. The design measures 24, 32 and 40."
+          },
+          {
+            "name": "shape",
+            "type": "'circle' | 'square'",
+            "from": "shape",
+            "origin": "axis",
+            "role": "axis",
+            "default": "circle",
+            "description": "The frame's silhouette. When each applies is not decided."
           }
         ],
         "Button": [
@@ -3182,10 +3425,10 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 15,
-      "propCount": 14,
+      "componentCount": 16,
+      "propCount": 15,
       "kindCounts": {
-        "axis": 5,
+        "axis": 6,
         "enum": 1,
         "boolean": 7,
         "node": 0,
@@ -3255,6 +3498,19 @@
             "Tooltip"
           ]
         },
+        "shape": {
+          "concept": "The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make.",
+          "canonicalValues": [
+            "circle",
+            "square"
+          ],
+          "profiles": null,
+          "default": "circle",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Avatar"
+          ]
+        },
         "size": {
           "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
@@ -3266,8 +3522,9 @@
           ],
           "profiles": null,
           "default": "m",
-          "usedOnCount": 3,
+          "usedOnCount": 4,
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
@@ -3672,6 +3929,37 @@
           ],
           "usedCount": 3
         },
+        "shape": {
+          "kind": "axis",
+          "axis": "shape",
+          "valueSets": [
+            {
+              "values": [
+                "circle",
+                "square"
+              ],
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'circle' | 'square'",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'circle' | 'square'"
+          ],
+          "usedOn": [
+            "Avatar"
+          ],
+          "usedCount": 1
+        },
         "size": {
           "kind": "axis",
           "axis": "size",
@@ -3683,6 +3971,7 @@
                 "l"
               ],
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -3693,6 +3982,7 @@
             {
               "type": "'s' | 'm' | 'l'",
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -3704,11 +3994,12 @@
             "'s' | 'm' | 'l'"
           ],
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
           ],
-          "usedCount": 3
+          "usedCount": 4
         },
         "touched": {
           "kind": "boolean",
@@ -3854,8 +4145,8 @@
       ],
       "flagCount": 1,
       "extraction": {
-        "componentsScanned": 15,
-        "propsResolved": 14,
+        "componentsScanned": 16,
+        "propsResolved": 15,
         "degraded": false,
         "warnings": []
       },
@@ -3908,6 +4199,26 @@
             "role": "identity",
             "required": true,
             "description": "Distinguishes this AccordionItem from its siblings. The ancestor Accordion compares against it to decide whether this one is in the selection."
+          }
+        ],
+        "Avatar": [
+          {
+            "name": "size",
+            "type": "'s' | 'm' | 'l'",
+            "from": "size",
+            "origin": "axis",
+            "role": "axis",
+            "default": "m",
+            "description": "The frame's size. The design measures 24, 32 and 40."
+          },
+          {
+            "name": "shape",
+            "type": "'circle' | 'square'",
+            "from": "shape",
+            "origin": "axis",
+            "role": "axis",
+            "default": "circle",
+            "description": "The frame's silhouette. When each applies is not decided."
           }
         ],
         "Button": [
@@ -4292,10 +4603,10 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 15,
-      "propCount": 16,
+      "componentCount": 16,
+      "propCount": 17,
       "kindCounts": {
-        "axis": 5,
+        "axis": 6,
         "enum": 1,
         "boolean": 8,
         "node": 0,
@@ -4365,6 +4676,19 @@
             "Tooltip"
           ]
         },
+        "shape": {
+          "concept": "The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make.",
+          "canonicalValues": [
+            "circle",
+            "square"
+          ],
+          "profiles": null,
+          "default": "circle",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Avatar"
+          ]
+        },
         "size": {
           "concept": "One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap.",
           "canonicalValues": [
@@ -4376,8 +4700,9 @@
           ],
           "profiles": null,
           "default": "m",
-          "usedOnCount": 3,
+          "usedOnCount": 4,
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
@@ -4862,6 +5187,37 @@
           ],
           "usedCount": 5
         },
+        "shape": {
+          "kind": "axis",
+          "axis": "shape",
+          "valueSets": [
+            {
+              "values": [
+                "circle",
+                "square"
+              ],
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'circle' | 'square'",
+              "on": [
+                "Avatar"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'circle' | 'square'"
+          ],
+          "usedOn": [
+            "Avatar"
+          ],
+          "usedCount": 1
+        },
         "size": {
           "kind": "axis",
           "axis": "size",
@@ -4873,6 +5229,7 @@
                 "l"
               ],
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -4883,6 +5240,7 @@
             {
               "type": "'s' | 'm' | 'l'",
               "on": [
+                "Avatar",
                 "Button",
                 "Dialog",
                 "TextField"
@@ -4894,11 +5252,12 @@
             "'s' | 'm' | 'l'"
           ],
           "usedOn": [
+            "Avatar",
             "Button",
             "Dialog",
             "TextField"
           ],
-          "usedCount": 3
+          "usedCount": 4
         },
         "touched": {
           "kind": "boolean",
@@ -5050,8 +5409,8 @@
       ],
       "flagCount": 1,
       "extraction": {
-        "componentsScanned": 15,
-        "propsResolved": 16,
+        "componentsScanned": 16,
+        "propsResolved": 17,
         "degraded": false,
         "warnings": []
       },
@@ -5114,6 +5473,30 @@
             "kind": "string",
             "required": true,
             "description": "Distinguishes this AccordionItem from its siblings. The ancestor Accordion compares against it to decide whether this one is in the selection."
+          }
+        ],
+        "Avatar": [
+          {
+            "name": "size",
+            "attribute": "size",
+            "type": "'s' | 'm' | 'l'",
+            "from": "size",
+            "origin": "axis",
+            "role": "axis",
+            "kind": "enum",
+            "default": "m",
+            "description": "The frame's size. The design measures 24, 32 and 40."
+          },
+          {
+            "name": "shape",
+            "attribute": "shape",
+            "type": "'circle' | 'square'",
+            "from": "shape",
+            "origin": "axis",
+            "role": "axis",
+            "kind": "enum",
+            "default": "circle",
+            "description": "The frame's silhouette. When each applies is not decided."
           }
         ],
         "Button": [

@@ -141,10 +141,10 @@
     },
 
     "variantConventions": {
-      "_doc": "A Figma variant property value must match the component's prop value exactly, or the two surfaces describe different components. The canon lives in .ai/maps/prop-map.md §1 and packages/contracts/prop-canon.json — THOSE ARE AUTHORITATIVE; this is a pointer, not a copy.",
+      "_doc": "The component map records Figma variant property names and values exactly as measured. Code-facing axes use the canon in .ai/maps/prop-map.md §1 and packages/contracts/prop-canon.json — THOSE ARE AUTHORITATIVE. A Figma value may map exactly or through an explicit mapping recorded in the map entry's note or linked proposal; an unexplained difference remains a finding.",
       "canonSource": [".ai/maps/prop-map.md", "packages/contracts/prop-canon.json"],
-      "propertyCase": "TitleCase property name, prop-exact value — Hierarchy=secondary, Size=m",
-      "statesAreNotVariants": "Hover / Pressed / Focused are runtime states the browser owns. They must not become a variant property that maps to a prop. See .ai/maps/proposals/README.md."
+      "propertyCase": "The map keeps Figma's TitleCase property name and literal value. The contract uses its canonical prop spelling — for example, Figma Size=Large may map to size=l when the proposal records that mapping.",
+      "statesAreNotVariants": "Hover / Pressed / Focused are runtime states the browser owns. They must not become a variant property that maps to a prop. A Figma variant may instead map to an observed contract state when the proposal records the evidence, as Avatar's Type does. See .ai/maps/proposals/README.md."
     },
 
     "codePathConvention": {

@@ -1,0 +1,139 @@
+{
+  "$schema": "../../schema/component.schema.json",
+  "component": "Avatar",
+  "status": {
+    "level": "experimental",
+    "since": "2026-09-17",
+    "note": "Proposed in .ai/maps/proposals/Avatar.md from the Figma set 4284:256. The first contract whose visibility depends on an OBSERVED outcome rather than a value anyone sets: the picture shows only once it has loaded. Any backend that cannot observe load and error is non-conforming for that promise (ADR 0005); this contract rejects it through emission.resourceObservation."
+  },
+  "emission": {
+    "resourceObservation": "reject"
+  },
+  "intent": {
+    "purpose": "Stands for a person or entity in a small fixed frame: their picture when one is available, their initial otherwise.",
+    "behaviour": [
+      "Shows the supplied picture once it has loaded.",
+      "Shows the initial whenever the picture is not showing: nothing supplied, or the picture failed to load.",
+      "Never shows the picture and the initial at the same time."
+    ],
+    "notFor": [
+      "A control. An avatar that opens a profile menu is a button that contains an avatar.",
+      "Status or presence marks. Those are separate indicators this contract does not describe.",
+      "Several initials. The design sizes the frame for one character, and two overflow the small size."
+    ]
+  },
+  "axes": {
+    "size": {
+      "values": ["s", "m", "l"],
+      "default": "m",
+      "description": "The frame's size. The design measures 24, 32 and 40."
+    },
+    "shape": {
+      "values": ["circle", "square"],
+      "default": "circle",
+      "description": "The frame's silhouette. When each applies is not decided."
+    }
+  },
+  "states": {
+    "image-status": {
+      "kind": "authored",
+      "control": "internal",
+      "values": ["absent", "loaded", "failed"],
+      "default": "absent",
+      "derivedFrom": {
+        "slot": "image"
+      },
+      "description": "What happened to the supplied picture. Observed, never set: `absent` while there is no source or the current one has not finished loading, `loaded` once it has, `failed` if it could not.",
+      "visual": "The picture shows only while `loaded`; the initial shows otherwise."
+    }
+  },
+  "semantics": {
+    "role": "img",
+    "focusable": false
+  },
+  "a11y": {
+    "keyboard": "Not focusable. An avatar is not a control.",
+    "notes": [
+      "The root carries one accessible name for both outcomes, supplied by the consumer — `aria-label` on the web. The picture inside is decorative, so the name is not announced twice, and a lone initial is never announced on its own.",
+      "An avatar beside a visible name is decorative and must be hidden from assistive technology by the consumer — `aria-hidden` on the web. Nothing here detects a missing name or a redundant one.",
+      "`failed` must fall back to the initial. A backend that cannot observe load or error cannot keep that promise and must refuse to emit this contract rather than show an empty frame.",
+      "Contrast of the initial against the frame is not claimed. The design binds both to variables this repository does not map."
+    ]
+  },
+  "composition": {
+    "children": {
+      "accepts": [],
+      "max": 0,
+      "description": "None. The picture and the initial arrive through their slots."
+    },
+    "slots": {
+      "image": {
+        "part": "image",
+        "accepts": ["image"],
+        "required": false,
+        "max": 1,
+        "description": "The picture's source. Optional: without one, the initial shows."
+      },
+      "fallback": {
+        "part": "fallback",
+        "accepts": ["text"],
+        "required": false,
+        "max": 1,
+        "description": "The initial. One character, per the design."
+      }
+    }
+  },
+  "anatomy": {
+    "root": {
+      "part": "root",
+      "description": "The frame. Owns size and silhouette, and holds whichever of the picture or the initial is showing. Clipping to the silhouette is layout, which the contract cannot express yet.",
+      "paints": {
+        "background": null
+      },
+      "whenAxis": {
+        "size=s": {
+          "inline-size": null,
+          "block-size": null,
+          "font-size": null
+        },
+        "size=m": {
+          "inline-size": null,
+          "block-size": null,
+          "font-size": null
+        },
+        "size=l": {
+          "inline-size": null,
+          "block-size": null,
+          "font-size": null
+        },
+        "shape=circle": {
+          "border-radius": null
+        },
+        "shape=square": {
+          "border-radius": null
+        }
+      },
+      "parts": {
+        "image": {
+          "part": "image",
+          "description": "The picture. How it fills the frame is the `object-fit` paint, supplied by the consumer.",
+          "visibleWhen": "image-status=loaded",
+          "paints": {
+            "inline-size": null,
+            "block-size": null,
+            "object-fit": null
+          }
+        },
+        "fallback": {
+          "part": "fallback",
+          "description": "The initial. Centring it in the frame is layout, which the contract cannot express yet.",
+          "visibleWhen": "image-status!=loaded",
+          "paints": {
+            "color": null,
+            "line-height": null
+          }
+        }
+      }
+    }
+  }
+}

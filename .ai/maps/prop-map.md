@@ -17,7 +17,7 @@ Each section describes that backend only. Model events, attributes, and slots ar
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 15 components · 39 props · 2 flags.
+**Coverage:** 16 components · 42 props · 2 flags.
 
 ### How to use this
 
@@ -39,7 +39,8 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -82,10 +83,12 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `dirty` | boolean | boolean | Field |
 | `disabled` | boolean | boolean | Accordion, AccordionItem, Button, Checkbox, Field, RadioGroup, RadioItem, Slider, Switch, TabItem, Tabs, TextField, Tooltip |
 | `error` | node | ReactNode | Field |
+| `fallback` | node | ReactNode | Avatar |
 | `heading` | node | ReactNode | AccordionItem |
 | `hierarchy` | axis | primary · secondary · tertiary | Button |
 | `iconEnd` | node | ReactNode | Button |
 | `iconStart` | node | ReactNode | Button |
+| `image` | local | string | Avatar |
 | `invalid` | boolean | boolean | Checkbox, Field, TextField |
 | `label` | node | ReactNode | Checkbox, Field, RadioItem, TabItem |
 | `loading` | boolean | boolean | Button |
@@ -100,7 +103,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `panel` | node | ReactNode | AccordionItem |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
-| `size` | axis | s · m · l | Button, Dialog, TextField |
+| `shape` | axis | circle · square | Avatar |
+| `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `title` | node | ReactNode | Dialog |
 | `touched` | boolean | boolean | Field |
 | `trigger` | node | ReactNode | Tooltip |
@@ -131,6 +135,15 @@ One spelling, one meaning. A new value is added here in the same change that int
 | value | identity | string | ? | ? |
 | heading | slot | ReactNode | ? | ? |
 | panel | slot | ReactNode | ? | ? |
+
+### Avatar
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| size | axis | 's' \| 'm' \| 'l' | ? | ? |
+| shape | axis | 'circle' \| 'square' | ? | ? |
+| image | slot | string | ? | ? |
+| fallback | slot | ReactNode | ? | ? |
 
 ### Button
 
@@ -283,7 +296,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 15 components · 14 props · 1 flags.
+**Coverage:** 16 components · 15 props · 1 flags.
 
 ### How to use this
 
@@ -305,7 +318,8 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -343,7 +357,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `orientation` | axis | vertical | Accordion |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
-| `size` | axis | s · m · l | Button, Dialog, TextField |
+| `shape` | axis | circle · square | Avatar |
+| `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
 | `value` | local | Slider: number<br>AccordionItem, RadioGroup, RadioItem, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, RadioGroup, RadioItem, Slider, TabItem, TabPanel, Tabs, TextField |
 | `variant` | axis | neutral · brand · danger | Button |
@@ -367,6 +382,13 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | ? | ? |
 | value | identity | string | ? | ? |
+
+### Avatar
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| size | axis | 's' \| 'm' \| 'l' | ? | ? |
+| shape | axis | 'circle' \| 'square' | ? | ? |
 
 ### Button
 
@@ -483,7 +505,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 15 components · 14 props · 1 flags.
+**Coverage:** 16 components · 15 props · 1 flags.
 
 ### How to use this
 
@@ -505,7 +527,8 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -543,7 +566,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `orientation` | axis | vertical | Accordion |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
-| `size` | axis | s · m · l | Button, Dialog, TextField |
+| `shape` | axis | circle · square | Avatar |
+| `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
 | `value` | local | Slider: number<br>AccordionItem, RadioGroup, RadioItem, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, RadioGroup, RadioItem, Slider, TabItem, TabPanel, Tabs, TextField |
 | `variant` | axis | neutral · brand · danger | Button |
@@ -567,6 +591,13 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | ? | ? |
 | value | identity | string | ? | ? |
+
+### Avatar
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| size | axis | 's' \| 'm' \| 'l' | ? | ? |
+| shape | axis | 'circle' \| 'square' | ? | ? |
 
 ### Button
 
@@ -683,7 +714,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 15 components · 16 props · 1 flags.
+**Coverage:** 16 components · 17 props · 1 flags.
 
 ### How to use this
 
@@ -705,7 +736,8 @@ never a synonym.
 | `hierarchy` | How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only. | primary · secondary · tertiary | `primary` | 1 |
 | `orientation` | Layout axis along which the component and its children flow. | horizontal · vertical | — | 1 |
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
-| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 3 |
+| `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
+| `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
 | `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
 
 ### 2. Value glossary (anti-synonym list)
@@ -745,7 +777,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
 | `required` | boolean | boolean | Checkbox, RadioGroup, Slider, Switch, TextField |
-| `size` | axis | s · m · l | Button, Dialog, TextField |
+| `shape` | axis | circle · square | Avatar |
+| `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
 | `value` | local | Slider: number<br>AccordionItem, Checkbox, RadioGroup, RadioItem, Switch, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, Checkbox, RadioGroup, RadioItem, Slider, Switch, TabItem, TabPanel, Tabs, TextField |
 | `variant` | axis | neutral · brand · danger | Button |
@@ -769,6 +802,13 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
 | value | identity | string | value | ? |
+
+### Avatar
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| size | axis | 's' \| 'm' \| 'l' | size | ? |
+| shape | axis | 'circle' \| 'square' | shape | ? |
 
 ### Button
 

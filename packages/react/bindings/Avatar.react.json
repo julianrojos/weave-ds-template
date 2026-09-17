@@ -1,0 +1,12 @@
+{
+  "$schema": "./binding.schema.json",
+  "component": "Avatar",
+  "contract": "../../contracts/components/Avatar/Avatar.contract.json",
+  "framework": "react",
+  "refTarget": "root",
+  "classNamePassthrough": "root",
+  "notes": [
+    "The `image` slot compiles to a string prop rendered as `<img alt=\"\">`. The empty `alt` is deliberate: the root's `role=\"img\"` carries the one accessible name, which the consumer passes as `aria-label`.",
+    "`image-status` is observed from the <img>'s `load` and `error` events. The <img> is keyed by its source and every change of `image` discards the previous outcome, so a new source — or a return to one that loaded before — reads `absent` until that mount reports load or error, and a broken source falls back to the initial."
+  ]
+}

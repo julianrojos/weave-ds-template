@@ -15,6 +15,11 @@
       "values": ["xs", "s", "m", "l", "xl"],
       "default": "m"
     },
+    "shape": {
+      "concept": "The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make.",
+      "values": ["circle", "square"],
+      "default": "circle"
+    },
     "hierarchy": {
       "concept": "How much emphasis an action carries. Orthogonal to `variant`, which chooses the colour, and distinct from a paint treatment. Actions have a rank; surfaces do not — so this axis is for interactive components only.",
       "values": ["primary", "secondary", "tertiary"],

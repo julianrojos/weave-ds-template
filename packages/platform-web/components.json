@@ -3,6 +3,7 @@
   "components": {
     "Accordion": "div",
     "AccordionItem": "div",
+    "Avatar": "div",
     "Button": "button",
     "Checkbox": "button",
     "Dialog": "dialog",

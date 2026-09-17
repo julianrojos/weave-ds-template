@@ -50,6 +50,7 @@ const WEB = loadProfile();
 // contract, and the two light-DOM stylesheets. See packages/emit-web/README.md, which is also
 // explicit that the CSS half stops at the shadow boundary.
 import {
+  unsupportedResourceObservation,
   emitStructure,
   emitTheme,
   kebab,
@@ -58,6 +59,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
+  visibilityCondition,
 } from '@juro/emit-web';
 
 import { camel, pascal, slotsFrom, surfaceFrom } from './surface.mjs';
@@ -79,11 +81,11 @@ const attrKeyFor = (event) => `on${event.charAt(0).toUpperCase()}${event.slice(1
 // emitter's inline `disabled || ctx.disabled`: the inline form would have to say `ctx.disabled.value`
 // in the template, which works but puts framework plumbing in the markup.
 function stateExpr(spec, ctx) {
-  const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
+  const { state, op, value } = visibilityCondition(spec);
   let base;
   if (ctx.memberReflects === state) base = 'selected';
   else base = camel(state);
-  return value === null ? base : `${base} === '${value}'`;
+  return value === null ? base : `${base} ${op} '${value}'`;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -166,6 +168,7 @@ function renderPart(key, node, ctx, depth) {
 // the single-file component
 // ---------------------------------------------------------------------------------------
 export function emitSfc(name, contract, binding, prefix) {
+  const unsupportedResources = unsupportedResourceObservation(name, contract, 'Vue');
   const props = surfaceFrom(contract);
   const slots = slotsFrom(contract);
   const root = contract.anatomy.root;
@@ -441,6 +444,7 @@ export function emitSfc(name, contract, binding, prefix) {
   // -------------------------------------------------------------------------------------
   const s = [];
   const vueImports = new Set(['computed', 'useAttrs']);
+  if (unsupportedResources?.derivedStates.length) vueImports.add('ref');
   if (commitEditing) for (const i of ['ref', 'watch']) vueImports.add(i);
   if (needsIds && !member) vueImports.add('useId');
   if (collection) vueImports.add('provide');
@@ -505,6 +509,20 @@ export function emitSfc(name, contract, binding, prefix) {
     s.push(`const ${m.name} = defineModel<${m.type}>('${m.name}', { default: ${dflt} });`);
   }
   if (models.length) s.push(``);
+
+  if (unsupportedResources) {
+    assume(
+      'resource observation',
+      'emitted an `absent` fallback for each derived state',
+      `${unsupportedResources.message} The generated component is non-conforming until this backend observes the resource.`,
+    );
+    for (const { state, definition } of unsupportedResources.derivedStates) {
+      const type = definition.values.map((value) => `'${value}'`).join(' | ');
+      s.push(`// NON-CONFORMING: ${unsupportedResources.message}`);
+      s.push(`const ${camel(state)} = ref<${type}>('${definition.default}');`);
+    }
+    s.push(``);
+  }
 
   if (slots.length) {
     s.push(`defineSlots<{`);
@@ -1098,8 +1116,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
+  const source = emitSfc(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.vue`), emitSfc(name, contract, binding, prefix), 'utf8');
+  writeFileSync(join(outDir, `${name}.vue`), source, 'utf8');
   writeFileSync(
     join(outDir, `${name}.structure.css`),
     emitStructure(name, contract, binding.element, prefix, WEB, assume),

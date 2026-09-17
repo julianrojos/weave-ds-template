@@ -49,6 +49,7 @@ const WEB = loadProfile();
 // contract, and the two light-DOM stylesheets. See packages/emit-web/README.md, which is also
 // explicit that the CSS half stops at the shadow boundary.
 import {
+  unsupportedResourceObservation,
   emitStructure,
   emitTheme,
   kebab,
@@ -57,6 +58,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
+  visibilityCondition,
 } from '@juro/emit-web';
 
 import { camel, pascal, selectorFor, slotsFrom, surfaceFrom } from './surface.mjs';
@@ -77,9 +79,9 @@ const orNull = (expr) => `${expr} || null`;
 // invokes. A missed pair of parentheses binds the signal FUNCTION rather than its value and renders
 // the source of the function into the DOM — which is visible, but only if you look.
 function stateExpr(spec, ctx) {
-  const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
+  const { state, op, value } = visibilityCondition(spec);
   const base = ctx.memberReflects === state ? 'selected()' : `${camel(state)}()`;
-  return value === null ? base : `${base} === '${value}'`;
+  return value === null ? base : `${base} ${op} '${value}'`;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -175,6 +177,7 @@ function renderPart(key, node, ctx, depth) {
 // the component
 // ---------------------------------------------------------------------------------------
 export function emitComponent(name, contract, binding, prefix) {
+  const unsupportedResources = unsupportedResourceObservation(name, contract, 'Angular');
   const props = surfaceFrom(contract);
   const slots = slotsFrom(contract);
   const root = contract.anatomy.root;
@@ -593,6 +596,7 @@ export function emitComponent(name, contract, binding, prefix) {
   };
   need(inputs.length || axes.length || identity, 'input');
   need(models.length, 'model');
+  need(Boolean(unsupportedResources?.derivedStates.length), 'signal');
   need(commitEditing, 'signal', 'effect');
   need(member, 'computed', 'inject');
   need(collection, 'InjectionToken', 'forwardRef');
@@ -828,6 +832,19 @@ export function emitComponent(name, contract, binding, prefix) {
     s.push(`  readonly ${m.name} = model<${m.type}>(${dflt});`);
   }
   if (inputs.length || axes.length || identity || models.length) s.push(``);
+  if (unsupportedResources) {
+    assume(
+      'resource observation',
+      'emitted an `absent` fallback for each derived state',
+      `${unsupportedResources.message} The generated component is non-conforming until this backend observes the resource.`,
+    );
+    for (const { state, definition } of unsupportedResources.derivedStates) {
+      const type = definition.values.map((value) => `'${value}'`).join(' | ');
+      s.push(`  // NON-CONFORMING: ${unsupportedResources.message}`);
+      s.push(`  protected readonly ${camel(state)} = signal<${type}>('${definition.default}');`);
+    }
+    s.push(``);
+  }
   if (commitEditing) {
     s.push(`  protected readonly editingDraft = signal(this.${camel(valueState.from)}());`);
     s.push(
@@ -1137,8 +1154,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
+  const source = emitComponent(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.ts`), emitComponent(name, contract, binding, prefix), 'utf8');
+  writeFileSync(join(outDir, `${name}.ts`), source, 'utf8');
   writeFileSync(
     join(outDir, `${name}.structure.css`),
     emitStructure(name, contract, binding.element, prefix, WEB, assume),

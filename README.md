@@ -41,8 +41,8 @@ The questions become decisions with their reasoning attached. The component is b
 decision that already exists — and the machinery checks that it was.
 
 `packages/react`, `packages/vue`, `packages/angular` and `packages/wc` each ship an emitter, bindings
-and behaviour primitives, and **zero components**. `@juro/contracts` holds fifteen contracts, written
-to find out what a contract must be able to say before it can be compiled at all. The four sandboxes
+and behaviour primitives, and **zero components**. `@juro/contracts` holds sixteen contracts: fifteen written
+to find out what a contract must be able to say before it can be compiled at all, and `Avatar`, built from Figma afterwards. The four sandboxes
 hold the generated components those contracts produce. Nothing here is a component library you are
 meant to consume as is. I encourage you to modify or build your own emitters based on your product stack.
 
@@ -61,7 +61,7 @@ to re-brand an initialized repository. Try `--dry` first to see what moves. The 
 prefix and the data-attribute prefix are one decision in three syntaxes; renaming one by hand leaves
 a repo that builds green and is wrong. The current identity always comes from `ds.config.json`.
 
-The other three sandboxes render the same fifteen contracts, and running them side by side is the
+The other three sandboxes render the first fifteen of those contracts (`Avatar` is React-only so far), and running them side by side is the
 whole demonstration:
 
 ```bash

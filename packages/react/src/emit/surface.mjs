@@ -128,10 +128,12 @@ export function surfaceFrom(contract) {
   for (const [slot, def] of Object.entries(contract.composition?.slots ?? {})) {
     props.push({
       name: camel(slot),
-      type: 'ReactNode',
+      // An `image` slot takes a source the platform loads, not something the consumer renders.
+      type: def.accepts?.includes('image') ? 'string' : 'ReactNode',
       from: slot,
       origin: 'slot',
       role: 'slot',
+      accepts: def.accepts ?? [],
       part: def.part,
       required: def.required === true,
       description: def.description,

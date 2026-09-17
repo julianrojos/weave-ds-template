@@ -37,12 +37,14 @@ const WEB = loadProfile();
 
 import { emitFormMethods } from './form.mjs';
 import {
+  unsupportedResourceObservation,
   formFor,
   loadPair,
   memberFacts,
   partsOf,
   readJson,
   referencedByASibling,
+  visibilityCondition,
 } from '@juro/emit-web';
 import { emitStructureShadow, emitThemeShadow } from './css-shadow.mjs';
 import { camel, kebab, pascal, slotsFrom, surfaceFrom, tagFor } from './surface.mjs';
@@ -98,6 +100,7 @@ function renderPart(key, node, ctx, depth) {
 // the component
 // ---------------------------------------------------------------------------------------
 export function emitComponent(name, contract, binding, prefix, { declareTagTypes = true } = {}) {
+  const unsupportedResources = unsupportedResourceObservation(name, contract, 'Web Components');
   const form = formFor(contract);
   const props = surfaceFrom(contract);
   const slots = slotsFrom(contract);
@@ -416,6 +419,18 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   if (dismissCauses.length) s.push(`  readonly #dismissal;`);
   if (range) s.push(`  readonly #range;`);
   if (navigation) s.push(`  readonly #nav;`);
+  if (unsupportedResources) {
+    assume(
+      'resource observation',
+      'emitted an `absent` fallback for each derived state',
+      `${unsupportedResources.message} The generated component is non-conforming until this backend observes the resource.`,
+    );
+    for (const { state, definition } of unsupportedResources.derivedStates) {
+      const type = definition.values.map((value) => `'${value}'`).join(' | ');
+      s.push(`  // NON-CONFORMING: ${unsupportedResources.message}`);
+      s.push(`  protected readonly ${camel(state)}: ${type} = '${definition.default}';`);
+    }
+  }
   s.push(``);
 
   s.push(`  constructor() {`);
@@ -1151,9 +1166,9 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
 
 /** How a state name reads inside the class body. */
 function stateRead(spec, member) {
-  const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
+  const { state, op, value } = visibilityCondition(spec);
   const base = member && member.reflects === state ? 'this.#selected' : `this.${camel(state)}`;
-  return value === null ? base : `${base} === '${value}'`;
+  return value === null ? base : `${base} ${op} '${value}'`;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -1176,8 +1191,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
+  const source = emitComponent(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.ts`), emitComponent(name, contract, binding, prefix), 'utf8');
+  writeFileSync(join(outDir, `${name}.ts`), source, 'utf8');
   writeFileSync(
     join(outDir, `${name}.structure.css`),
     emitStructureShadow(name, contract, prefix, assume),

@@ -52,7 +52,7 @@
         "variantCount": { "type": ["integer", "null"], "minimum": 0 },
         "axes": {
           "type": "object",
-          "description": "Figma variant property -> its values, TitleCase property with prop-exact values. Must agree with the component's extracted prop value sets; a disagreement means the two surfaces describe different components.",
+          "description": "Figma variant property -> its values exactly as measured in Figma. These are source evidence, not code props: record any canonical mapping or deliberate difference in the entry's note or linked proposal.",
           "additionalProperties": { "type": "array", "items": { "type": "string" } }
         },
         "dependsOn": {

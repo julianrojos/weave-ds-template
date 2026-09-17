@@ -3,5 +3,22 @@
   "_doc": "Code component <-> Figma node, and the running record of what has been reconciled. `componentKey` stays null until the source file is published as a library; until then the join is pageId + componentSetId, both of which are file-local and refreshable. A component absent from this map has no Figma representation yet — the absence is the signal, so add an entry when the work is done, never in advance.",
   "lastScanned": null,
   "source": "weave",
-  "components": {}
+  "components": {
+    "Avatar": {
+      "source": "weave",
+      "codePath": "packages/contracts/components/Avatar",
+      "pageId": "4284:242",
+      "componentSetId": "4284:256",
+      "componentId": null,
+      "componentKey": null,
+      "assetType": "component_set",
+      "variantCount": 12,
+      "axes": {
+        "Type": ["Image", "Initial"],
+        "Size": ["Large", "Medium", "Small"],
+        "Shape": ["Circle", "Square"]
+      },
+      "note": "Measured 2026-09-17 on page test_juro_4_2. Figma's Type=Image|Initial is an observed state, not a code prop; Size maps Large/Medium/Small to size=l/m/s; Shape maps Circle/Square to shape=circle/square. Mapping and reasons: .ai/maps/proposals/Avatar.md §2 and §4."
+    }
+  }
 }

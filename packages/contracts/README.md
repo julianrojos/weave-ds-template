@@ -23,8 +23,8 @@ token system into it. See [`components/README.md`](./components/README.md) §3.
 
 `components/` shipped empty by design, the same way `packages/react` ships with no components: a
 contract is written against evidence and an accepted decision, never scaffolded in advance. It now
-holds fifteen, written on `spike/compile-switch` to find out what a contract must be able to say
-before it can be compiled at all.
+holds sixteen: fifteen written on `spike/compile-switch` to find out what a contract must be able
+to say before it can be compiled at all, and `Avatar`, built later from the Figma source.
 
 ## Read this when
 

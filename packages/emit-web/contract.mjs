@@ -168,3 +168,48 @@ export function formFor(contract) {
   }
   return { ...form, property: selection ? 'value' : camel(form.source) };
 }
+
+/**
+ * Parse a `visibleWhen` condition once, for every backend. `state` is true-ish, `state=value` is
+ * equality and `state!=value` is inequality. Four hand-copied `split('=')` calls read `a!=b` as
+ * state `a!` equal to `b`, silently, which is why this is shared rather than repeated.
+ */
+export function visibilityCondition(spec) {
+  const match = /^([a-z][a-z0-9-]*)(?:(!=|=)([a-z0-9-]+))?$/.exec(spec);
+  if (!match) throw new Error(`visibleWhen "${spec}" is not a state, state=value or state!=value`);
+  const [, state, op, value] = match;
+  return { state, op: op === '!=' ? '!==' : op ? '===' : null, value: value ?? null };
+}
+
+/**
+ * Describe a backend's lack of resource observation without making component names a capability
+ * table. A contract normally follows ADR 0005 and receives a diagnostic plus a compilable
+ * `absent` fallback. A contract whose promise would be false in that form opts into rejection via
+ * `emission.resourceObservation: "reject"`.
+ */
+export function unsupportedResourceObservation(name, contract, backend) {
+  const imageSlots = Object.entries(contract.composition?.slots ?? {})
+    .filter(([, def]) => def.accepts?.includes('image'))
+    .map(([slot]) => slot);
+  const derivedStates = Object.entries(contract.states ?? {})
+    .filter(([, def]) => def.derivedFrom)
+    .map(([state, definition]) => ({ state, definition }));
+
+  if (!imageSlots.length && !derivedStates.length) return;
+
+  const features = [
+    imageSlots.length &&
+      `image slot${imageSlots.length === 1 ? '' : 's'} ${imageSlots.map((x) => `\`${x}\``).join(', ')}`,
+    derivedStates.length &&
+      `state${derivedStates.length === 1 ? '' : 's'} ${derivedStates.map(({ state }) => `\`${state}\``).join(', ')} derived from a slot`,
+  ].filter(Boolean);
+  const message =
+    `${name}: ${backend} cannot observe ${features.join(' and ')}. This backend does not observe ` +
+    `resource load and error.`;
+  if (contract.emission?.resourceObservation === 'reject') {
+    throw new Error(
+      `${message} ${name}.contract.json requires rejection until that capability exists.`,
+    );
+  }
+  return { imageSlots, derivedStates, message };
+}

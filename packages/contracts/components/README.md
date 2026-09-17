@@ -8,7 +8,7 @@ advance — see `docs/ADR/README.md`.
 
 ## What is here
 
-Fifteen contracts, and they did **not** compile equally. The verdict column is measured by generating
+Sixteen contracts, and they did **not** compile equally. The verdict column is measured by generating
 each one and using the result — see `docs/research/0002-compiling-a-contract-into-a-component.md`.
 
 | Contract         | Compiles       | What the contract could not say                                                   |
@@ -19,6 +19,7 @@ each one and using the result — see `docs/research/0002-compiling-a-contract-i
 | `Tabs/`          | **partially**  | its keyboard, and that a tab and its panel reference each other across a boundary |
 | `TabItem/`       | **partially**  | `aria-controls`, and that one tab belongs in the Tab order                        |
 | `TabPanel/`      | **partially**  | `aria-labelledby` — its name crosses a component boundary                         |
+| `Avatar/`        | **fully**      | that its frame centres and clips its content — layout has no home (React only)    |
 | `Switch/`        | **fully**      | nothing — the platform supplies its behaviour                                     |
 | `Accordion/`     | **fully**      | nothing, since `collection` was added                                             |
 | `AccordionItem/` | **fully**      | its heading level, which the APG says must fit the page                           |
@@ -171,6 +172,14 @@ mapping work. See
 _when another state may display_; they are real, tracked, and invisible. Say so in `visual` rather
 than inventing a treatment. Whether these deserve a `kind` of their own is open — see
 `docs/research/0001-contract-schema-smoke-test.md`.
+
+### Resource observation and emission
+
+An internal state with `derivedFrom` reports a resource outcome rather than a value a consumer can
+set. A backend without `load` and `error` observation records that as non-conforming and emits a
+compilable `absent` fallback, as ADR 0005 requires. Set
+`emission.resourceObservation: "reject"` only when that fallback would make the contract's stated
+promise false; the emitter then stops before writing output. Avatar is the first such contract.
 
 ## 4. Never invent a field to fill a blank
 

@@ -62,6 +62,7 @@ import {
   partsOf,
   readJson,
   referencedByASibling,
+  visibilityCondition,
 } from '@juro/emit-web';
 
 // The prop surface a contract implies. Shared with the contract tooling, which needs the same
@@ -89,8 +90,11 @@ function renderPart(key, node, ctx, depth) {
   const slot = slots.find((x) => (x.part ? x.part === key : camel(x.from) === key));
   const takesChildrenHere = ctx.childrenPart === key;
   const attrs = [];
+  const imageSlot = slot?.accepts?.includes('image') ? slot : null;
 
-  const nodeEl = defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
+  const nodeEl = imageSlot
+    ? 'img'
+    : defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
   // Unified with the ROOT path, which asks the same question two hundred lines below. Equivalent
   // to the old inline check by cases: a container has no implicit role so it never suppresses,
   // and an activatable suppresses exactly when the declared role is the one it already carries.
@@ -148,6 +152,38 @@ function renderPart(key, node, ctx, depth) {
   if (ctx.rangeTrack === key) attrs.push(`ref={range.trackRef}`);
   attrs.push(`data-${prefix}-part="${node.part}"`);
 
+  // An image slot's content is a source, not children, so the part IS the void <img>. `alt` is empty
+  // because the component's root carries the accessible name.
+  if (imageSlot) {
+    const childParts = Object.keys(node.parts ?? {});
+    if (takesChildrenHere || childParts.length) {
+      const discarded = [
+        takesChildrenHere && 'component children',
+        childParts.length &&
+          `subpart${childParts.length === 1 ? '' : 's'} ${childParts.map((x) => `\`${x}\``).join(', ')}`,
+      ]
+        .filter(Boolean)
+        .join(' and ');
+      throw new Error(
+        `${ctx.contract.component}: image slot \`${imageSlot.name}\` fills part \`${key}\`, which ` +
+          `renders as a void <img> and cannot contain ${discarded}.`,
+      );
+    }
+    const d = ctx.derived.find((x) => x.source === imageSlot);
+    if (d) {
+      const set = `set${pascal(d.outcome)}`;
+      const src = imageSlot.name;
+      // Keyed by source: a new source mounts a new <img>, so a load or error still pending for the old
+      // one lands on an unmounted element and can never be credited to the new source.
+      attrs.unshift(
+        `key={${src}}`,
+        `onLoad={() => ${set}({ source: ${src} as string, status: 'loaded' })}`,
+        `onError={() => ${set}({ source: ${src} as string, status: 'failed' })}`,
+      );
+    }
+    return [`${pad}<img src={${imageSlot.name}} alt="" ${attrs.join(' ')} />`];
+  }
+
   const el = nodeEl;
   const kids = Object.entries(node.parts ?? {});
   const open = `<${el} ${attrs.join(' ')}>`;
@@ -168,12 +204,12 @@ function renderPart(key, node, ctx, depth) {
 
 // How a state name evaluates inside the generated component.
 function stateExpr(spec, ctx) {
-  const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
+  const { state, op, value } = visibilityCondition(spec);
   let base;
   if (ctx.memberReflects === state) base = 'selected';
   else if (ctx.sharedStates.has(state)) base = `${camel(state)}Value`;
   else base = camel(state);
-  return value === null ? base : `${base} === '${value}'`;
+  return value === null ? base : `${base} ${op} '${value}'`;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -421,9 +457,45 @@ export function emitTsx(name, contract, binding, prefix) {
   const referencedBySibling = referencedByASibling(name, member, CONTRACTS);
   const needsIds = Boolean(collection) || referencesParts || referencedBySibling;
 
+  // A state `derivedFrom` an image slot is observed from that <img>'s load and error events. Keyed
+  // by slot so the part that renders the image knows which setter to call.
+  // An image slot with no anatomy part would fall through to the bare-slot path below and print its
+  // source as text, with no <img> to observe. Refuse instead.
+  for (const x of slots.filter((s) => s.accepts.includes('image'))) {
+    const partKey = x.part ?? camel(x.from);
+    if (!allParts.some((p) => p.key === partKey)) {
+      throw new Error(
+        `${name}: image slot \`${x.from}\` names part \`${partKey}\`, which the anatomy does not declare.`,
+      );
+    }
+  }
+
+  const derived = Object.entries(contract.states ?? {})
+    .filter(([, def]) => def.derivedFrom)
+    .map(([st, def]) => {
+      const source = slots.find((x) => x.from === def.derivedFrom.slot);
+      if (!source?.accepts.includes('image')) {
+        throw new Error(
+          `${name}: state \`${st}\` derives from slot \`${def.derivedFrom.slot}\`, which is not an image slot.`,
+        );
+      }
+      return { state: st, def, source, outcome: `${camel(st)}Outcome` };
+    });
+  // The values are fixed, so two states observing one slot would be the same state twice — and only
+  // one <img> exists to wire. Refuse rather than leave the second unobserved.
+  for (const d of derived) {
+    const twin = derived.find((x) => x !== d && x.source === d.source);
+    if (twin) {
+      throw new Error(
+        `${name}: states \`${d.state}\` and \`${twin.state}\` both derive from slot \`${d.source.from}\`; declare one.`,
+      );
+    }
+  }
+
   const ctx = {
     prefix,
     slots,
+    derived,
     contract,
     idFor,
     childrenPart,
@@ -444,7 +516,7 @@ export function emitTsx(name, contract, binding, prefix) {
 
   const hooks = ['forwardRef'];
   if (needsIds && !member) hooks.push('useId');
-  if (shared.length || selShared) hooks.push('useState');
+  if (shared.length || selShared || derived.length) hooks.push('useState');
   if (rootToggles || activator || collection || nativelyEdited) hooks.push('useCallback');
   if (registers) hooks.push('useCallback');
   if (range) hooks.push('useCallback');
@@ -454,7 +526,7 @@ export function emitTsx(name, contract, binding, prefix) {
   if (member) hooks.push('useContext');
   s.push(`import { ${[...new Set(hooks)].join(', ')} } from 'react';`);
   const types = [attrType];
-  if (slots.length) types.push('ReactNode');
+  if (slots.some((x) => x.type === 'ReactNode')) types.push('ReactNode');
   if (nativelyEdited) types.push('ChangeEvent');
   s.push(`import type { ${types.join(', ')} } from 'react';`);
   if (range) {
@@ -652,6 +724,30 @@ export function emitTsx(name, contract, binding, prefix) {
     s.push(``);
   } else if (needsIds) {
     s.push(`  const baseId = useId();`);
+    s.push(``);
+  }
+
+  // ---- derived states: observed through `derivedFrom`, never set
+  for (const d of derived) {
+    const union = d.def.values.map((v) => `'${v}'`).join(' | ');
+    s.push(
+      `  // \`${d.state}\` is observed, never set. Any change of source discards the previous outcome —`,
+    );
+    s.push(
+      `  // including a return to a source that loaded before — so it reads \`absent\` until this`,
+    );
+    s.push(`  // mount's own load or error arrives.`);
+    s.push(
+      `  const [${d.outcome}, set${pascal(d.outcome)}] = useState<{ source: string; status: 'loaded' | 'failed' } | null>(null);`,
+    );
+    s.push(`  const [${d.outcome}For, set${pascal(d.outcome)}For] = useState(${d.source.name});`);
+    s.push(`  if (${d.outcome}For !== ${d.source.name}) {`);
+    s.push(`    set${pascal(d.outcome)}For(${d.source.name});`);
+    s.push(`    set${pascal(d.outcome)}(null);`);
+    s.push(`  }`);
+    s.push(
+      `  const ${camel(d.state)}: ${union} = ${d.source.name} && ${d.outcome}?.source === ${d.source.name} ? ${d.outcome}.status : 'absent';`,
+    );
     s.push(``);
   }
 

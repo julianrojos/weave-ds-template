@@ -19,6 +19,8 @@
  *   invented   contract names a part / state / slot / axis value the implementation lacks
  *   phantom    contract declares a part the TSX never renders
  *   status     a `deprecated` level whose replacedBy does not exist
+ *   derived    an image slot with no part, or a `derivedFrom` state observing a slot that is
+ *              missing, takes no image, or another state already observes
  *
  * REPORTS, NEVER FAILS
  *   a component with no contract          (uncontracted is a reportable state, not a failure)
@@ -170,6 +172,58 @@ function check(name, validateContract, validateBinding) {
           `binding.contract points at ${binding.contract}, not its own contract.`,
         );
       }
+    }
+  }
+
+  // An image slot is rendered as the <img> of its part. Without that part there is nothing to load
+  // the source, and the emitter would print it as text.
+  const anatomyKeys = new Set();
+  const collectKeys = (node) => {
+    for (const [key, child] of Object.entries(node?.parts ?? {})) {
+      anatomyKeys.add(key);
+      collectKeys(child);
+    }
+  };
+  collectKeys(contract.anatomy?.root);
+  const observed = new Map();
+  for (const [slotName, def] of Object.entries(contract.composition?.slots ?? {})) {
+    if (!(def.accepts ?? []).includes('image')) continue;
+    const partKey = def.part ?? slotName;
+    if (!anatomyKeys.has(partKey)) {
+      fail(
+        name,
+        'derived',
+        `image slot "${slotName}" names part "${partKey}", which the anatomy does not declare.`,
+      );
+    }
+  }
+
+  // A derived state names the slot it observes. The schema can only check the name's spelling, and
+  // the emitter only finds a wrong one when this component is next generated.
+  for (const [state, def] of Object.entries(contract.states ?? {})) {
+    if (!def.derivedFrom) continue;
+    const slot = contract.composition?.slots?.[def.derivedFrom.slot];
+    if (!slot) {
+      fail(
+        name,
+        'derived',
+        `state "${state}" derives from slot "${def.derivedFrom.slot}", which is not declared.`,
+      );
+    } else if (!(slot.accepts ?? []).includes('image')) {
+      fail(
+        name,
+        'derived',
+        `state "${state}" derives from slot "${def.derivedFrom.slot}", which does not accept image.`,
+      );
+    }
+    if (observed.has(def.derivedFrom.slot)) {
+      fail(
+        name,
+        'derived',
+        `states "${observed.get(def.derivedFrom.slot)}" and "${state}" both derive from slot "${def.derivedFrom.slot}"; declare one.`,
+      );
+    } else {
+      observed.set(def.derivedFrom.slot, state);
     }
   }
 
