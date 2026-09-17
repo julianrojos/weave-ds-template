@@ -8,7 +8,7 @@
  *
  * `works` does NOT mean finished. It means: everything this component's contract states, it does.
  * Every component here still gets its layout from the consumer's theme file, because the contract
- * has no way to say where a part sits — see `crossCutting` below, which applies to all fifteen.
+ * has no way to say where a part sits — see `crossCutting` below, which applies to all sixteen.
  *
  * A specimen moves up only after being driven in a browser. Moving one because the code looks right
  * is how this file becomes a wish list.
@@ -17,7 +17,7 @@
 export type Verdict = 'works' | 'partial' | 'shell';
 
 export interface ComponentStatus {
-  /** The contract's name. All fifteen appear, including the ones the page shows inside a group. */
+  /** The contract's name. All sixteen appear, including the ones the page shows inside a group. */
   component: string;
   verdict: Verdict;
   /** The behaviour its contract declares and the emitter now generates. */
@@ -50,6 +50,17 @@ export const STATUS: ComponentStatus[] = [
     verdict: 'works',
     supplies: 'A three-valued state, with `activates.between` naming the two a click may reach.',
     remaining: [],
+  },
+  {
+    component: 'Avatar',
+    verdict: 'works',
+    supplies:
+      'A picture or an initial in one frame, chosen by an internal state derived from the image slot.',
+    remaining: [],
+    alsoKnown: [
+      'The accessible name is the consumer’s: pass aria-label on the root, or aria-hidden when a visible name sits beside it.',
+      'CONSUMER: the frame itself. The sandbox theme supplies the measured 24/32/40 sizes, radii, crop and centring; those remain consumer CSS because the contract cannot express layout. Colour and font-family bindings remain unclaimed because the Figma variables do not map to this repository’s tokens.',
+    ],
   },
   {
     component: 'Switch',
@@ -160,7 +171,7 @@ export const STATUS: ComponentStatus[] = [
 
 /**
  * True of every component above, including the ones marked `works`. Listed once rather than
- * repeated fifteen times, because repeating it would make each one look like a local defect when it
+ * repeated sixteen times, because repeating it would make each one look like a local defect when it
  * is the same missing decision each time.
  */
 export const CROSS_CUTTING = [

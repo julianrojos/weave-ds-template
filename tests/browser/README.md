@@ -34,7 +34,7 @@ commit-mode TextField and manual-activation Tabs with its TabItem. Both `pnpm ty
 load only on their dedicated page; the production emitter still emits its global tag declarations by default.
 
 Fixtures import generated components. They remain separate from specimen pages. Additional
-regressions cover styling, editing drafts, ARIA references, collection identity, modal lifecycle,
+regressions cover styling, Avatar's fallback, source changes and measured geometry (React only), editing drafts, ARIA references, collection identity, modal lifecycle,
 activation cancellation, and form contribution/validation/reset/disabled behavior. Form state
 restoration invokes the platform callback directly; history/autofill scheduling is not asserted.
 Known relationship gaps are characterized and reported as non-conforming under ADR 0005.

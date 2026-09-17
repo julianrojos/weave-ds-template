@@ -8,13 +8,14 @@
  * Nothing is imported from @juro/react, which exports no components and never will. The components
  * live here, in the consumer's own tree, which is the architecture in one import path.
  *
- * Fifteen contracts went in. They did NOT come out equal, and the page says so per specimen — the
+ * Sixteen contracts went in. They did NOT come out equal, and the page says so per specimen — the
  * point of this harness is to show how far each contract got, not to hide the difference.
  */
 
 import { useState, type ReactNode } from 'react';
 import { CROSS_CUTTING, COUNTS, STATUS, verdictOf, type Verdict } from './status';
 import { Switch } from './components/Switch';
+import { Avatar } from './components/Avatar';
 import { Field } from './components/Field';
 import { Accordion } from './components/Accordion';
 import { AccordionItem } from './components/AccordionItem';
@@ -59,7 +60,7 @@ function Specimen({
 }
 
 /**
- * The board. Fifteen contracts, what each one produced, and what it still owes — the thing that was
+ * The board. Sixteen contracts, what each one produced, and what it still owes — the thing that was
  * previously only reconstructable by reading every specimen note on the page.
  */
 function StatusBoard() {
@@ -130,7 +131,7 @@ function StatusBoard() {
           ))}
         </tbody>
       </table>
-      <h3>True of all fifteen</h3>
+      <h3>True of all sixteen</h3>
       <ul className="cross-cutting">
         {CROSS_CUTTING.map((x) => (
           <li key={x}>{x}</li>
@@ -165,7 +166,7 @@ export function App() {
       <header>
         <h1>Design system sandbox</h1>
         <p>
-          Fifteen contracts, compiled by <code>packages/react/src/emit/emit.mjs</code>. Each
+          Sixteen contracts, compiled by <code>packages/react/src/emit/emit.mjs</code>. Each
           specimen is labelled with how far its contract actually got — see{' '}
           <code>docs/research/0002-compiling-a-contract-into-a-component.md</code>.
         </p>
@@ -311,6 +312,20 @@ export function App() {
             </>
           }
         />
+      </Specimen>
+
+      <Specimen
+        name="Avatar"
+        of={['Avatar']}
+        note="image-status is internal and derivedFrom the image slot, so no prop exists for it. With a source the picture shows; without one the initial does. The last one has a broken source: its error event moves the state to failed, and the initial shows."
+      >
+        <Avatar
+          aria-label="Ada Lovelace"
+          image="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%236b8afd'/%3E%3C/svg%3E"
+          fallback="A"
+        />
+        <Avatar aria-label="Grace Hopper" fallback="G" shape="square" size="l" />
+        <Avatar aria-label="Broken source" image="/does-not-exist.png" fallback="B" size="s" />
       </Specimen>
 
       <Specimen

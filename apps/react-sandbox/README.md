@@ -28,7 +28,7 @@ node packages/react/src/emit/emit.mjs Switch --out apps/react-sandbox/src/compon
 ```
 
 That produced `Switch/`, and the same command produced `Field/`, `Accordion/`, `AccordionItem/`,
-`RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`, `Tabs/`, `TabItem/` and `TabPanel/` — each one a TSX, its structural CSS, an empty theme file
+`RadioGroup/`, `RadioItem/`, `Tooltip/`, `Button/`, `Checkbox/`, `TextField/`, `Slider/`, `Dialog/`, `Tabs/`, `TabItem/`, `TabPanel/` and `Avatar/` — each one a TSX, its structural CSS, an empty theme file
 and a barrel, from the matching contract in `packages/contracts/components/`. Note what the imports in `src/App.tsx` do
 **not** say: nothing comes from `@juro/react`, because that package exports no components. The
 components live here, in the consumer's own tree, which is the whole architecture in one import path.

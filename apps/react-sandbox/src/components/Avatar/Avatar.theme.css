@@ -1,0 +1,72 @@
+/*
+ * Avatar — YOUR FILE. Emitted once, never regenerated. Wire your tokens here.
+ *
+ * The sandbox owns the measured frame geometry, crop and centring. Its colour and type bindings
+ * remain unbound: Avatar's Figma variables do not map to this repository's token system.
+ *
+ * NOTE: this file is FRAMEWORK-FREE. It selects on data attributes the contract
+ * produced, so the identical file styles every light-DOM build of Avatar.
+ * See docs/research/0004.
+ */
+
+[data-juro-component='Avatar'] {
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  /* background: ; */
+}
+
+/* size = s */
+[data-juro-component='Avatar'][data-juro-size='s'] {
+  inline-size: 24px;
+  block-size: 24px;
+  font-size: 14px;
+}
+
+/* size = m */
+[data-juro-component='Avatar'][data-juro-size='m'] {
+  inline-size: 32px;
+  block-size: 32px;
+  font-size: 16px;
+}
+
+/* size = l */
+[data-juro-component='Avatar'][data-juro-size='l'] {
+  inline-size: 40px;
+  block-size: 40px;
+  font-size: 20px;
+}
+
+/* shape = circle */
+[data-juro-component='Avatar'][data-juro-shape='circle'] {
+  border-radius: 50%;
+}
+
+/* shape = square */
+[data-juro-component='Avatar'][data-juro-shape='square'] {
+  border-radius: 8px;
+}
+
+[data-juro-component='Avatar'][data-juro-size='s'][data-juro-shape='square'] {
+  border-radius: 4px;
+}
+
+[data-juro-component='Avatar'] [data-juro-part='image'] {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+[data-juro-component='Avatar'] [data-juro-part='fallback'] {
+  /* color: ; */
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  line-height: 1.4;
+}
+
+[data-juro-component='Avatar'][data-juro-size='l'] [data-juro-part='fallback'] {
+  line-height: 1.2;
+}
