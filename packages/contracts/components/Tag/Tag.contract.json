@@ -1,0 +1,170 @@
+{
+  "$schema": "../../schema/component.schema.json",
+  "component": "Tag",
+  "status": {
+    "level": "experimental",
+    "since": "2026-09-21",
+    "note": "Proposed in .ai/maps/proposals/Tag.md from the imported Figma set 4323:266. The first contract to take the `treatment` axis (ADR 0006) and the first whose part asks for something it cannot do: the remove control declares `activates.requests` (ADR 0007), because a tag cannot remove itself from a list only its owner holds."
+  },
+  "intent": {
+    "purpose": "Labels a thing with one short piece of text, and offers to take that label off again.",
+    "behaviour": [
+      "Shows its label, which is text the consumer supplies.",
+      "Offers a control that asks for the tag to be removed. The tag does not remove itself — it cannot, because whatever holds the list decides.",
+      "Carries a semantic intent separately from how present it is: a danger tag can be the quiet one on the page, and one axis could not say so."
+    ],
+    "notFor": [
+      "A control. A tag that filters a list when pressed is a button that looks like a tag; only the remove control here is interactive.",
+      "A status message. A tag labels a thing that is present; it does not announce that something happened.",
+      "Counting. A tag holds a label, not a number badge — the design sizes it for words.",
+      "Long text. The design draws one line at a fixed height and says nothing about wrapping or truncation."
+    ]
+  },
+  "axes": {
+    "variant": {
+      "values": ["neutral", "brand", "success", "warning", "danger"],
+      "default": "neutral",
+      "description": "The semantic intent the label carries, which selects the colour role. The design names this axis `Scheme`, and its `Positive` is the canon's `success`."
+    },
+    "treatment": {
+      "values": ["solid", "soft"],
+      "default": "solid",
+      "description": "How much visual presence the tag has, independently of which intent it carries. Orthogonal to `variant`. The design names this axis `Variant`, which is NOT the canon's `variant` — see ADR 0006 and the proposal §2."
+    }
+  },
+  "states": {
+    "hover": {
+      "kind": "intrinsic",
+      "control": "internal",
+      "description": "The pointer is over the tag. The platform tracks it; nothing here does.",
+      "visual": "The surface shifts one step. Measured: the design repaints only the background and leaves the label untouched."
+    },
+    "focus-visible": {
+      "kind": "intrinsic",
+      "control": "internal",
+      "description": "The remove control is focused in a way the browser judges worth showing a ring for. The tag itself is not focusable, so this can only ever be that control.",
+      "visual": "A focus ring is drawn around the remove control. NOT MEASURED: the design draws no focus indicator at all, and this contract claims one anyway because a focusable control without one is a defect. The treatment is the consumer's."
+    },
+    "removable": {
+      "kind": "authored",
+      "control": "consumer",
+      "default": true,
+      "description": "Whether this tag offers to be removed. Measured as the set's `Removable#147:0` property, which defaults to true and which the design binds to the remove control's visibility.",
+      "visual": "The remove control shows only while this is set; nothing else changes."
+    }
+  },
+  "semantics": {
+    "focusable": false
+  },
+  "a11y": {
+    "focusVisible": true,
+    "minHitArea": 24,
+    "keyboard": "The tag itself is not focusable. Tab reaches its remove control, and Enter or Space activates that control, which the platform provides for the role it declares.",
+    "notes": [
+      "The remove control needs an accessible name the consumer supplies, and the label alone is not one: ten tags each named `Tag` give ten identical controls. The name has to say what is being removed — `Remove design-system` — and nothing here can compose it.",
+      "`minHitArea: 24` is the repository's floor, and THE DESIGN DOES NOT MEET IT: the remove glyph is drawn 16 × 16. A 16 px glyph can still carry a 24 px target through padding, so this is a claim the consumer's theme must satisfy, not one the measured design already satisfies. See the proposal §8.1.",
+      "The design draws no focus indicator for the remove control, and this contract claims one anyway, because a focusable control without one is a defect regardless of what was drawn. The treatment is the consumer's; that it exists is not.",
+      "Contrast is not claimed. The design binds every colour to an external library this repository does not map, so no pair here has been measured against a background this system owns.",
+      "There is no `disabled`. The design does not draw one, and a disabled tag whose remove control is still reachable would be worse than none."
+    ]
+  },
+  "composition": {
+    "children": {
+      "part": "label",
+      "accepts": ["text"],
+      "required": true,
+      "description": "The label. Text, and short — the design draws one line at a fixed height."
+    },
+    "slots": {
+      "removeIcon": {
+        "part": "dismiss",
+        "accepts": ["node"],
+        "required": true,
+        "max": 1,
+        "description": "The glyph inside the remove control. REQUIRED and DECORATIVE, which are not in tension: the control's accessible name is supplied separately because an icon names nothing, but a visible control with nothing drawn in it is an affordance nobody can see. The design draws the glyph in all twenty variants, from an external library this repository does not ship — so the consumer supplies it, and the contract is what makes sure they do."
+      }
+    }
+  },
+  "anatomy": {
+    "root": {
+      "part": "root",
+      "description": "The tag. Owns the surface, the silhouette and the spacing between the label and the remove control. Holds no focus of its own.",
+      "paints": {
+        "background": null,
+        "color": null,
+        "padding-inline": null,
+        "padding-block": null,
+        "gap": null,
+        "border-radius": null,
+        "min-block-size": null
+      },
+      "whenAxis": {
+        "variant=neutral": {
+          "background": null,
+          "color": null
+        },
+        "variant=brand": {
+          "background": null,
+          "color": null
+        },
+        "variant=success": {
+          "background": null,
+          "color": null
+        },
+        "variant=warning": {
+          "background": null,
+          "color": null
+        },
+        "variant=danger": {
+          "background": null,
+          "color": null
+        },
+        "treatment=solid": {
+          "background": null,
+          "color": null
+        },
+        "treatment=soft": {
+          "background": null,
+          "color": null
+        }
+      },
+      "states": {
+        "hover": {
+          "background": null
+        }
+      },
+      "parts": {
+        "label": {
+          "part": "label",
+          "description": "The text. Takes its colour from the pair the two axes select, never from one of them alone.",
+          "paints": {
+            "color": null,
+            "font-size": null,
+            "line-height": null
+          }
+        },
+        "dismiss": {
+          "part": "dismiss",
+          "role": "button",
+          "visibleWhen": "removable",
+          "activates": {
+            "requests": "remove"
+          },
+          "description": "The control that asks for this tag to be removed. Shown only while `removable`: the design binds this node's visibility to that property, so a tag that cannot be removed shows no control rather than a dead one.",
+          "paints": {
+            "inline-size": null,
+            "block-size": null,
+            "color": null,
+            "border-radius": null
+          },
+          "states": {
+            "focus-visible": {
+              "outline": null,
+              "outline-offset": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

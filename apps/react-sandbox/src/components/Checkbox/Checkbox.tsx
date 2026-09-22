@@ -85,11 +85,11 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
       data-juro-part="root"
       className={className}
     >
-      <div data-juro-part="box">
-        <div hidden={!(checkedValue === 'checked')} data-juro-part="tick" />
-        <div hidden={!(checkedValue === 'mixed')} data-juro-part="dash" />
-      </div>
-      <div data-juro-part="label">{label}</div>
+      <span data-juro-part="box">
+        <span hidden={!(checkedValue === 'checked')} data-juro-part="tick" />
+        <span hidden={!(checkedValue === 'mixed')} data-juro-part="dash" />
+      </span>
+      <span data-juro-part="label">{label}</span>
       {children}
     </button>
   );

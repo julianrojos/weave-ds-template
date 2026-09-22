@@ -20,14 +20,14 @@ export function emitFormMethods(
     : source;
   const restore = number
     ? 'Number(state)'
-    : model.kind === 'boolean'
+    : model.type === 'boolean'
       ? "state === 'true'"
       : `state as ${model.type}`;
   const restoreGuard = number
     ? 'if (!Number.isFinite(Number(state))) return;'
     : model.kind === 'enum'
       ? `if (![${model.type.split(' | ').join(', ')}].includes(state)) return;`
-      : model.kind === 'boolean'
+      : model.type === 'boolean'
         ? "if (state !== 'true' && state !== 'false') return;"
         : '';
   const cancel = [
@@ -79,5 +79,5 @@ export function emitFormMethods(
     this.#root.setAttribute('aria-invalid', String(valueMissing || customError));
     this.#root.setAttribute('aria-required', String(this.required));
   }
-`;
+`.replace(/^ +$/gm, '');
 }

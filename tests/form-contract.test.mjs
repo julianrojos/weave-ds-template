@@ -1,6 +1,7 @@
 import { it, expect } from 'vitest';
 import Ajv from 'ajv/dist/2020.js';
 import { formFor } from '../packages/emit-web/contract.mjs';
+import { emitFormMethods } from '../packages/wc/src/emit/form.mjs';
 import { readJson, contractPaths, REPO_ROOT } from '../scripts/contract-lib.mjs';
 import { join } from 'node:path';
 const validate = new Ajv({ strict: false }).compile(
@@ -23,4 +24,22 @@ it('validates form serialization and rejects missing or incompatible sources', (
   expect(() => formFor(checkbox)).toThrow(/domain/);
   delete checkbox.form.checkedValue;
   expect(validate(checkbox)).toBe(false);
+});
+
+it('restores every boolean model by its public type, including default-true attributes', () => {
+  const emitted = emitFormMethods(
+    { property: 'enabled', encoding: 'checked', checkedValue: true, source: 'enabled' },
+    { kind: 'boolean-default-true', type: 'boolean' },
+    {
+      range: null,
+      hasInvalid: false,
+      commitEditing: false,
+      hasReadOnly: false,
+      hasActivation: false,
+    },
+  );
+
+  expect(emitted).toContain("if (state !== 'true' && state !== 'false') return;");
+  expect(emitted).toContain("this.enabled = state === 'true';");
+  expect(emitted).not.toContain('state as boolean');
 });

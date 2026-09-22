@@ -105,10 +105,10 @@ function onRootClick(event: MouseEvent) {
     data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-juro-part="label">
+    <span data-juro-part="label">
       <slot name="label" />
-    </div>
-    <div :hidden="!selected" data-juro-part="indicator" />
+    </span>
+    <span :hidden="!selected" data-juro-part="indicator" />
     <slot />
   </button>
 </template>

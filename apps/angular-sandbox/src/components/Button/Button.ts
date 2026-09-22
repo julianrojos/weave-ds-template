@@ -29,15 +29,15 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
     'data-juro-part': 'root',
   },
   template: `
-    <div data-juro-part="icon-start">
+    <span data-juro-part="icon-start">
       <ng-content select="[slot=iconStart]" />
-    </div>
-    <div data-juro-part="label">
+    </span>
+    <span data-juro-part="label">
       <ng-content />
-    </div>
-    <div data-juro-part="icon-end">
+    </span>
+    <span data-juro-part="icon-end">
       <ng-content select="[slot=iconEnd]" />
-    </div>
+    </span>
   `,
 })
 export class Button {

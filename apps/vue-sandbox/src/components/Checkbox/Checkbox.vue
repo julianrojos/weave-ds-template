@@ -80,13 +80,13 @@ function onRootClick(event: MouseEvent) {
     data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-juro-part="box">
-      <div :hidden="!(checked === 'checked')" data-juro-part="tick" />
-      <div :hidden="!(checked === 'mixed')" data-juro-part="dash" />
-    </div>
-    <div data-juro-part="label">
+    <span data-juro-part="box">
+      <span :hidden="!(checked === 'checked')" data-juro-part="tick" />
+      <span :hidden="!(checked === 'mixed')" data-juro-part="dash" />
+    </span>
+    <span data-juro-part="label">
       <slot name="label" />
-    </div>
+    </span>
     <slot />
   </button>
 </template>

@@ -9,14 +9,19 @@
 // the controlled/uncontrolled trio are React's spelling of a `shared` state. ADR 0004 is the
 // decision, and each framework's own rules live beside its emitter.
 //
-// Pure: no fs, no profile, no module state. Depends only on the two string helpers below.
+// Pure: no fs, no profile, no module state.
+
+import {
+  camel,
+  partHasOwnText,
+  pascal,
+  requestingParts,
+  stateTypeAndDefault,
+  uniqueSurface,
+} from '@juro/emit-web';
 
 // Exported because emit.mjs needs the same two, and one home beats two copies that can drift.
-export const camel = (s) => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-export const pascal = (s) => {
-  const c = camel(s);
-  return c.charAt(0).toUpperCase() + c.slice(1);
-};
+export { camel, pascal };
 
 // ---------------------------------------------------------------------------------------
 // states -> the public prop surface, per ADR 0004's controlRules
@@ -30,18 +35,10 @@ export function surfaceFrom(contract) {
     // A state with `values` is an enumeration, not a boolean. Everything downstream — the prop
     // type, the default, the comparison in a `visibleWhen` — follows from this one fact.
     // Three shapes: enumerated, free (string/number), or — saying nothing — boolean.
-    let t = 'boolean';
-    let dflt = false;
-    if (def.values) {
-      t = def.values.map((v) => `'${v}'`).join(' | ');
-      dflt = def.default;
-    } else if (def.valueType === 'string') {
-      t = 'string';
-      dflt = '';
-    } else if (def.valueType === 'number') {
-      t = 'number';
-      dflt = def.min ?? 0;
-    }
+    const { type: t, default: dflt } = stateTypeAndDefault(def);
+    // `declared` keeps an explicit default apart from the fallback every state shape carries, so
+    // only a contract that actually said something changes a consumer-only prop's destructuring.
+    const declared = def.default !== undefined;
     if (def.control === 'shared') {
       props.push(
         { name: n, type: t, from: state, origin: 'state', role: 'controlled' },
@@ -62,7 +59,15 @@ export function surfaceFrom(contract) {
         },
       );
     } else if (def.control === 'consumer') {
-      props.push({ name: n, type: t, from: state, origin: 'state', role: 'input', default: dflt });
+      props.push({
+        name: n,
+        type: t,
+        from: state,
+        origin: 'state',
+        role: 'input',
+        default: dflt,
+        declaredDefault: declared,
+      });
     }
     // `internal` emits nothing. That is the whole point of the value.
   }
@@ -140,5 +145,51 @@ export function surfaceFrom(contract) {
     });
   }
 
-  return props;
+  // A part that declares `activates.requests` asks its CONSUMER to perform something the component
+  // cannot perform itself — ADR 0007. One callback per request, by rule, so a contract that uses it
+  // adds no mapping work here.
+  //
+  // The `Request` suffix is load-bearing, not decoration. `onRemove` reads as "it was removed",
+  // which is exactly the fact the component can never know: it asked, and whoever owns the list
+  // decided. It also keeps the name clear of a future `remove` state, whose callback under ADR
+  // 0004 would be `onRemoveChange`.
+  for (const { key, action } of requestingParts(contract)) {
+    // REQUIRED, unlike a state's `on…Change`, and the difference is the primitive rather than
+    // taste. A toggling callback NOTIFIES: Dialog owns `open`, so without `onOpenChange` the
+    // dialog still opens and closes and only the outside is left uninformed. A request owns
+    // nothing by design (ADR 0007), so without its callback the control is not under-reported —
+    // it is inert. A focusable, named button that provably does nothing is worth a type error.
+    props.push({
+      name: `on${pascal(action)}Request`,
+      type: '() => void',
+      from: key,
+      origin: 'request',
+      role: 'request',
+      action,
+      required: true,
+      description: `Asks the consumer to ${action} this ${contract.component}. The component does not ${action} itself and cannot observe whether it happened.`,
+    });
+
+    // A control with nothing rendered into it has no accessible name, and an unnamed button is a
+    // defect however well the contract documents the intent. Where the part is contentless, the
+    // name becomes a REQUIRED prop, so the type checker asks for it instead of a note hoping
+    // somebody reads it. It reaches the DOM as the platform's literal-name attribute.
+    //
+    // A request part that DOES render content — a "Retry" button with its own text — gets no such
+    // prop: naming it again would override the text it already shows.
+    if (!partHasOwnText(contract, key)) {
+      props.push({
+        name: `${camel(action)}Label`,
+        type: 'string',
+        from: key,
+        origin: 'request',
+        role: 'requestLabel',
+        action,
+        required: true,
+        description: `The accessible name of the control that asks to ${action} this ${contract.component}. Required because that control shows no text of its own, and the ${contract.component}'s own label does not name it: ten of them would give ten identical controls.`,
+      });
+    }
+  }
+
+  return uniqueSurface(props, 'React');
 }

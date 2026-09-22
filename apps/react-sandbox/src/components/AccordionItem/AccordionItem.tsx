@@ -72,7 +72,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(func
           data-juro-part="trigger"
         >
           {heading}
-          <div data-juro-part="indicator" />
+          <span data-juro-part="indicator" />
         </button>
       </div>
       <div

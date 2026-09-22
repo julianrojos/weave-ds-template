@@ -18,6 +18,7 @@ import {
   SKIP_FILES,
   applyRules,
   buildRules,
+  componentEvents,
   componentTags,
   identityProblems,
   renameTree,
@@ -396,7 +397,12 @@ describe('CLI', () => {
 });
 
 describe('state-independent documentation', () => {
-  const rules = buildRules(generic, 'renamed', componentTags(REPO_ROOT));
+  const rules = buildRules(
+    generic,
+    'renamed',
+    componentTags(REPO_ROOT),
+    componentEvents(REPO_ROOT),
+  );
 
   it.each([
     [join(REPO_ROOT, 'CLAUDE.md'), 'Brand it before anything else', 2],
@@ -435,5 +441,41 @@ describe('state-independent documentation', () => {
     );
     expect(prefixConflict).toBeTypeOf('string');
     expect(applyRules(prefixConflict ?? '', rules)).toBe(prefixConflict);
+  });
+});
+
+// The rename rules namespace a component tag, and every event the Web Components backend
+// dispatches carries the same prefix. `componentEvents` re-derives that list from the contracts
+// instead of importing the WC surface, because init-ds has to run on a checkout whose workspace
+// packages may not be linked. This is the check that makes the duplication safe: the moment the
+// surface starts emitting an event shape the deriver does not know, this fails — rather than a
+// future rebrand silently leaving `ds-<something>-change` behind, which is how the WC sandbox
+// stopped reacting to its own components.
+describe('the rename covers dispatched event names', () => {
+  it('derives exactly the events the Web Components surface emits', async () => {
+    const { listContracts, contractPaths, readJson } = await import('../scripts/contract-lib.mjs');
+    const { surfaceFrom } = await import('../packages/wc/src/emit/surface.mjs');
+
+    const emitted = new Set();
+    for (const name of listContracts()) {
+      for (const entry of surfaceFrom(readJson(contractPaths(name).contract))) {
+        if (entry.event) emitted.add(entry.event);
+      }
+    }
+    expect(componentEvents(REPO_ROOT)).toEqual([...emitted].sort());
+  });
+
+  it('renames an event name the tag rule alone would miss', () => {
+    const rules = buildRules(generic, 'renamed', componentTags(REPO_ROOT), ['value-change']);
+    expect(applyRules(`el.addEventListener('${generic}-value-change', f)`, rules)).toBe(
+      "el.addEventListener('renamed-value-change', f)",
+    );
+    // Without the event list it is untouched — the regression this exists to prevent.
+    expect(
+      applyRules(
+        `el.addEventListener('${generic}-value-change', f)`,
+        buildRules(generic, 'renamed', componentTags(REPO_ROOT)),
+      ),
+    ).toContain(`${generic}-value-change`);
   });
 });

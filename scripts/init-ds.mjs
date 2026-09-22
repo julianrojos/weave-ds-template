@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import {
   buildRules,
+  componentEvents,
   componentTags,
   identityProblems,
   planRenames,
@@ -109,7 +110,7 @@ if (!check && from !== 'ds') {
   );
 }
 
-const rules = buildRules(from, name, componentTags(REPO_ROOT));
+const rules = buildRules(from, name, componentTags(REPO_ROOT), componentEvents(REPO_ROOT));
 const changed = planRenames(REPO_ROOT, rules);
 
 if (check) {

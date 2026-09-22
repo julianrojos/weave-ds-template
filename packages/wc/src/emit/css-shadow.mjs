@@ -42,7 +42,7 @@ import { pseudoClassFor } from '@juro/platform-web';
  * consumer reaching in from outside with `::part()` cannot append an attribute selector at all. One
  * place, always.
  */
-export function stateSelectorShadow(base, spec, profile) {
+export function stateSelectorShadow(base, spec, profile, defaultTrue = false) {
   const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
   const pseudo = pseudoClassFor(state, profile);
   const on =
@@ -50,7 +50,9 @@ export function stateSelectorShadow(base, spec, profile) {
       ? `:host([${kebab(state)}='${value}'])`
       : pseudo
         ? `:host(${pseudo})`
-        : `:host([${kebab(state)}])`;
+        : defaultTrue
+          ? `:host(:not([${kebab(state)}='false']))`
+          : `:host([${kebab(state)}])`;
   // `base` is always a part selector now: the host paints nothing, because it generates no
   // box. See emitStructureShadow on why that is `display: contents`.
   return `${on} ${base}`;
@@ -203,7 +205,7 @@ export function emitThemeShadow(name, contract, profile) {
     for (const [state, paints] of Object.entries(p.node.states ?? {})) {
       const def = contract.states?.[state];
       L.push(`/* state: ${state} — ${def?.visual ?? 'no visual recorded'} */`);
-      L.push(`${stateSelectorShadow(sel, state, profile)} {`);
+      L.push(`${stateSelectorShadow(sel, state, profile, def?.default === true)} {`);
       for (const c of Object.keys(paints)) L.push(`  /* ${c}: ; */`);
       L.push(`}`);
       L.push(``);

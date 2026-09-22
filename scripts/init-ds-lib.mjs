@@ -88,7 +88,48 @@ export function componentTags(root) {
     .sort();
 }
 
-export function buildRules(from, name, tags) {
+/**
+ * The event names the Web Components backend dispatches, without their prefix.
+ *
+ * The custom element's tag is not the only thing the data prefix namespaces: every event the WC
+ * emitter dispatches is `<prefix>-<suffix>`, and a rename that moves the tag and leaves the event
+ * behind produces a sandbox that compiles, renders, and silently stops reacting — which is exactly
+ * what happened here. `ds-value-change` survived a rebrand because `value-change` is not a
+ * component name, so the tag rule below could never match it.
+ *
+ * Derived from the contracts rather than imported from `packages/wc/src/emit/surface.mjs`: this
+ * script must run on a checkout whose workspace packages may not be linked yet, and a failed
+ * import here would be a worse failure than the one it prevents. `tests/init-ds.test.mjs` asserts
+ * this list equals what that surface actually emits, so the duplication is a CHECKED one.
+ */
+export function componentEvents(root) {
+  const dir = join(root, 'packages/contracts/components');
+  if (!existsSync(dir)) return [];
+  const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  const events = new Set();
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const file = join(dir, entry.name, `${entry.name}.contract.json`);
+    if (!existsSync(file)) continue;
+    const contract = JSON.parse(readFileSync(file, 'utf8'));
+    for (const [state, def] of Object.entries(contract.states ?? {})) {
+      if (def.control === 'shared') events.add(`${kebab(state)}-change`);
+    }
+    // A collection's shared selection is published as `value`, not as `selection` — measured
+    // against the WC surface, not guessed from the field name.
+    if (contract.collection?.selection?.control === 'shared') events.add('value-change');
+    const walk = (node) => {
+      if (!node) return;
+      if (node.activates?.requests) events.add(`${kebab(node.activates.requests)}-request`);
+      for (const child of Object.values(node.parts ?? {})) walk(child);
+    };
+    walk(contract.anatomy?.root);
+  }
+  return [...events].sort();
+}
+
+export function buildRules(from, name, tags, events = []) {
+  const namespaced = [...tags, ...events];
   return [
     [new RegExp(`data-${from}-`, 'g'), `data-${name}-`],
     [new RegExp(`@${from}/`, 'g'), `@${name}/`],
@@ -97,10 +138,16 @@ export function buildRules(from, name, tags) {
     // so the rule silently matches nothing. Prefix+capital identifiers are reserved for Angular
     // selectors and other generated identifiers in this family.
     [new RegExp(String.raw`\b${from}(?=[A-Z])`, 'g'), name],
-    // A component tag also namespaces related identifiers such as ds-button-spin. Only reject a
-    // match when the old prefix is itself the suffix of another word or hyphenated namespace.
-    ...(tags.length
-      ? [[new RegExp(String.raw`(?<![\w-])${from}-(?=(?:${tags.join('|')})\b)`, 'g'), `${name}-`]]
+    // A component tag also namespaces related identifiers such as ds-button-spin, and so does a
+    // dispatched event name. Only reject a match when the old prefix is itself the suffix of
+    // another word or hyphenated namespace.
+    ...(namespaced.length
+      ? [
+          [
+            new RegExp(String.raw`(?<![\w-])${from}-(?=(?:${namespaced.join('|')})\b)`, 'g'),
+            `${name}-`,
+          ],
+        ]
       : []),
   ];
 }

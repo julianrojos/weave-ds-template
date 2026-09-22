@@ -20,13 +20,13 @@ SHEET.replaceSync(structureCss + '\n' + themeCss);
 const TEMPLATE = document.createElement('template');
 TEMPLATE.innerHTML = `
     <button part="root" type="button" role="checkbox">
-      <div part="box">
-        <div part="tick"></div>
-        <div part="dash"></div>
-      </div>
-      <div part="label">
+      <span part="box">
+        <span part="tick"></span>
+        <span part="dash"></span>
+      </span>
+      <span part="label">
         <slot name="label"></slot>
-      </div>
+      </span>
       <slot></slot>
     </button>
 `;
@@ -173,7 +173,7 @@ export class Checkbox extends HTMLElement {
    * boundary by default would leak every internal click to the page.
    */
   #emit(type: string, detail: unknown): void {
-    this.dispatchEvent(new CustomEvent('ds-' + type, { detail, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('juro-' + type, { detail, bubbles: true, composed: true }));
   }
 
   #updating = false;

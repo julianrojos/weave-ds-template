@@ -12,14 +12,14 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 16,
-      "propCount": 42,
+      "componentCount": 17,
+      "propCount": 47,
       "kindCounts": {
-        "axis": 6,
+        "axis": 7,
         "enum": 2,
-        "boolean": 11,
-        "node": 14,
-        "local": 9
+        "boolean": 12,
+        "node": 15,
+        "local": 11
       },
       "conventions": {
         "propCase": "camelCase",
@@ -117,6 +117,19 @@
             "TextField"
           ]
         },
+        "treatment": {
+          "concept": "Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006.",
+          "canonicalValues": [
+            "solid",
+            "soft"
+          ],
+          "profiles": null,
+          "default": "solid",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Tag"
+          ]
+        },
         "variant": {
           "concept": "Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied.",
           "canonicalValues": [
@@ -128,9 +141,10 @@
           ],
           "profiles": null,
           "default": "neutral",
-          "usedOnCount": 1,
+          "usedOnCount": 2,
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ]
         }
       },
@@ -140,6 +154,8 @@
         "danger": "Error or destructive. Canonical — never `error`, `critical` or `red`.",
         "success": "Confirmation or a completed state. Canonical — never `positive` or `green`.",
         "warning": "Needs attention but is not an error. Canonical — never `caution` or `yellow`.",
+        "solid": "The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint.",
+        "soft": "The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint.",
         "xs": "Extra small. Canonical — never `xsmall` or `tiny`.",
         "s": "Small. Canonical — never `small` or `sm`.",
         "m": "Medium, the default step. Canonical — never `medium` or `md`.",
@@ -960,6 +976,27 @@
           ],
           "usedCount": 2
         },
+        "onRemoveRequest": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "() => void",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "() => void"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "onTouchedChange": {
           "kind": "local",
           "axis": null,
@@ -1175,6 +1212,76 @@
           ],
           "usedCount": 3
         },
+        "removable": {
+          "kind": "boolean",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "types": [
+            "boolean"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeIcon": {
+          "kind": "node",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "ReactNode",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "ReactNode"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeLabel": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "string",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "string"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "shape": {
           "kind": "axis",
           "axis": "shape",
@@ -1296,6 +1403,37 @@
           ],
           "usedCount": 1
         },
+        "treatment": {
+          "kind": "axis",
+          "axis": "treatment",
+          "valueSets": [
+            {
+              "values": [
+                "solid",
+                "soft"
+              ],
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'solid' | 'soft'",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'solid' | 'soft'"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "trigger": {
           "kind": "node",
           "axis": null,
@@ -1400,6 +1538,18 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "values": [
+                "neutral",
+                "brand",
+                "success",
+                "warning",
+                "danger"
+              ],
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "typesOn": [
@@ -1408,16 +1558,24 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "valuelessOn": [],
           "types": [
-            "'neutral' | 'brand' | 'danger'"
+            "'neutral' | 'brand' | 'danger'",
+            "'neutral' | 'brand' | 'success' | 'warning' | 'danger'"
           ],
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ],
-          "usedCount": 1
+          "usedCount": 2
         }
       },
       "flags": [
@@ -1438,12 +1596,21 @@
             "Switch"
           ],
           "detail": "`defaultChecked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right."
+        },
+        {
+          "kind": "divergent-value-sets",
+          "prop": "variant",
+          "components": [
+            "Button",
+            "Tag"
+          ],
+          "detail": "`variant` is exposed with 2 different value sets across components."
         }
       ],
-      "flagCount": 2,
+      "flagCount": 3,
       "extraction": {
-        "componentsScanned": 16,
-        "propsResolved": 42,
+        "componentsScanned": 17,
+        "propsResolved": 47,
         "degraded": false,
         "warnings": []
       },
@@ -1455,7 +1622,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "orientation",
@@ -1495,7 +1663,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "value",
@@ -1584,7 +1753,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "loading",
@@ -1592,7 +1762,8 @@
             "from": "loading",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "hierarchy",
@@ -1673,7 +1844,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "invalid",
@@ -1681,7 +1853,8 @@
             "from": "invalid",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "label",
@@ -1772,7 +1945,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "invalid",
@@ -1903,7 +2077,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "readOnly",
@@ -1911,7 +2086,8 @@
             "from": "read-only",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "value",
@@ -1942,7 +2118,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "value",
@@ -1996,7 +2173,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           }
         ],
         "Switch": [
@@ -2028,7 +2206,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "readOnly",
@@ -2036,7 +2215,8 @@
             "from": "read-only",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           }
         ],
         "TabItem": [
@@ -2046,7 +2226,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "value",
@@ -2089,7 +2270,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "value",
@@ -2111,6 +2293,68 @@
             "from": "selection",
             "origin": "selection",
             "role": "callback"
+          }
+        ],
+        "Tag": [
+          {
+            "name": "removable",
+            "type": "boolean",
+            "from": "removable",
+            "origin": "state",
+            "role": "input",
+            "default": true,
+            "declaredDefault": true
+          },
+          {
+            "name": "variant",
+            "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+            "from": "variant",
+            "origin": "axis",
+            "role": "axis",
+            "default": "neutral",
+            "description": "The semantic intent the label carries, which selects the colour role. The design names this axis `Scheme`, and its `Positive` is the canon's `success`."
+          },
+          {
+            "name": "treatment",
+            "type": "'solid' | 'soft'",
+            "from": "treatment",
+            "origin": "axis",
+            "role": "axis",
+            "default": "solid",
+            "description": "How much visual presence the tag has, independently of which intent it carries. Orthogonal to `variant`. The design names this axis `Variant`, which is NOT the canon's `variant` — see ADR 0006 and the proposal §2."
+          },
+          {
+            "name": "removeIcon",
+            "type": "ReactNode",
+            "from": "removeIcon",
+            "origin": "slot",
+            "role": "slot",
+            "accepts": [
+              "node"
+            ],
+            "part": "dismiss",
+            "required": true,
+            "description": "The glyph inside the remove control. REQUIRED and DECORATIVE, which are not in tension: the control's accessible name is supplied separately because an icon names nothing, but a visible control with nothing drawn in it is an affordance nobody can see. The design draws the glyph in all twenty variants, from an external library this repository does not ship — so the consumer supplies it, and the contract is what makes sure they do."
+          },
+          {
+            "name": "onRemoveRequest",
+            "type": "() => void",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "request",
+            "action": "remove",
+            "required": true,
+            "description": "Asks the consumer to remove this Tag. The component does not remove itself and cannot observe whether it happened."
+          },
+          {
+            "name": "removeLabel",
+            "type": "string",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "requestLabel",
+            "action": "remove",
+            "required": true,
+            "description": "The accessible name of the control that asks to remove this Tag. Required because that control shows no text of its own, and the Tag's own label does not name it: ten of them would give ten identical controls."
           }
         ],
         "TextField": [
@@ -2142,7 +2386,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "readOnly",
@@ -2150,7 +2395,8 @@
             "from": "read-only",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "invalid",
@@ -2158,7 +2404,8 @@
             "from": "invalid",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "size",
@@ -2199,7 +2446,8 @@
             "from": "disabled",
             "origin": "state",
             "role": "input",
-            "default": false
+            "default": false,
+            "declaredDefault": false
           },
           {
             "name": "placement",
@@ -2247,14 +2495,14 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 16,
-      "propCount": 15,
+      "componentCount": 17,
+      "propCount": 19,
       "kindCounts": {
-        "axis": 6,
+        "axis": 7,
         "enum": 1,
-        "boolean": 7,
+        "boolean": 8,
         "node": 0,
-        "local": 1
+        "local": 3
       },
       "conventions": {
         "propCase": "camelCase",
@@ -2352,6 +2600,19 @@
             "TextField"
           ]
         },
+        "treatment": {
+          "concept": "Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006.",
+          "canonicalValues": [
+            "solid",
+            "soft"
+          ],
+          "profiles": null,
+          "default": "solid",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Tag"
+          ]
+        },
         "variant": {
           "concept": "Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied.",
           "canonicalValues": [
@@ -2363,9 +2624,10 @@
           ],
           "profiles": null,
           "default": "neutral",
-          "usedOnCount": 1,
+          "usedOnCount": 2,
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ]
         }
       },
@@ -2375,6 +2637,8 @@
         "danger": "Error or destructive. Canonical — never `error`, `critical` or `red`.",
         "success": "Confirmation or a completed state. Canonical — never `positive` or `green`.",
         "warning": "Needs attention but is not an error. Canonical — never `caution` or `yellow`.",
+        "solid": "The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint.",
+        "soft": "The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint.",
         "xs": "Extra small. Canonical — never `xsmall` or `tiny`.",
         "s": "Small. Canonical — never `small` or `sm`.",
         "m": "Medium, the default step. Canonical — never `medium` or `md`.",
@@ -2751,6 +3015,76 @@
           ],
           "usedCount": 3
         },
+        "removable": {
+          "kind": "boolean",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "types": [
+            "boolean"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeLabel": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "string",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "string"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeRequest": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "[]",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "[]"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "shape": {
           "kind": "axis",
           "axis": "shape",
@@ -2851,6 +3185,37 @@
           ],
           "usedCount": 1
         },
+        "treatment": {
+          "kind": "axis",
+          "axis": "treatment",
+          "valueSets": [
+            {
+              "values": [
+                "solid",
+                "soft"
+              ],
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'solid' | 'soft'",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'solid' | 'soft'"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "value": {
           "kind": "local",
           "axis": null,
@@ -2934,6 +3299,18 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "values": [
+                "neutral",
+                "brand",
+                "success",
+                "warning",
+                "danger"
+              ],
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "typesOn": [
@@ -2942,16 +3319,24 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "valuelessOn": [],
           "types": [
-            "'neutral' | 'brand' | 'danger'"
+            "'neutral' | 'brand' | 'danger'",
+            "'neutral' | 'brand' | 'success' | 'warning' | 'danger'"
           ],
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ],
-          "usedCount": 1
+          "usedCount": 2
         }
       },
       "flags": [
@@ -2963,12 +3348,21 @@
             "Switch"
           ],
           "detail": "`checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right."
+        },
+        {
+          "kind": "divergent-value-sets",
+          "prop": "variant",
+          "components": [
+            "Button",
+            "Tag"
+          ],
+          "detail": "`variant` is exposed with 2 different value sets across components."
         }
       ],
-      "flagCount": 1,
+      "flagCount": 2,
       "extraction": {
-        "componentsScanned": 16,
-        "propsResolved": 15,
+        "componentsScanned": 17,
+        "propsResolved": 19,
         "degraded": false,
         "warnings": []
       },
@@ -2981,6 +3375,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The whole accordion ignores interaction. Cascades to every item."
           },
           {
@@ -3011,6 +3406,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "Set by the `disabled` prop or inherited from the Accordion. Rendered as a natively disabled button."
           },
           {
@@ -3051,6 +3447,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The platform's own disabled state. Removed from the focus order and cannot be activated."
           },
           {
@@ -3060,6 +3457,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The action is already running. The implementation must track this: no platform provides it."
           },
           {
@@ -3108,6 +3506,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The platform's own disabled state. Removed from the focus order and cannot be answered."
           },
           {
@@ -3117,6 +3516,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The answer failed validation — typically a required checkbox left unchecked."
           }
         ],
@@ -3149,6 +3549,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The control ignores interaction. Set on the field so the label and description can dim with it."
           },
           {
@@ -3190,6 +3591,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The whole group ignores interaction. Cascades to every item."
           },
           {
@@ -3199,6 +3601,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The selection cannot be changed, but the group stays readable and focusable. Distinct from disabled, which removes it from the focus order."
           },
           {
@@ -3220,6 +3623,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "Set by the `disabled` prop or inherited from the group. Skipped by arrow-key movement."
           },
           {
@@ -3250,6 +3654,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The platform's own disabled state. Removed from the focus order and cannot be moved."
           }
         ],
@@ -3271,6 +3676,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The platform's own disabled state. Removed from the focus order and cannot be toggled."
           },
           {
@@ -3280,6 +3686,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "Cannot be toggled, but remains focusable and readable. Distinct from disabled, which removes it from the focus order entirely."
           }
         ],
@@ -3291,6 +3698,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "Set by the prop or inherited from the strip. Skipped by arrow-key movement."
           },
           {
@@ -3322,6 +3730,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The whole strip ignores interaction. Cascades to every tab."
           },
           {
@@ -3333,6 +3742,56 @@
             "default": "",
             "event": "update:value",
             "description": "The current selection, by member identity."
+          }
+        ],
+        "Tag": [
+          {
+            "name": "removable",
+            "type": "boolean",
+            "from": "removable",
+            "origin": "state",
+            "role": "input",
+            "default": true,
+            "declaredDefault": true,
+            "description": "Whether this tag offers to be removed. Measured as the set's `Removable#147:0` property, which defaults to true and which the design binds to the remove control's visibility."
+          },
+          {
+            "name": "variant",
+            "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+            "from": "variant",
+            "origin": "axis",
+            "role": "axis",
+            "default": "neutral",
+            "description": "The semantic intent the label carries, which selects the colour role. The design names this axis `Scheme`, and its `Positive` is the canon's `success`."
+          },
+          {
+            "name": "treatment",
+            "type": "'solid' | 'soft'",
+            "from": "treatment",
+            "origin": "axis",
+            "role": "axis",
+            "default": "solid",
+            "description": "How much visual presence the tag has, independently of which intent it carries. Orthogonal to `variant`. The design names this axis `Variant`, which is NOT the canon's `variant` — see ADR 0006 and the proposal §2."
+          },
+          {
+            "name": "removeRequest",
+            "event": "remove-request",
+            "type": "[]",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "request",
+            "action": "remove",
+            "description": "Asks the consumer to remove this Tag."
+          },
+          {
+            "name": "removeLabel",
+            "type": "string",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "requestLabel",
+            "action": "remove",
+            "required": true,
+            "description": "The accessible name of the control that asks to remove this Tag."
           }
         ],
         "TextField": [
@@ -3353,6 +3812,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The platform's own disabled state. Removed from the focus order and cannot be typed into."
           },
           {
@@ -3362,6 +3822,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The text can be read and selected but not changed. Distinct from disabled, which removes it from the focus order."
           },
           {
@@ -3371,6 +3832,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "Set from outside — usually by a surrounding Field. This component does not decide it."
           },
           {
@@ -3401,6 +3863,7 @@
             "origin": "state",
             "role": "input",
             "default": false,
+            "declaredDefault": false,
             "description": "The tooltip never opens. The trigger still works."
           },
           {
@@ -3425,14 +3888,14 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 16,
-      "propCount": 15,
+      "componentCount": 17,
+      "propCount": 19,
       "kindCounts": {
-        "axis": 6,
+        "axis": 7,
         "enum": 1,
-        "boolean": 7,
+        "boolean": 8,
         "node": 0,
-        "local": 1
+        "local": 3
       },
       "conventions": {
         "propCase": "camelCase",
@@ -3530,6 +3993,19 @@
             "TextField"
           ]
         },
+        "treatment": {
+          "concept": "Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006.",
+          "canonicalValues": [
+            "solid",
+            "soft"
+          ],
+          "profiles": null,
+          "default": "solid",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Tag"
+          ]
+        },
         "variant": {
           "concept": "Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied.",
           "canonicalValues": [
@@ -3541,9 +4017,10 @@
           ],
           "profiles": null,
           "default": "neutral",
-          "usedOnCount": 1,
+          "usedOnCount": 2,
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ]
         }
       },
@@ -3553,6 +4030,8 @@
         "danger": "Error or destructive. Canonical — never `error`, `critical` or `red`.",
         "success": "Confirmation or a completed state. Canonical — never `positive` or `green`.",
         "warning": "Needs attention but is not an error. Canonical — never `caution` or `yellow`.",
+        "solid": "The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint.",
+        "soft": "The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint.",
         "xs": "Extra small. Canonical — never `xsmall` or `tiny`.",
         "s": "Small. Canonical — never `small` or `sm`.",
         "m": "Medium, the default step. Canonical — never `medium` or `md`.",
@@ -3929,6 +4408,76 @@
           ],
           "usedCount": 3
         },
+        "removable": {
+          "kind": "boolean",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "types": [
+            "boolean"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeLabel": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "string",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "string"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeRequest": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "void",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "void"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "shape": {
           "kind": "axis",
           "axis": "shape",
@@ -4029,6 +4578,37 @@
           ],
           "usedCount": 1
         },
+        "treatment": {
+          "kind": "axis",
+          "axis": "treatment",
+          "valueSets": [
+            {
+              "values": [
+                "solid",
+                "soft"
+              ],
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'solid' | 'soft'",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'solid' | 'soft'"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "value": {
           "kind": "local",
           "axis": null,
@@ -4112,6 +4692,18 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "values": [
+                "neutral",
+                "brand",
+                "success",
+                "warning",
+                "danger"
+              ],
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "typesOn": [
@@ -4120,16 +4712,24 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "valuelessOn": [],
           "types": [
-            "'neutral' | 'brand' | 'danger'"
+            "'neutral' | 'brand' | 'danger'",
+            "'neutral' | 'brand' | 'success' | 'warning' | 'danger'"
           ],
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ],
-          "usedCount": 1
+          "usedCount": 2
         }
       },
       "flags": [
@@ -4141,12 +4741,21 @@
             "Switch"
           ],
           "detail": "`checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right."
+        },
+        {
+          "kind": "divergent-value-sets",
+          "prop": "variant",
+          "components": [
+            "Button",
+            "Tag"
+          ],
+          "detail": "`variant` is exposed with 2 different value sets across components."
         }
       ],
-      "flagCount": 1,
+      "flagCount": 2,
       "extraction": {
-        "componentsScanned": 16,
-        "propsResolved": 15,
+        "componentsScanned": 17,
+        "propsResolved": 19,
         "degraded": false,
         "warnings": []
       },
@@ -4513,6 +5122,54 @@
             "description": "The current selection, by member identity."
           }
         ],
+        "Tag": [
+          {
+            "name": "removable",
+            "type": "boolean",
+            "from": "removable",
+            "origin": "state",
+            "role": "input",
+            "default": true,
+            "description": "Whether this tag offers to be removed. Measured as the set's `Removable#147:0` property, which defaults to true and which the design binds to the remove control's visibility."
+          },
+          {
+            "name": "variant",
+            "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+            "from": "variant",
+            "origin": "axis",
+            "role": "axis",
+            "default": "neutral",
+            "description": "The semantic intent the label carries, which selects the colour role. The design names this axis `Scheme`, and its `Positive` is the canon's `success`."
+          },
+          {
+            "name": "treatment",
+            "type": "'solid' | 'soft'",
+            "from": "treatment",
+            "origin": "axis",
+            "role": "axis",
+            "default": "solid",
+            "description": "How much visual presence the tag has, independently of which intent it carries. Orthogonal to `variant`. The design names this axis `Variant`, which is NOT the canon's `variant` — see ADR 0006 and the proposal §2."
+          },
+          {
+            "name": "removeRequest",
+            "type": "void",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "request",
+            "action": "remove",
+            "description": "Asks the consumer to remove this Tag."
+          },
+          {
+            "name": "removeLabel",
+            "type": "string",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "requestLabel",
+            "action": "remove",
+            "required": true,
+            "description": "The accessible name of the control that asks to remove this Tag."
+          }
+        ],
         "TextField": [
           {
             "name": "value",
@@ -4603,14 +5260,14 @@
         "canon": "packages/contracts/prop-canon.json",
         "prose": "packages/contracts/components/README.md §2"
       },
-      "componentCount": 16,
-      "propCount": 17,
+      "componentCount": 17,
+      "propCount": 21,
       "kindCounts": {
-        "axis": 6,
+        "axis": 7,
         "enum": 1,
-        "boolean": 8,
+        "boolean": 9,
         "node": 0,
-        "local": 2
+        "local": 4
       },
       "conventions": {
         "propCase": "camelCase",
@@ -4708,6 +5365,19 @@
             "TextField"
           ]
         },
+        "treatment": {
+          "concept": "Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006.",
+          "canonicalValues": [
+            "solid",
+            "soft"
+          ],
+          "profiles": null,
+          "default": "solid",
+          "usedOnCount": 1,
+          "usedOn": [
+            "Tag"
+          ]
+        },
         "variant": {
           "concept": "Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied.",
           "canonicalValues": [
@@ -4719,9 +5389,10 @@
           ],
           "profiles": null,
           "default": "neutral",
-          "usedOnCount": 1,
+          "usedOnCount": 2,
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ]
         }
       },
@@ -4731,6 +5402,8 @@
         "danger": "Error or destructive. Canonical — never `error`, `critical` or `red`.",
         "success": "Confirmation or a completed state. Canonical — never `positive` or `green`.",
         "warning": "Needs attention but is not an error. Canonical — never `caution` or `yellow`.",
+        "solid": "The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint.",
+        "soft": "The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint.",
         "xs": "Extra small. Canonical — never `xsmall` or `tiny`.",
         "s": "Small. Canonical — never `small` or `sm`.",
         "m": "Medium, the default step. Canonical — never `medium` or `md`.",
@@ -5147,6 +5820,76 @@
           ],
           "usedCount": 3
         },
+        "removable": {
+          "kind": "boolean",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [
+            {
+              "type": "boolean",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "types": [
+            "boolean"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeLabel": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "string",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "string"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
+        "removeRequest": {
+          "kind": "local",
+          "axis": null,
+          "valueSets": [],
+          "typesOn": [
+            {
+              "type": "CustomEvent<void>",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "CustomEvent<void>"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "required": {
           "kind": "boolean",
           "axis": null,
@@ -5287,6 +6030,37 @@
           ],
           "usedCount": 1
         },
+        "treatment": {
+          "kind": "axis",
+          "axis": "treatment",
+          "valueSets": [
+            {
+              "values": [
+                "solid",
+                "soft"
+              ],
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "typesOn": [
+            {
+              "type": "'solid' | 'soft'",
+              "on": [
+                "Tag"
+              ]
+            }
+          ],
+          "valuelessOn": [],
+          "types": [
+            "'solid' | 'soft'"
+          ],
+          "usedOn": [
+            "Tag"
+          ],
+          "usedCount": 1
+        },
         "value": {
           "kind": "local",
           "axis": null,
@@ -5376,6 +6150,18 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "values": [
+                "neutral",
+                "brand",
+                "success",
+                "warning",
+                "danger"
+              ],
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "typesOn": [
@@ -5384,16 +6170,24 @@
               "on": [
                 "Button"
               ]
+            },
+            {
+              "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+              "on": [
+                "Tag"
+              ]
             }
           ],
           "valuelessOn": [],
           "types": [
-            "'neutral' | 'brand' | 'danger'"
+            "'neutral' | 'brand' | 'danger'",
+            "'neutral' | 'brand' | 'success' | 'warning' | 'danger'"
           ],
           "usedOn": [
-            "Button"
+            "Button",
+            "Tag"
           ],
-          "usedCount": 1
+          "usedCount": 2
         }
       },
       "flags": [
@@ -5405,12 +6199,21 @@
             "Switch"
           ],
           "detail": "`checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right."
+        },
+        {
+          "kind": "divergent-value-sets",
+          "prop": "variant",
+          "components": [
+            "Button",
+            "Tag"
+          ],
+          "detail": "`variant` is exposed with 2 different value sets across components."
         }
       ],
-      "flagCount": 1,
+      "flagCount": 2,
       "extraction": {
-        "componentsScanned": 16,
-        "propsResolved": 17,
+        "componentsScanned": 17,
+        "propsResolved": 21,
         "degraded": false,
         "warnings": []
       },
@@ -5957,6 +6760,64 @@
             "default": "",
             "event": "juro-value-change",
             "description": "The current selection, by member identity."
+          }
+        ],
+        "Tag": [
+          {
+            "name": "removable",
+            "attribute": "removable",
+            "type": "boolean",
+            "from": "removable",
+            "origin": "state",
+            "default": true,
+            "description": "Whether this tag offers to be removed. Measured as the set's `Removable#147:0` property, which defaults to true and which the design binds to the remove control's visibility.",
+            "kind": "boolean-default-true",
+            "role": "input"
+          },
+          {
+            "name": "variant",
+            "attribute": "variant",
+            "type": "'neutral' | 'brand' | 'success' | 'warning' | 'danger'",
+            "from": "variant",
+            "origin": "axis",
+            "role": "axis",
+            "kind": "enum",
+            "default": "neutral",
+            "description": "The semantic intent the label carries, which selects the colour role. The design names this axis `Scheme`, and its `Positive` is the canon's `success`."
+          },
+          {
+            "name": "treatment",
+            "attribute": "treatment",
+            "type": "'solid' | 'soft'",
+            "from": "treatment",
+            "origin": "axis",
+            "role": "axis",
+            "kind": "enum",
+            "default": "solid",
+            "description": "How much visual presence the tag has, independently of which intent it carries. Orthogonal to `variant`. The design names this axis `Variant`, which is NOT the canon's `variant` — see ADR 0006 and the proposal §2."
+          },
+          {
+            "name": "removeRequest",
+            "event": "juro-remove-request",
+            "type": "CustomEvent<void>",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "request",
+            "action": "remove",
+            "description": "Fired when this Tag asks its consumer to remove it."
+          },
+          {
+            "name": "removeLabel",
+            "attribute": "remove-label",
+            "type": "string",
+            "kind": "string",
+            "default": "",
+            "from": "dismiss",
+            "origin": "request",
+            "role": "requestLabel",
+            "action": "remove",
+            "required": true,
+            "description": "The accessible name of the control that asks to remove this Tag."
           }
         ],
         "TextField": [

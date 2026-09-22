@@ -16,12 +16,17 @@
 //
 // Pure: no fs, no profile, no module state.
 
-export const camel = (s) => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-export const pascal = (s) => {
-  const c = camel(s);
-  return c.charAt(0).toUpperCase() + c.slice(1);
-};
-export const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+import {
+  camel,
+  kebab,
+  partHasOwnText,
+  pascal,
+  requestingParts,
+  stateTypeAndDefault,
+  uniqueSurface,
+} from '@juro/emit-web';
+
+export { camel, kebab, pascal };
 
 /**
  * The custom element's tag.
@@ -35,11 +40,7 @@ export const tagFor = (component, prefix) => `${prefix}-${kebab(component)}`;
 
 /** A state's type and default, from the contract and nothing else. */
 export function typeOf(def) {
-  if (def.values)
-    return { type: def.values.map((v) => `'${v}'`).join(' | '), default: def.default };
-  if (def.valueType === 'string') return { type: 'string', default: '' };
-  if (def.valueType === 'number') return { type: 'number', default: def.min ?? 0 };
-  return { type: 'boolean', default: false };
+  return stateTypeAndDefault(def);
 }
 
 /**
@@ -73,7 +74,9 @@ export function surfaceFrom(contract) {
           ? 'number'
           : def.valueType === 'string'
             ? 'string'
-            : 'boolean',
+            : def.default === true
+              ? 'boolean-default-true'
+              : 'boolean',
     };
     if (def.control === 'shared') {
       props.push({ ...shape, role: 'model', event: `${kebab(state)}-change` });
@@ -134,6 +137,34 @@ export function surfaceFrom(contract) {
     });
   }
 
+  for (const { key, action } of requestingParts(contract)) {
+    props.push({
+      name: `${camel(action)}Request`,
+      event: `${kebab(action)}-request`,
+      type: 'CustomEvent<void>',
+      from: key,
+      origin: 'request',
+      role: 'request',
+      action,
+      description: `Fired when this ${contract.component} asks its consumer to ${action} it.`,
+    });
+    if (!partHasOwnText(contract, key)) {
+      props.push({
+        name: `${camel(action)}Label`,
+        attribute: `${kebab(action)}-label`,
+        type: 'string',
+        kind: 'string',
+        default: '',
+        from: key,
+        origin: 'request',
+        role: 'requestLabel',
+        action,
+        required: true,
+        description: `The accessible name of the control that asks to ${action} this ${contract.component}.`,
+      });
+    }
+  }
+
   if (contract.form) {
     for (const [name, kind, dflt, description] of [
       ['name', 'string', '', 'Name of the submitted answer. An empty name contributes nothing.'],
@@ -154,7 +185,7 @@ export function surfaceFrom(contract) {
         description,
       });
   }
-  return props;
+  return uniqueSurface(props, 'Web Components');
 }
 
 /** The slots a contract implies. `<slot name="x">` in the shadow root; `slot="x"` on the child. */

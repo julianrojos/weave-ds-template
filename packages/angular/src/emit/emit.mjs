@@ -60,6 +60,7 @@ import {
   referencedByASibling,
   visibilityCondition,
 } from '@juro/emit-web';
+import { formatIfPossible, writeEmittedFiles } from '@juro/emit-web/write';
 
 import { camel, pascal, selectorFor, slotsFrom, surfaceFrom } from './surface.mjs';
 
@@ -87,14 +88,14 @@ function stateExpr(spec, ctx) {
 // ---------------------------------------------------------------------------------------
 // the template: one anatomy part and everything under it
 // ---------------------------------------------------------------------------------------
-function renderPart(key, node, ctx, depth) {
+function renderPart(key, node, ctx, depth, within = ctx.rootElement) {
   const { prefix, slots, contract, idFor, refId } = ctx;
   const pad = '  '.repeat(depth + 1);
   const slot = slots.find((x) => (x.part ? x.part === key : x.name === key));
   const takesChildrenHere = ctx.childrenPart === key;
   const attrs = [];
 
-  const nodeEl = defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
+  const nodeEl = defaultElement(node.activates ? 'activatable' : 'container', WEB, within);
   if (node.role && implicitRole(nodeEl, WEB) !== node.role) attrs.push(`role="${node.role}"`);
   if (
     node.role ||
@@ -134,7 +135,13 @@ function renderPart(key, node, ctx, depth) {
     attrs.push(`[attr.${relationAttribute('describedBy', WEB)}]="ids(${pieces.join(', ')})"`);
   }
   if (node.activates?.toggles) attrs.push(`(click)="activate($event)"`);
-  if (node.activates?.toggles && node.role === 'button') attrs.push(`type="button"`);
+  const request = ctx.requests.find((p) => p.from === key);
+  if (request) attrs.push(`(click)="${request.name}.emit()"`);
+  const requestLabel = ctx.requestLabels.find((p) => p.from === key);
+  if (requestLabel) {
+    attrs.push(`[attr.${relationAttribute('namedLiterally', WEB)}]="${requestLabel.name}()"`);
+  }
+  if (node.activates && node.role === 'button') attrs.push(`type="button"`);
   if (node.visibleWhen) {
     attrs.push(
       `[attr.${WEB.visibility.attribute}]="${stateExpr(node.visibleWhen, ctx)} ? null : ''"`,
@@ -168,7 +175,7 @@ function renderPart(key, node, ctx, depth) {
   out.push(open);
   if (slot) out.push(`${pad}  <ng-content select="[slot=${slot.name}]" />`);
   if (takesChildrenHere) out.push(`${pad}  <ng-content />`);
-  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1));
+  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1, nodeEl));
   out.push(`${pad}</${nodeEl}>`);
   return out;
 }
@@ -188,11 +195,21 @@ export function emitComponent(name, contract, binding, prefix) {
   const models = props.filter((p) => p.role === 'model');
   const stateModels = models.filter((p) => p.from !== 'selection');
   const inputs = props.filter((p) => p.role === 'input');
+  const requests = props.filter((p) => p.role === 'request');
+  const requestLabels = props.filter((p) => p.role === 'requestLabel');
   const axes = props.filter((p) => p.role === 'axis');
   const identity = props.find((p) => p.role === 'identity');
   const namedSlots = slots.filter((s) => s.name !== 'default');
   const takesChildren = slots.some((s) => s.name === 'default');
   const childrenPart = contract.composition?.children?.part;
+
+  if (requests.length) {
+    assume(
+      'a request listener must be required',
+      'emit a typed output whose listener remains optional',
+      'Angular cannot require a parent to subscribe to an output. This is reported as non-conforming under ADR 0005 and ADR 0007.',
+    );
+  }
 
   const collection = contract.collection;
   const selShared = collection?.selection?.control === 'shared';
@@ -380,14 +397,18 @@ export function emitComponent(name, contract, binding, prefix) {
     allParts.flatMap((p) => refsOf(p.node)).filter((r) => typeof r === 'string'),
   );
   const referencedBySibling = referencedByASibling(name, member, CONTRACTS);
-  const needsIds = Boolean(collection) || referencesParts || referencedBySibling;
+  const roledPart = allParts.some((p) => p.node.role);
+  const needsIds = Boolean(collection) || referencesParts || referencedBySibling || roledPart;
 
   const needsIdsHelper = { value: false };
 
   const ctx = {
     prefix,
+    rootElement: el,
     needsIdsHelper,
     slots: namedSlots,
+    requests,
+    requestLabels,
     contract,
     idFor,
     childrenPart,
@@ -568,6 +589,12 @@ export function emitComponent(name, contract, binding, prefix) {
   }
   if (navigation) onEvent('keydown', 'nav.onKeyDown($event)');
   if (rootToggles) onEvent('click', 'activate($event)');
+  const rootRequest = requests.find((p) => p.from === 'root');
+  if (rootRequest) onEvent('click', `${rootRequest.name}.emit()`);
+  const rootRequestLabel = requestLabels.find((p) => p.from === 'root');
+  if (rootRequestLabel) {
+    host.push([`attr.${relationAttribute('namedLiterally', WEB)}`, `${rootRequestLabel.name}()`]);
+  }
 
   host.push([`data-${prefix}-component`, `'${name}'`, true]);
   host.push([`data-${prefix}-part`, `'${root.part}'`, true]);
@@ -594,8 +621,9 @@ export function emitComponent(name, contract, binding, prefix) {
   const need = (cond, ...names) => {
     if (cond) for (const n of names) ngImports.add(n);
   };
-  need(inputs.length || axes.length || identity, 'input');
+  need(inputs.length || requestLabels.length || axes.length || identity, 'input');
   need(models.length, 'model');
+  need(requests.length, 'output');
   need(Boolean(unsupportedResources?.derivedStates.length), 'signal');
   need(commitEditing, 'signal', 'effect');
   need(member, 'computed', 'inject');
@@ -806,7 +834,7 @@ export function emitComponent(name, contract, binding, prefix) {
   const implementsList = collection ? ` implements ${name}Context` : '';
   s.push(`export class ${name}${implementsList} {`);
 
-  for (const p of [...inputs, ...axes]) {
+  for (const p of [...inputs, ...requestLabels, ...axes]) {
     const d = (p.description ?? '').replace(/\s+/g, ' ');
     const dflt =
       p.role === 'axis'
@@ -817,7 +845,17 @@ export function emitComponent(name, contract, binding, prefix) {
     s.push(
       `  /** ${d}${p.role === 'axis' && p.default ? ` Defaults to \`${p.default}\`.` : ''} */`,
     );
-    s.push(`  readonly ${p.name} = input<${p.type}>(${dflt});`);
+    s.push(
+      p.required
+        ? `  readonly ${p.name} = input.required<${p.type}>();`
+        : `  readonly ${p.name} = input<${p.type}>(${dflt});`,
+    );
+  }
+  if (requests.length)
+    s.push(`  // NON-CONFORMING: Angular cannot require a consumer to subscribe to an output.`);
+  for (const request of requests) {
+    s.push(`  /** ${request.description} */`);
+    s.push(`  readonly ${request.name} = output<void>();`);
   }
   if (identity) {
     s.push(`  /** ${identity.description.replace(/\s+/g, ' ')} */`);
@@ -831,7 +869,15 @@ export function emitComponent(name, contract, binding, prefix) {
     s.push(`  /** ${d} Two-way: \`[(${m.name})]\`. */`);
     s.push(`  readonly ${m.name} = model<${m.type}>(${dflt});`);
   }
-  if (inputs.length || axes.length || identity || models.length) s.push(``);
+  if (
+    inputs.length ||
+    requestLabels.length ||
+    requests.length ||
+    axes.length ||
+    identity ||
+    models.length
+  )
+    s.push(``);
   if (unsupportedResources) {
     assume(
       'resource observation',
@@ -1134,6 +1180,18 @@ export function emitComponent(name, contract, binding, prefix) {
   return s.join('\n');
 }
 
+/** Files wholly owned by this emitter. Consumer-authored theme CSS is deliberately absent. */
+export function emitOwnedFiles(name, contract, binding, prefix) {
+  const hasContext = Boolean(contract.collection);
+  return {
+    [`${name}.ts`]: emitComponent(name, contract, binding, prefix),
+    [`${name}.structure.css`]: emitStructure(name, contract, binding.element, prefix, WEB, assume),
+    'index.ts': hasContext
+      ? `export { ${name}, ${name.toUpperCase()}, type ${name}Context } from './${name}';\n`
+      : `export { ${name} } from './${name}';\n`,
+  };
+}
+
 // ---------------------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------------------
@@ -1154,32 +1212,27 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
-  const source = emitComponent(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.ts`), source, 'utf8');
-  writeFileSync(
-    join(outDir, `${name}.structure.css`),
-    emitStructure(name, contract, binding.element, prefix, WEB, assume),
-    'utf8',
+  // Formatted on the way out, so the command printed in every generated header produces a
+  // file that `format:check` and `sandboxes:check` accept. See @juro/emit-web/write.
+  const unformatted = await writeEmittedFiles(
+    outDir,
+    emitOwnedFiles(name, contract, binding, prefix),
   );
 
   const themePath = join(outDir, `${name}.theme.css`);
   if (existsSync(themePath)) {
     console.log(`  kept   ${name}.theme.css (yours — never regenerated)`);
   } else {
-    writeFileSync(themePath, emitTheme(name, contract, prefix, WEB), 'utf8');
+    const theme = await formatIfPossible(emitTheme(name, contract, prefix, WEB), themePath);
+    if (!theme.formatted) unformatted.push({ file: `${name}.theme.css`, reason: theme.reason });
+    writeFileSync(themePath, theme.text, 'utf8');
   }
 
-  const hasContext = Boolean(contract.collection);
-  writeFileSync(
-    join(outDir, 'index.ts'),
-    hasContext
-      ? `export { ${name}, ${name.toUpperCase()}, type ${name}Context } from './${name}';\n`
-      : `export { ${name} } from './${name}';\n`,
-    'utf8',
-  );
-
   const surface = surfaceFrom(contract);
+  for (const { file, reason } of unformatted) {
+    console.warn(`  unformatted ${file} — ${reason}`);
+  }
   console.log(`\nemitted ${name} -> ${outDir}`);
   console.log(`  selector: ${selectorFor(binding.element, name, prefix)}`);
   console.log(

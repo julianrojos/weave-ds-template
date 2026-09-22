@@ -1,0 +1,13 @@
+{
+  "$schema": "./binding.schema.json",
+  "component": "Tag",
+  "contract": "../../contracts/components/Tag/Tag.contract.json",
+  "framework": "react",
+  "refTarget": "root",
+  "classNamePassthrough": "root",
+  "notes": [
+    "The `dismiss` part declares `activates.requests`, which compiles to one callback prop, `onRemoveRequest`. The `Request` suffix is deliberate: `onRemove` would read as a report that removal happened, and the component cannot know that — it asked, and whoever owns the list decided. See ADR 0007.",
+    "Nothing is wired to the callback's return. A request carries no state, so the emitted component has no `removed` to set, nothing to read back, and no uncontrolled fallback: the tag stays on screen until its consumer stops rendering it.",
+    "The root is not focusable and carries no role. The only interactive thing here is the `dismiss` button, and its accessible name is the consumer's to supply — the label alone would give every tag on the page the same one."
+  ]
+}

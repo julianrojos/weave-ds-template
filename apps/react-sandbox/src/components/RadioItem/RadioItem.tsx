@@ -32,6 +32,7 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(function Rad
     );
   }
   const selected = ctx.selection === value;
+  const baseId = `${ctx.baseId}-RadioItem-${value}`;
   const { register, unregister } = ctx;
 
   const rootRef = useCallback(
@@ -68,6 +69,7 @@ export const RadioItem = forwardRef<HTMLDivElement, RadioItemProps>(function Rad
       {...rest}
       ref={rootRef}
       role="radio"
+      id={baseId}
       aria-disabled={disabled || undefined}
       aria-checked={selected}
       tabIndex={ctx.isTabStop(value) ? 0 : -1}

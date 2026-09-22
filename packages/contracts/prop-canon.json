@@ -30,6 +30,11 @@
       "values": ["neutral", "brand", "success", "warning", "danger"],
       "default": "neutral"
     },
+    "treatment": {
+      "concept": "Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006.",
+      "values": ["solid", "soft"],
+      "default": "solid"
+    },
     "orientation": {
       "concept": "Layout axis along which the component and its children flow.",
       "values": ["horizontal", "vertical"]
@@ -69,6 +74,8 @@
     "danger": "Error or destructive. Canonical — never `error`, `critical` or `red`.",
     "success": "Confirmation or a completed state. Canonical — never `positive` or `green`.",
     "warning": "Needs attention but is not an error. Canonical — never `caution` or `yellow`.",
+    "solid": "The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint.",
+    "soft": "The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint.",
     "xs": "Extra small. Canonical — never `xsmall` or `tiny`.",
     "s": "Small. Canonical — never `small` or `sm`.",
     "m": "Medium, the default step. Canonical — never `medium` or `md`.",

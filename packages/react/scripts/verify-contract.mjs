@@ -35,6 +35,11 @@ import { existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import Ajv from 'ajv/dist/2020.js';
 import { loadProfile } from '@juro/platform-web';
+import { numericDefaultProblems } from '@juro/emit-web';
+import { surfaceFrom as reactSurface } from '../src/emit/surface.mjs';
+import { surfaceFrom as vueSurface } from '../../vue/src/emit/surface.mjs';
+import { surfaceFrom as angularSurface } from '../../angular/src/emit/surface.mjs';
+import { surfaceFrom as wcSurface } from '../../wc/src/emit/surface.mjs';
 import {
   REPO_ROOT,
   listContracts,
@@ -140,6 +145,23 @@ function check(name, validateContract, validateBinding) {
     report(name, 'no CHANGELOG.md — the contract is the versioned artifact and has no history.');
   }
 
+  // A legal contract can still derive an illegal backend API: states, axes, slots and requests use
+  // different source vocabularies but eventually share one identifier namespace. Derive every
+  // surface here so a collision fails at the contract gate, before an emitter writes uncompilable
+  // source or a later glossary build happens to encounter it.
+  for (const [backend, surface] of [
+    ['react', reactSurface],
+    ['vue', vueSurface],
+    ['angular', angularSurface],
+    ['wc', wcSurface],
+  ]) {
+    try {
+      surface(contract);
+    } catch (error) {
+      fail(name, 'surface', `${backend}: ${error.message}`);
+    }
+  }
+
   // --- the binding -----------------------------------------------------------------------
   if (!existsSync(paths.binding)) {
     report(name, `no ${name}.react.json — this backend cannot compile it.`);
@@ -197,6 +219,19 @@ function check(name, validateContract, validateBinding) {
       );
     }
   }
+
+  // --- a numeric default has to be a value the state can actually hold ----------------------
+  //
+  // The schema types `default` against the state's shape, and a type is as far as it gets: JSON
+  // Schema cannot compare one field to another, so `min: 0, max: 100, default: 200` is legal
+  // there and always will be. The emitter then writes 200 into the signature while the geometry
+  // and the ARIA attributes clamp to 100 — the component starts disagreeing with itself, and
+  // nothing says so.
+  //
+  // `step` is checked for the same reason its own schema description gives: "a value between
+  // steps is not reachable, which is a promise a consumer relies on". A default that is not on a
+  // step breaks that promise on the first render, before anyone has touched the control.
+  for (const problem of numericDefaultProblems(contract)) fail(name, 'range', problem);
 
   // A derived state names the slot it observes. The schema can only check the name's spelling, and
   // the emitter only finds a wrong one when this component is next generated.
@@ -262,6 +297,52 @@ function check(name, validateContract, validateBinding) {
         fail(name, 'reference', `references member "${ref.member}", which has no contract.`);
       }
     }
+  }
+
+  // --- one request, one asking part ---------------------------------------------------------
+  //
+  // Every backend compiles `activates.requests` into ONE callback named after the action, by rule
+  // and with no per-component mapping (ADR 0007). Two parts naming the same action therefore
+  // produce the same identifier twice — a duplicated prop in the interface and a duplicated
+  // binding in the destructuring, which does not compile.
+  //
+  // Refused rather than deduplicated, and for the same reason `derivedFrom` refuses a second
+  // observer: a single callback fired by two different controls cannot say which one the user
+  // pressed, so the contract has to name the two actions apart.
+  const asking = new Map();
+  for (const [path, node] of walkAnatomy(contract.anatomy?.root)) {
+    const action = node.activates?.requests;
+    if (!action) continue;
+    if (asking.has(action)) {
+      fail(
+        name,
+        'request',
+        `parts "${asking.get(action)}" and "${path}" both request "${action}"; one callback cannot serve both, so name the two actions apart.`,
+      );
+    } else {
+      asking.set(action, path);
+    }
+  }
+
+  // --- what a request obliges the contract to state ------------------------------------------
+  //
+  // ADR 0007 decision 6: a part carrying `requests` is interactive, so it declares its own role,
+  // the consumer supplies its accessible name, and the COMPONENT declares `a11y.minHitArea`. The
+  // role half is in the schema, on the part. This half cannot be: `minHitArea` sits on `a11y` at
+  // the component root while `requests` is somewhere down in `anatomy`, and JSON Schema cannot
+  // walk that far to relate the two.
+  //
+  // Gated rather than reported, because the obligations are the whole reason this primitive was
+  // acceptable in the first place. A `requests` part is a real control — the ADR's own argument
+  // for allowing it rests on it being named and reachable — so a contract that takes the
+  // primitive and skips them has kept the affordance and dropped the conditions.
+  if (asking.size && contract.a11y?.minHitArea === undefined) {
+    fail(
+      name,
+      'request',
+      `part "${[...asking.values()][0]}" requests "${[...asking.keys()][0]}", which makes it an ` +
+        'interactive control, but the contract declares no `a11y.minHitArea` (ADR 0007).',
+    );
   }
 
   // --- an intrinsic state must be one the platform actually provides -----------------------

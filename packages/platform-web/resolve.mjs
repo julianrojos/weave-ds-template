@@ -54,7 +54,17 @@ export const visibilityOf = (element, profile) =>
   elementFacts(element, profile).visibility ?? { mode: 'attribute' };
 
 /** @param kind {'container' | 'activatable'} */
-export const defaultElement = (kind, profile) => profile.defaults[kind];
+export const defaultElement = (kind, profile, within = null) => {
+  // A container must be legal inside its ancestor. `<span><div/></span>` is invalid: the parser
+  // does not reject it, it RESTRUCTURES it — the div is hoisted out of the span — so the emitted
+  // tree and the rendered tree stop matching and no error is reported anywhere.
+  if (kind === 'container' && within && profile.elements?.[within]?.phrasing) {
+    return profile.defaults.containerInPhrasing ?? profile.defaults.container;
+  }
+  return profile.defaults[kind];
+};
+
+export const isPhrasing = (element, profile) => Boolean(profile.elements?.[element]?.phrasing);
 
 // ---------------------------------------------------------------------------------------
 // vocabulary: a contract's word, and the platform's

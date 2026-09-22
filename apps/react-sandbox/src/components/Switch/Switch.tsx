@@ -65,7 +65,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
       data-juro-part="root"
       className={className}
     >
-      <div data-juro-part="thumb" />
+      <span data-juro-part="thumb" />
     </button>
   );
 });

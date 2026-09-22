@@ -64,6 +64,7 @@ import {
   referencedByASibling,
   visibilityCondition,
 } from '@juro/emit-web';
+import { formatIfPossible, writeEmittedFiles } from '@juro/emit-web/write';
 
 // The prop surface a contract implies. Shared with the contract tooling, which needs the same
 // answer and cannot import this file — see the CLI guard at the bottom.
@@ -76,6 +77,7 @@ const ATTR_TYPE = {
   label: ['LabelHTMLAttributes', 'HTMLLabelElement'],
   a: ['AnchorHTMLAttributes', 'HTMLAnchorElement'],
   dialog: ['DialogHTMLAttributes', 'HTMLDialogElement'],
+  span: ['HTMLAttributes', 'HTMLSpanElement'],
 };
 const attrTypeFor = (el) => ATTR_TYPE[el] ?? ['HTMLAttributes', 'HTMLDivElement'];
 
@@ -84,7 +86,11 @@ const assume = (topic, decision, why) => EMITTER_ASSUMPTIONS.push({ topic, decis
 
 // Render one anatomy part and everything under it. Recursive, so a role or a relationship on a
 // nested part lands where the contract put it rather than on the root.
-function renderPart(key, node, ctx, depth) {
+//
+// `within` is the element this part is being rendered INSIDE, and it has to follow the recursion:
+// the HTML content model is a property of the immediate parent, not of the root. Passing the root
+// at every depth fixes `span > div` and leaves `button > div` one level down.
+function renderPart(key, node, ctx, depth, within = ctx.rootElement) {
   const { prefix, slots, contract, idFor, refId } = ctx;
   const pad = '  '.repeat(depth + 3);
   const slot = slots.find((x) => (x.part ? x.part === key : camel(x.from) === key));
@@ -94,7 +100,7 @@ function renderPart(key, node, ctx, depth) {
 
   const nodeEl = imageSlot
     ? 'img'
-    : defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
+    : defaultElement(node.activates ? 'activatable' : 'container', WEB, within);
   // Unified with the ROOT path, which asks the same question two hundred lines below. Equivalent
   // to the old inline check by cases: a container has no implicit role so it never suppresses,
   // and an activatable suppresses exactly when the declared role is the one it already carries.
@@ -131,7 +137,18 @@ function renderPart(key, node, ctx, depth) {
     );
   }
   if (node.activates?.toggles) attrs.push(`onClick={activate}`);
-  if (node.activates?.toggles && node.role === 'button') attrs.push(`type="button"`);
+  // A request calls the consumer's callback and changes nothing here — the component has no state
+  // for it and cannot observe the outcome. ADR 0007.
+  const request = (ctx.requests ?? []).find((p) => p.from === key);
+  // Called plainly, not `?.()`: the surface makes a request callback REQUIRED, and an optional
+  // call would say the opposite of the type right next to it.
+  if (request) attrs.push(`onClick={() => ${request.name}()}`);
+  // Its accessible name, where the surface decided the part shows no text of its own.
+  const requestLabel = (ctx.requestLabels ?? []).find((p) => p.from === key);
+  if (requestLabel) {
+    attrs.push(`${relationAttribute('namedLiterally', WEB)}={${requestLabel.name}}`);
+  }
+  if (node.activates && node.role === 'button') attrs.push(`type="button"`);
   if (node.visibleWhen)
     attrs.push(`${WEB.visibility.attribute}={!(${stateExpr(node.visibleWhen, ctx)})}`);
   if (node.role === 'button') {
@@ -197,7 +214,7 @@ function renderPart(key, node, ctx, depth) {
   out.push(pad + open);
   if (slot) out.push(`${pad}  {${slot.name}}`);
   if (takesChildrenHere) out.push(`${pad}  {children}`);
-  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1));
+  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1, el));
   out.push(pad + close);
   return out;
 }
@@ -224,6 +241,8 @@ export function emitTsx(name, contract, binding, prefix) {
 
   const shared = props.filter((p) => p.role === 'controlled' && p.from !== 'selection');
   const slots = props.filter((p) => p.role === 'slot');
+  const requests = props.filter((p) => p.role === 'request');
+  const requestLabels = props.filter((p) => p.role === 'requestLabel');
   const takesChildren = (contract.composition?.children?.max ?? 1) !== 0;
   const childrenPart = contract.composition?.children?.part;
 
@@ -455,7 +474,12 @@ export function emitTsx(name, contract, binding, prefix) {
   // A member whose root is POINTED AT from a sibling needs an id even if it references nothing
   // itself. Nothing in this contract can know that, so the flag is set from the ancestor's roster.
   const referencedBySibling = referencedByASibling(name, member, CONTRACTS);
-  const needsIds = Boolean(collection) || referencesParts || referencedBySibling;
+  // A part carrying a `role` is given an id by renderPart, whether or not anything references it.
+  // That has to be part of this condition, or the emitted component uses a `baseId` nothing
+  // declared. It stayed hidden while the only such part (Tabs' `list`) sat in a contract whose
+  // `collection` set the flag for other reasons.
+  const roledPart = allParts.some((p) => p.node.role);
+  const needsIds = Boolean(collection) || referencesParts || referencedBySibling || roledPart;
 
   // A state `derivedFrom` an image slot is observed from that <img>'s load and error events. Keyed
   // by slot so the part that renders the image knows which setter to call.
@@ -494,7 +518,10 @@ export function emitTsx(name, contract, binding, prefix) {
 
   const ctx = {
     prefix,
+    rootElement: el,
     slots,
+    requests,
+    requestLabels,
     derived,
     contract,
     idFor,
@@ -644,6 +671,7 @@ export function emitTsx(name, contract, binding, prefix) {
     if (p.role === 'uncontrolled') s.push(`  /** Initial value when uncontrolled. */`);
     if (p.role === 'callback') s.push(`  /** Called when it changes, controlled or not. */`);
     if (p.role === 'input') s.push(`  /** ${src.description} */`);
+    if (p.role === 'request' || p.role === 'requestLabel') s.push(`  /** ${p.description} */`);
     if (p.role === 'identity' || p.role === 'slot')
       s.push(`  /** ${p.description ?? 'Slot content.'} */`);
     if (p.role === 'axis')
@@ -659,11 +687,14 @@ export function emitTsx(name, contract, binding, prefix) {
     ...props.map((p) => {
       if (p.role === 'uncontrolled') {
         if (p.from === 'selection') return `${p.name} = ${many ? '[]' : "''"}`;
-        const d = p.default;
-        const lit = d === false ? 'false' : typeof d === 'number' ? String(d) : `'${d}'`;
-        return `${p.name} = ${lit}`;
+        return `${p.name} = ${JSON.stringify(p.default)}`;
       }
       if (p.role === 'axis' && p.default) return `${p.name} = '${p.default}'`;
+      // Only a DECLARED default reaches the signature. Every boolean input carries an implicit
+      // `false`, and emitting that would rewrite every existing component for no gain.
+      if (p.role === 'input' && p.declaredDefault) {
+        return `${p.name} = ${JSON.stringify(p.default)}`;
+      }
       return p.name;
     }),
     ...(takesChildren ? ['children'] : []),
@@ -1234,6 +1265,12 @@ export function emitTsx(name, contract, binding, prefix) {
   }
   if (navigation) onEvent('onKeyDown', 'nav.onKeyDown');
   if (rootToggles) onEvent('onClick', 'activate');
+  const rootRequest = requests.find((p) => p.from === 'root');
+  if (rootRequest) onEvent('onClick', rootRequest.name, false);
+  const rootRequestLabel = requestLabels.find((p) => p.from === 'root');
+  if (rootRequestLabel) {
+    rootAttrs.push(`${relationAttribute('namedLiterally', WEB)}={${rootRequestLabel.name}}`);
+  }
 
   // Consumer first, so they can `preventDefault()` and win. ALWAYS composed, never emitted bare:
   // no event name here can be produced by `surfaceFrom`, so none is ever in the props type's `Omit`
@@ -1309,6 +1346,15 @@ export function emitTsx(name, contract, binding, prefix) {
   return s.join('\n');
 }
 
+/** Files wholly owned by this emitter. Consumer-authored theme CSS is deliberately absent. */
+export function emitOwnedFiles(name, contract, binding, prefix) {
+  return {
+    [`${name}.tsx`]: emitTsx(name, contract, binding, prefix),
+    [`${name}.structure.css`]: emitStructure(name, contract, binding.element, prefix, WEB, assume),
+    'index.ts': `export { ${name}, type ${name}Props } from './${name}';\n`,
+  };
+}
+
 // ---------------------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------------------
@@ -1330,26 +1376,25 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.tsx`), emitTsx(name, contract, binding, prefix), 'utf8');
-  writeFileSync(
-    join(outDir, `${name}.structure.css`),
-    emitStructure(name, contract, binding.element, prefix, WEB, assume),
-    'utf8',
+  // Formatted on the way out, so the command printed in every generated header produces a
+  // file that `format:check` and `sandboxes:check` accept. See @juro/emit-web/write.
+  const unformatted = await writeEmittedFiles(
+    outDir,
+    emitOwnedFiles(name, contract, binding, prefix),
   );
 
   const themePath = join(outDir, `${name}.theme.css`);
   if (existsSync(themePath)) {
     console.log(`  kept   ${name}.theme.css (yours — never regenerated)`);
   } else {
-    writeFileSync(themePath, emitTheme(name, contract, prefix, WEB), 'utf8');
+    const theme = await formatIfPossible(emitTheme(name, contract, prefix, WEB), themePath);
+    if (!theme.formatted) unformatted.push({ file: `${name}.theme.css`, reason: theme.reason });
+    writeFileSync(themePath, theme.text, 'utf8');
   }
-  writeFileSync(
-    join(outDir, 'index.ts'),
-    `export { ${name}, type ${name}Props } from './${name}';\n`,
-    'utf8',
-  );
-
   const surface = surfaceFrom(contract);
+  for (const { file, reason } of unformatted) {
+    console.warn(`  unformatted ${file} — ${reason}`);
+  }
   console.log(`\nemitted ${name} -> ${outDir}`);
   console.log(`  props: ${surface.map((p) => p.name).join(', ') || '(none)'}`);
   console.log(

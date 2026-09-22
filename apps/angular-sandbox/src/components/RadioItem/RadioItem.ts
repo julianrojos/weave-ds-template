@@ -30,6 +30,7 @@ import { RADIOGROUP, type RadioGroupContext } from '../RadioGroup/RadioGroup';
   styleUrls: ['./RadioItem.structure.css', './RadioItem.theme.css'],
   host: {
     '[attr.role]': "'radio'",
+    '[attr.id]': 'baseId()',
     '[attr.aria-disabled]': 'disabled() || null',
     '[attr.aria-checked]': 'selected()',
     '[attr.tabindex]': 'collection.isTabStop(value()) ? 0 : -1',
@@ -59,6 +60,7 @@ export class RadioItem {
   protected readonly isDisabled = computed(
     () => this.disabled() || this.collection.collectionDisabled(),
   );
+  protected readonly baseId = computed(() => this.collection.baseId + '-RadioItem-' + this.value());
 
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 

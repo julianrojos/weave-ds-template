@@ -61,6 +61,7 @@ import {
   referencedByASibling,
   visibilityCondition,
 } from '@juro/emit-web';
+import { formatIfPossible, writeEmittedFiles } from '@juro/emit-web/write';
 
 import { camel, pascal, slotsFrom, surfaceFrom } from './surface.mjs';
 
@@ -91,14 +92,14 @@ function stateExpr(spec, ctx) {
 // ---------------------------------------------------------------------------------------
 // the template: one anatomy part and everything under it
 // ---------------------------------------------------------------------------------------
-function renderPart(key, node, ctx, depth) {
+function renderPart(key, node, ctx, depth, within = ctx.rootElement) {
   const { prefix, slots, contract, idFor, refId } = ctx;
   const pad = '  '.repeat(depth + 1);
   const slot = slots.find((x) => (x.part ? x.part === key : x.name === key));
   const takesChildrenHere = ctx.childrenPart === key;
   const attrs = [];
 
-  const nodeEl = defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
+  const nodeEl = defaultElement(node.activates ? 'activatable' : 'container', WEB, within);
   if (node.role && implicitRole(nodeEl, WEB) !== node.role) {
     attrs.push(`role="${node.role}"`);
   }
@@ -132,7 +133,13 @@ function renderPart(key, node, ctx, depth) {
     );
   }
   if (node.activates?.toggles) attrs.push(`@click="activate"`);
-  if (node.activates?.toggles && node.role === 'button') attrs.push(`type="button"`);
+  const request = ctx.requests.find((p) => p.from === key);
+  if (request) attrs.push(`@click="${request.name}"`);
+  const requestLabel = ctx.requestLabels.find((p) => p.from === key);
+  if (requestLabel) {
+    attrs.push(`:${relationAttribute('namedLiterally', WEB)}="${requestLabel.name}"`);
+  }
+  if (node.activates && node.role === 'button') attrs.push(`type="button"`);
   if (node.visibleWhen)
     attrs.push(`:${WEB.visibility.attribute}="!(${stateExpr(node.visibleWhen, ctx)})"`);
   if (node.role === 'button' && ctx.disabledExpr) attrs.push(`:disabled="${ctx.disabledExpr}"`);
@@ -159,7 +166,7 @@ function renderPart(key, node, ctx, depth) {
   out.push(`${pad}<${nodeEl} ${attrs.join(' ')}>`);
   if (slot) out.push(`${pad}  <slot name="${slot.name}" />`);
   if (takesChildrenHere) out.push(`${pad}  <slot />`);
-  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1));
+  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1, nodeEl));
   out.push(`${pad}</${nodeEl}>`);
   return out;
 }
@@ -178,11 +185,21 @@ export function emitSfc(name, contract, binding, prefix) {
   const models = props.filter((p) => p.role === 'model');
   const stateModels = models.filter((p) => p.from !== 'selection');
   const inputs = props.filter((p) => p.role === 'input');
+  const requests = props.filter((p) => p.role === 'request');
+  const requestLabels = props.filter((p) => p.role === 'requestLabel');
   const axes = props.filter((p) => p.role === 'axis');
   const identity = props.find((p) => p.role === 'identity');
   const namedSlots = slots.filter((s) => s.name !== 'default');
   const takesChildren = slots.some((s) => s.name === 'default');
   const childrenPart = contract.composition?.children?.part;
+
+  if (requests.length) {
+    assume(
+      'a request listener must be required',
+      'emit a typed event whose listener remains optional',
+      'Vue cannot require a parent to listen for an emitted event. This is reported as non-conforming under ADR 0005 and ADR 0007.',
+    );
+  }
 
   const collection = contract.collection;
   const selShared = collection?.selection?.control === 'shared';
@@ -348,11 +365,15 @@ export function emitSfc(name, contract, binding, prefix) {
     allParts.flatMap((p) => refsOf(p.node)).filter((r) => typeof r === 'string'),
   );
   const referencedBySibling = referencedByASibling(name, member, CONTRACTS);
-  const needsIds = Boolean(collection) || referencesParts || referencedBySibling;
+  const roledPart = allParts.some((p) => p.node.role);
+  const needsIds = Boolean(collection) || referencesParts || referencedBySibling || roledPart;
 
   const ctx = {
     prefix,
+    rootElement: el,
     slots: namedSlots,
+    requests,
+    requestLabels,
     contract,
     idFor,
     childrenPart,
@@ -375,7 +396,7 @@ export function emitSfc(name, contract, binding, prefix) {
   head.push(`-->`);
   head.push(``);
 
-  const declaredProps = [...inputs, ...axes, ...(identity ? [identity] : [])];
+  const declaredProps = [...inputs, ...requestLabels, ...axes, ...(identity ? [identity] : [])];
   const exportsSomething = declaredProps.length > 0 || Boolean(collection);
 
   if (exportsSomething) {
@@ -509,6 +530,17 @@ export function emitSfc(name, contract, binding, prefix) {
     s.push(`const ${m.name} = defineModel<${m.type}>('${m.name}', { default: ${dflt} });`);
   }
   if (models.length) s.push(``);
+
+  if (requests.length) {
+    s.push(`// NON-CONFORMING: Vue cannot require a consumer to listen for a request event.`);
+    s.push(`const emit = defineEmits<{`);
+    for (const request of requests) s.push(`  '${request.event}': [];`);
+    s.push(`}>();`);
+    for (const request of requests) {
+      s.push(`function ${request.name}() { emit('${request.event}'); }`);
+    }
+    s.push(``);
+  }
 
   if (unsupportedResources) {
     assume(
@@ -992,6 +1024,12 @@ export function emitSfc(name, contract, binding, prefix) {
   }
   if (navigation) onEvent('keydown', 'nav.onKeyDown');
   if (rootToggles) onEvent('click', 'activate');
+  const rootRequest = requests.find((p) => p.from === 'root');
+  if (rootRequest) onEvent('click', rootRequest.name, false);
+  const rootRequestLabel = requestLabels.find((p) => p.from === 'root');
+  if (rootRequestLabel) {
+    rootAttrs.push(`:${relationAttribute('namedLiterally', WEB)}="${rootRequestLabel.name}"`);
+  }
 
   rootAttrs.push(`data-${prefix}-component="${name}"`);
   rootAttrs.push(`data-${prefix}-part="${root.part}"`);
@@ -1050,7 +1088,12 @@ export function emitSfc(name, contract, binding, prefix) {
 
   if (declaredProps.length) {
     const usesProps = s.some((l) => l !== PROPS_DECL && l.includes('props.'));
-    const defaults = axes.filter((a) => a.default).map((a) => `${a.name}: '${a.default}'`);
+    const defaults = [
+      ...axes.filter((a) => a.default).map((a) => `${a.name}: ${JSON.stringify(a.default)}`),
+      ...inputs
+        .filter((input) => input.declaredDefault)
+        .map((input) => `${input.name}: ${JSON.stringify(input.default)}`),
+    ];
     const lhs = usesProps ? 'const props = ' : '';
     const decl = defaults.length
       ? [
@@ -1096,6 +1139,20 @@ export function emitSfc(name, contract, binding, prefix) {
   return [...head, ...s, ...t].join('\n') + '\n';
 }
 
+/** Files wholly owned by this emitter. Consumer-authored theme CSS is deliberately absent. */
+export function emitOwnedFiles(name, contract, binding, prefix) {
+  const exportsType = surfaceFrom(contract).some((p) =>
+    ['input', 'axis', 'identity'].includes(p.role),
+  );
+  return {
+    [`${name}.vue`]: emitSfc(name, contract, binding, prefix),
+    [`${name}.structure.css`]: emitStructure(name, contract, binding.element, prefix, WEB, assume),
+    'index.ts': exportsType
+      ? `export { default as ${name} } from './${name}.vue';\nexport type { ${name}Props } from './${name}.vue';\n`
+      : `export { default as ${name} } from './${name}.vue';\n`,
+  };
+}
+
 // ---------------------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------------------
@@ -1116,38 +1173,27 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
-  const source = emitSfc(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.vue`), source, 'utf8');
-  writeFileSync(
-    join(outDir, `${name}.structure.css`),
-    emitStructure(name, contract, binding.element, prefix, WEB, assume),
-    'utf8',
+  // Formatted on the way out, so the command printed in every generated header produces a
+  // file that `format:check` and `sandboxes:check` accept. See @juro/emit-web/write.
+  const unformatted = await writeEmittedFiles(
+    outDir,
+    emitOwnedFiles(name, contract, binding, prefix),
   );
 
   const themePath = join(outDir, `${name}.theme.css`);
   if (existsSync(themePath)) {
     console.log(`  kept   ${name}.theme.css (yours — never regenerated)`);
   } else {
-    writeFileSync(themePath, emitTheme(name, contract, prefix, WEB), 'utf8');
+    const theme = await formatIfPossible(emitTheme(name, contract, prefix, WEB), themePath);
+    if (!theme.formatted) unformatted.push({ file: `${name}.theme.css`, reason: theme.reason });
+    writeFileSync(themePath, theme.text, 'utf8');
   }
 
-  const declared = surfaceFrom(contract).filter(
-    (p) => p.role !== 'model' || p.from === 'selection',
-  );
-  void declared;
-  const exportsType = surfaceFrom(contract).some((p) =>
-    ['input', 'axis', 'identity'].includes(p.role),
-  );
-  writeFileSync(
-    join(outDir, 'index.ts'),
-    exportsType
-      ? `export { default as ${name} } from './${name}.vue';\nexport type { ${name}Props } from './${name}.vue';\n`
-      : `export { default as ${name} } from './${name}.vue';\n`,
-    'utf8',
-  );
-
   const surface = surfaceFrom(contract);
+  for (const { file, reason } of unformatted) {
+    console.warn(`  unformatted ${file} — ${reason}`);
+  }
   console.log(`\nemitted ${name} -> ${outDir}`);
   console.log(
     `  props:  ${

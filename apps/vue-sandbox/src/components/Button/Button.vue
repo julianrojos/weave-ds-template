@@ -60,14 +60,14 @@ const fallthrough = computed(() => ({ ...attrs }));
     data-juro-component="Button"
     data-juro-part="root"
   >
-    <div data-juro-part="icon-start">
+    <span data-juro-part="icon-start">
       <slot name="iconStart" />
-    </div>
-    <div data-juro-part="label">
+    </span>
+    <span data-juro-part="label">
       <slot />
-    </div>
-    <div data-juro-part="icon-end">
+    </span>
+    <span data-juro-part="icon-end">
       <slot name="iconEnd" />
-    </div>
+    </span>
   </button>
 </template>

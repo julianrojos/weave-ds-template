@@ -79,7 +79,7 @@ const fallthrough = computed(() => ({ ...attrs }));
         data-juro-part="trigger"
       >
         <slot name="heading" />
-        <div data-juro-part="indicator" />
+        <span data-juro-part="indicator" />
       </button>
     </div>
     <div

@@ -37,7 +37,11 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 
-import { relationshipConformance, formConformance } from './relationship-conformance.mjs';
+import {
+  relationshipConformance,
+  requestConformance,
+  formConformance,
+} from './relationship-conformance.mjs';
 import { BACKENDS } from './backends.mjs';
 import Ajv from 'ajv/dist/2020.js';
 import { loadComponents, loadProfile } from '../packages/platform-web/resolve.mjs';
@@ -183,6 +187,13 @@ for (const component of everyComponent) {
     formFor(contract);
   } catch (error) {
     failures.push(error.message);
+  }
+  for (const backend of BACKENDS) {
+    const requestResult = requestConformance(contract, backend.framework);
+    if (requestResult.status === 'non-conforming')
+      reports.push(
+        `NON-CONFORMING ${backend.framework}/${component} requests: ${requestResult.detail}`,
+      );
   }
   for (const backend of present) {
     const formResult = formConformance(contract, backend.framework);

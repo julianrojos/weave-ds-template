@@ -7,12 +7,14 @@
   "exports": {
     ".": "./index.mjs",
     "./contract": "./contract.mjs",
-    "./css": "./css.mjs"
+    "./css": "./css.mjs",
+    "./write": "./write.mjs"
   },
   "files": [
-    "index.mjs",
     "contract.mjs",
-    "css.mjs"
+    "css.mjs",
+    "index.mjs",
+    "write.mjs"
   ],
   "dependencies": {
     "@juro/platform-web": "workspace:*"

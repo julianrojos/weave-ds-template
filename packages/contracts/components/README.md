@@ -8,8 +8,9 @@ advance — see `docs/ADR/README.md`.
 
 ## What is here
 
-Sixteen contracts, and they did **not** compile equally. The verdict column is measured by generating
-each one and using the result — see `docs/research/0002-compiling-a-contract-into-a-component.md`.
+Seventeen contracts, and they did **not** compile equally. The verdict column is measured by
+generating each one and using the result — see
+`docs/research/0002-compiling-a-contract-into-a-component.md`.
 
 | Contract         | Compiles       | What the contract could not say                                                   |
 | ---------------- | -------------- | --------------------------------------------------------------------------------- |
@@ -20,6 +21,7 @@ each one and using the result — see `docs/research/0002-compiling-a-contract-i
 | `TabItem/`       | **partially**  | `aria-controls`, and that one tab belongs in the Tab order                        |
 | `TabPanel/`      | **partially**  | `aria-labelledby` — its name crosses a component boundary                         |
 | `Avatar/`        | **fully**      | that its frame centres and clips its content — layout has no home (React only)    |
+| `Tag/`           | **fully**      | that its callback is needed only when `removable` (React only)                    |
 | `Switch/`        | **fully**      | nothing — the platform supplies its behaviour                                     |
 | `Accordion/`     | **fully**      | nothing, since `collection` was added                                             |
 | `AccordionItem/` | **fully**      | its heading level, which the APG says must fit the page                           |

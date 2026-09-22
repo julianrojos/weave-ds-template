@@ -57,9 +57,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       data-juro-part="root"
       className={className}
     >
-      <div data-juro-part="icon-start">{iconStart}</div>
-      <div data-juro-part="label">{children}</div>
-      <div data-juro-part="icon-end">{iconEnd}</div>
+      <span data-juro-part="icon-start">{iconStart}</span>
+      <span data-juro-part="label">{children}</span>
+      <span data-juro-part="icon-end">{iconEnd}</span>
     </button>
   );
 });

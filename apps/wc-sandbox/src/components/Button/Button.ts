@@ -20,15 +20,15 @@ SHEET.replaceSync(structureCss + '\n' + themeCss);
 const TEMPLATE = document.createElement('template');
 TEMPLATE.innerHTML = `
     <button part="root" type="button">
-      <div part="icon-start">
+      <span part="icon-start">
         <slot name="icon-start"></slot>
-      </div>
-      <div part="label">
+      </span>
+      <span part="label">
         <slot></slot>
-      </div>
-      <div part="icon-end">
+      </span>
+      <span part="icon-end">
         <slot name="icon-end"></slot>
-      </div>
+      </span>
     </button>
 `;
 

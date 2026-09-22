@@ -59,6 +59,8 @@ it, not here:
 | [0003](./0003-paints-name-the-channel-and-leave-the-source-unbound.md)              | A paint names the channel and leaves its source unbound                  | Draft    |
 | [0004](./0004-a-state-declares-who-may-set-it-and-props-are-generated-from-that.md) | A state declares who may set it, and prop names are generated from that  | Draft    |
 | [0005](./0005-unsupported-contract-claims-are-non-conforming.md)                    | Unsupported contract claims are non-conforming                           | Accepted |
+| [0006](./0006-paint-prominence-is-its-own-axis-not-a-hierarchy.md)                  | Paint prominence is its own axis, not a hierarchy                        | Draft    |
+| [0007](./0007-a-part-requests-an-action-it-cannot-perform.md)                       | A part requests an action it cannot perform                              | Draft    |
 
 <!-- adr-index:end -->
 

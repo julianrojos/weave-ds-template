@@ -117,9 +117,8 @@
             "description": "The values this state may hold, in a meaningful order. EXPERIMENTAL.\n\nOMIT IT AND THE STATE IS A BOOLEAN, which is what every state in this schema was until a checkbox needed three conditions — unchecked, checked and mixed. Two booleans cannot carry that: `checked` and `indeterminate` as separate flags admits `checked: true, indeterminate: true`, which is meaningless, and no gate here could reject it.\n\nNot the same thing as an `axis`. An axis is a styling choice the consumer makes; a state is a condition the component is in, and may be set by the platform or derived."
           },
           "default": {
-            "type": "string",
-            "pattern": "^[a-z][a-z0-9-]*$",
-            "description": "The value before anything sets one. Only meaningful alongside `values`, and must be one of them."
+            "type": ["string", "boolean", "number"],
+            "description": "The value before anything sets one.\n\nITS TYPE IS THE STATE'S TYPE, and the branches below enforce that rather than leaving it to a reader. A state has exactly one of three shapes and each admits exactly one kind of default:\n  `values: [...]`         -> a string, kebab-case, and one of them\n  `valueType: \"string\"`   -> a string, FREE TEXT (a text field's default is prose, not an identifier)\n  `valueType: \"number\"`   -> a number\n  neither                 -> a boolean\n\nWidening this field to carry a boolean for `Tag`'s `removable` originally constrained only the `values` case, which left a boolean state accepting `\"yes\"` and a numeric one accepting `true`. The emitter keeps the state's own type and would have emitted an incompatible default with every gate green."
           },
           "valueType": {
             "enum": ["string", "number"],
@@ -220,6 +219,74 @@
             },
             "then": {
               "required": ["editing"]
+            }
+          },
+          {
+            "if": {
+              "required": ["values"]
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9-]*$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": ["valueType"],
+              "properties": {
+                "valueType": {
+                  "const": "number"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": ["valueType"],
+              "properties": {
+                "valueType": {
+                  "const": "string"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": ["values"]
+                  },
+                  {
+                    "required": ["valueType"]
+                  }
+                ]
+              }
+            },
+            "then": {
+              "properties": {
+                "default": {
+                  "type": "boolean"
+                }
+              }
             }
           }
         ]
@@ -698,7 +765,7 @@
         "activates": {
           "type": "object",
           "additionalProperties": false,
-          "description": "What happens when a user activates this part — clicks it, or presses Enter or Space on it. EXPERIMENTAL.\n\nDeliberately NOT a general effect list. It takes one named thing, because the moment it takes an expression this schema has become a programming language.",
+          "description": "What happens when a user activates this part — clicks it, or presses Enter or Space on it. EXPERIMENTAL.\n\nDeliberately NOT a general effect list. It takes one named thing, because the moment it takes an expression this schema has become a programming language.\n\nTWO SHAPES, and they are exclusive. `toggles` (optionally with `between`) changes a state the component owns. `requests` asks the CONSUMER to do something the component cannot do itself — see ADR 0007. A part does one or the other; `between` never appears without `toggles`.",
           "properties": {
             "toggles": {
               "type": "string",
@@ -713,8 +780,36 @@
               "minItems": 2,
               "maxItems": 2,
               "description": "For a state with more than two values: the two a USER may move between, and the resting one to fall back to from any other. EXPERIMENTAL.\n\nA checkbox holds three values and a user may only reach two of them: `mixed` is reported by a parent whose children disagree, and activating a mixed checkbox resolves it to checked. Without this, activation would have to guess — and offering `mixed` as a third click target is a real defect in real libraries.\n\nRequired when the toggled state declares more than two values."
+            },
+            "requests": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]*$",
+              "description": "One action this part asks its CONSUMER to perform, named as a verb — `remove`. EXPERIMENTAL.\n\nThe component does not perform it and cannot observe whether it happened: a tag cannot remove itself from a list only its owner holds. That is why this is not a state. Modelling it as one would compile to a settable input for a fact the component can never know, which is the error ADR 0004 exists to prevent.\n\nEach backend compiles it into one native request channel by rule, with no per-component mapping: a required callback where props carry events, an emitted event where the framework or platform does. A backend that cannot emit it reports non-conformance under ADR 0005 rather than dropping the control. See ADR 0007."
             }
-          }
+          },
+          "oneOf": [
+            {
+              "required": ["toggles"],
+              "not": {
+                "required": ["requests"]
+              }
+            },
+            {
+              "required": ["requests"],
+              "allOf": [
+                {
+                  "not": {
+                    "required": ["toggles"]
+                  }
+                },
+                {
+                  "not": {
+                    "required": ["between"]
+                  }
+                }
+              ]
+            }
+          ]
         },
         "controls": {
           "description": "Names another part whose presence or visibility this part governs. Compiles to `aria-controls` on the web. EXPERIMENTAL.\n\nA plain string names a part of this same component. The object form crosses to a sibling member of the same collection — the reference a tab makes to its panel, which no sibling-only form could express: a tab and its panel are different components that share one collection and one identity.",
@@ -821,7 +916,23 @@
             "$ref": "#/$defs/part"
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "$comment": "ADR 0007 decision 6: a part carrying `requests` is interactive, so it must declare its own role. The hit-area half of that decision lives on `a11y` at the component root, out of reach from here, and is gated in verify-contract.mjs instead.",
+          "if": {
+            "required": ["activates"],
+            "properties": {
+              "activates": {
+                "required": ["requests"]
+              }
+            }
+          },
+          "then": {
+            "required": ["role"]
+          }
+        }
+      ]
     }
   }
 }

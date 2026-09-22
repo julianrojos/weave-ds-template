@@ -17,7 +17,7 @@ Each section describes that backend only. Model events, attributes, and slots ar
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 16 components · 42 props · 2 flags.
+**Coverage:** 17 components · 47 props · 3 flags.
 
 ### How to use this
 
@@ -41,7 +41,8 @@ never a synonym.
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
 | `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
 | `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
-| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
+| `treatment` | Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006. | solid · soft | `solid` | 1 |
+| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 2 |
 
 ### 2. Value glossary (anti-synonym list)
 
@@ -57,6 +58,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `m` | Medium, the default step. Canonical — never `medium` or `md`. |
 | `neutral` | Default, low-emphasis intent. Canonical — never `default` or `base`. |
 | `s` | Small. Canonical — never `small` or `sm`. |
+| `soft` | The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint. |
+| `solid` | The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint. |
 | `start` | Logical inline start — left in LTR, right in RTL. Preferred over `left`. |
 | `success` | Confirmation or a completed state. Canonical — never `positive` or `green`. |
 | `vertical` | Flows along the block axis. |
@@ -96,6 +99,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `onDirtyChange` | local | (dirty: boolean) => void | Field |
 | `onInvalidChange` | local | (invalid: boolean) => void | Field |
 | `onOpenChange` | local | (open: boolean) => void | Dialog, Tooltip |
+| `onRemoveRequest` | local | () => void | Tag |
 | `onTouchedChange` | local | (touched: boolean) => void | Field |
 | `onValueChange` | local | Slider: (value: number) => void<br>RadioGroup, Tabs, TextField: (value: string) => void<br>Accordion: (value: string[]) => void | Accordion, RadioGroup, Slider, Tabs, TextField |
 | `open` | boolean | boolean | Dialog, Tooltip |
@@ -103,18 +107,23 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `panel` | node | ReactNode | AccordionItem |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
+| `removable` | boolean | boolean | Tag |
+| `removeIcon` | node | ReactNode | Tag |
+| `removeLabel` | local | string | Tag |
 | `shape` | axis | circle · square | Avatar |
 | `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `title` | node | ReactNode | Dialog |
 | `touched` | boolean | boolean | Field |
+| `treatment` | axis | solid · soft | Tag |
 | `trigger` | node | ReactNode | Tooltip |
 | `value` | local | Slider: number<br>AccordionItem, RadioGroup, RadioItem, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, RadioGroup, RadioItem, Slider, TabItem, TabPanel, Tabs, TextField |
-| `variant` | axis | neutral · brand · danger | Button |
+| `variant` | axis | Button: neutral · brand · danger<br>Tag: neutral · brand · success · warning · danger | Button, Tag |
 
 ### 4. Drift report
 
 - `checked` (Checkbox, Switch) — `checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right. · **unreviewed**
 - `defaultChecked` (Checkbox, Switch) — `defaultChecked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right. · **unreviewed**
+- `variant` (Button, Tag) — `variant` is exposed with 2 different value sets across components. · **unreviewed**
 
 
 ### Accordion
@@ -259,6 +268,17 @@ One spelling, one meaning. A new value is added here in the same change that int
 | defaultValue | uncontrolled | string | ? | ? |
 | onValueChange | callback | (value: string) => void | ? | ? |
 
+### Tag
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| removable | input | boolean | ? | ? |
+| variant | axis | 'neutral' \| 'brand' \| 'success' \| 'warning' \| 'danger' | ? | ? |
+| treatment | axis | 'solid' \| 'soft' | ? | ? |
+| removeIcon | slot | ReactNode | ? | ? |
+| onRemoveRequest | request | () => void | ? | ? |
+| removeLabel | requestLabel | string | ? | ? |
+
 ### TextField
 
 | Name | Role | Type | Attribute | Event |
@@ -296,7 +316,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 16 components · 15 props · 1 flags.
+**Coverage:** 17 components · 19 props · 2 flags.
 
 ### How to use this
 
@@ -320,7 +340,8 @@ never a synonym.
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
 | `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
 | `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
-| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
+| `treatment` | Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006. | solid · soft | `solid` | 1 |
+| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 2 |
 
 ### 2. Value glossary (anti-synonym list)
 
@@ -336,6 +357,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `m` | Medium, the default step. Canonical — never `medium` or `md`. |
 | `neutral` | Default, low-emphasis intent. Canonical — never `default` or `base`. |
 | `s` | Small. Canonical — never `small` or `sm`. |
+| `soft` | The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint. |
+| `solid` | The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint. |
 | `start` | Logical inline start — left in LTR, right in RTL. Preferred over `left`. |
 | `success` | Confirmation or a completed state. Canonical — never `positive` or `green`. |
 | `vertical` | Flows along the block axis. |
@@ -357,15 +380,20 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `orientation` | axis | vertical | Accordion |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
+| `removable` | boolean | boolean | Tag |
+| `removeLabel` | local | string | Tag |
+| `removeRequest` | local | [] | Tag |
 | `shape` | axis | circle · square | Avatar |
 | `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
+| `treatment` | axis | solid · soft | Tag |
 | `value` | local | Slider: number<br>AccordionItem, RadioGroup, RadioItem, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, RadioGroup, RadioItem, Slider, TabItem, TabPanel, Tabs, TextField |
-| `variant` | axis | neutral · brand · danger | Button |
+| `variant` | axis | Button: neutral · brand · danger<br>Tag: neutral · brand · success · warning · danger | Button, Tag |
 
 ### 4. Drift report
 
 - `checked` (Checkbox, Switch) — `checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right. · **unreviewed**
+- `variant` (Button, Tag) — `variant` is exposed with 2 different value sets across components. · **unreviewed**
 
 
 ### Accordion
@@ -474,6 +502,16 @@ One spelling, one meaning. A new value is added here in the same change that int
 | disabled | input | boolean | ? | ? |
 | value | model | string | ? | update:value |
 
+### Tag
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| removable | input | boolean | ? | ? |
+| variant | axis | 'neutral' \| 'brand' \| 'success' \| 'warning' \| 'danger' | ? | ? |
+| treatment | axis | 'solid' \| 'soft' | ? | ? |
+| removeRequest | request | [] | ? | remove-request |
+| removeLabel | requestLabel | string | ? | ? |
+
 ### TextField
 
 | Name | Role | Type | Attribute | Event |
@@ -505,7 +543,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 16 components · 15 props · 1 flags.
+**Coverage:** 17 components · 19 props · 2 flags.
 
 ### How to use this
 
@@ -529,7 +567,8 @@ never a synonym.
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
 | `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
 | `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
-| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
+| `treatment` | Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006. | solid · soft | `solid` | 1 |
+| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 2 |
 
 ### 2. Value glossary (anti-synonym list)
 
@@ -545,6 +584,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `m` | Medium, the default step. Canonical — never `medium` or `md`. |
 | `neutral` | Default, low-emphasis intent. Canonical — never `default` or `base`. |
 | `s` | Small. Canonical — never `small` or `sm`. |
+| `soft` | The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint. |
+| `solid` | The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint. |
 | `start` | Logical inline start — left in LTR, right in RTL. Preferred over `left`. |
 | `success` | Confirmation or a completed state. Canonical — never `positive` or `green`. |
 | `vertical` | Flows along the block axis. |
@@ -566,15 +607,20 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `orientation` | axis | vertical | Accordion |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
+| `removable` | boolean | boolean | Tag |
+| `removeLabel` | local | string | Tag |
+| `removeRequest` | local | void | Tag |
 | `shape` | axis | circle · square | Avatar |
 | `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
+| `treatment` | axis | solid · soft | Tag |
 | `value` | local | Slider: number<br>AccordionItem, RadioGroup, RadioItem, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, RadioGroup, RadioItem, Slider, TabItem, TabPanel, Tabs, TextField |
-| `variant` | axis | neutral · brand · danger | Button |
+| `variant` | axis | Button: neutral · brand · danger<br>Tag: neutral · brand · success · warning · danger | Button, Tag |
 
 ### 4. Drift report
 
 - `checked` (Checkbox, Switch) — `checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right. · **unreviewed**
+- `variant` (Button, Tag) — `variant` is exposed with 2 different value sets across components. · **unreviewed**
 
 
 ### Accordion
@@ -683,6 +729,16 @@ One spelling, one meaning. A new value is added here in the same change that int
 | disabled | input | boolean | ? | ? |
 | value | model | string | ? | valueChange |
 
+### Tag
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| removable | input | boolean | ? | ? |
+| variant | axis | 'neutral' \| 'brand' \| 'success' \| 'warning' \| 'danger' | ? | ? |
+| treatment | axis | 'solid' \| 'soft' | ? | ? |
+| removeRequest | request | void | ? | ? |
+| removeLabel | requestLabel | string | ? | ? |
+
 ### TextField
 
 | Name | Role | Type | Attribute | Event |
@@ -714,7 +770,7 @@ One spelling, one meaning. A new value is added here in the same change that int
 > [`prop-canon.json`](../../packages/contracts/prop-canon.json) (data) and
 > `packages/contracts/components/README.md` §2 (prose).
 
-**Coverage:** 16 components · 17 props · 1 flags.
+**Coverage:** 17 components · 21 props · 2 flags.
 
 ### How to use this
 
@@ -738,7 +794,8 @@ never a synonym.
 | `placement` | Where the component sits relative to its anchor or host. Two profiles — a component picks one whole profile, never a mix of the two. | _overlay_: top · top-start · top-end · bottom · bottom-start · bottom-end · left · left-start · left-end · right · right-start · right-end<br>_edge_: top · bottom · start · end | — | 1 |
 | `shape` | The silhouette of a frame that holds identity content, such as a person's picture or initial. Added for Avatar (.ai/maps/proposals/Avatar.md), where the design offers both. When each value applies is a product decision the canon does not make. | circle · square | `circle` | 1 |
 | `size` | One ordered scale, shared with the token ladder (--juro-space-*, --juro-font-size-*). A component exposes a contiguous subset of it, never a gap. | xs · s · m · l · xl | `m` | 4 |
-| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 1 |
+| `treatment` | Visual treatment applied to a surface, independently of its semantic intent. `solid` has more visual presence; `soft` is deliberately more contained. Defined by presence, NEVER by a colour property or a token tier: the design this came from inverts greyscale on one scheme and tints the hue on three others, so any definition naming saturation or a token name is already wrong. Orthogonal to `variant`, which chooses WHICH colour role applies, and disjoint from `hierarchy`, which ranks actions. Added for Tag (.ai/maps/proposals/Tag.md); see ADR 0006. | solid · soft | `solid` | 1 |
+| `variant` | Semantic intent, which selects the colour role. Orthogonal to `hierarchy`, which decides how much emphasis is applied. | neutral · brand · success · warning · danger | `neutral` | 2 |
 
 ### 2. Value glossary (anti-synonym list)
 
@@ -754,6 +811,8 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `m` | Medium, the default step. Canonical — never `medium` or `md`. |
 | `neutral` | Default, low-emphasis intent. Canonical — never `default` or `base`. |
 | `s` | Small. Canonical — never `small` or `sm`. |
+| `soft` | The `treatment` deliberately more contained than `solid`. Canonical — never `subtle`, `muted`, `tinted`, or `secondary`: secondary is a hierarchy rank, not a paint. |
+| `solid` | The `treatment` with more visual presence — the filled, prominent form of whichever `variant` applies. Canonical — never `filled`, `strong`, or `primary`: primary is a hierarchy rank, not a paint. |
 | `start` | Logical inline start — left in LTR, right in RTL. Preferred over `left`. |
 | `success` | Confirmation or a completed state. Canonical — never `positive` or `green`. |
 | `vertical` | Flows along the block axis. |
@@ -776,16 +835,21 @@ One spelling, one meaning. A new value is added here in the same change that int
 | `orientation` | axis | vertical | Accordion |
 | `placement` | axis | top · top-start · top-end · bottom · bottom-start · bottom-end · left · right | Tooltip |
 | `readOnly` | boolean | boolean | RadioGroup, Switch, TextField |
+| `removable` | boolean | boolean | Tag |
+| `removeLabel` | local | string | Tag |
+| `removeRequest` | local | CustomEvent<void> | Tag |
 | `required` | boolean | boolean | Checkbox, RadioGroup, Slider, Switch, TextField |
 | `shape` | axis | circle · square | Avatar |
 | `size` | axis | s · m · l | Avatar, Button, Dialog, TextField |
 | `touched` | boolean | boolean | Field |
+| `treatment` | axis | solid · soft | Tag |
 | `value` | local | Slider: number<br>AccordionItem, Checkbox, RadioGroup, RadioItem, Switch, TabItem, TabPanel, Tabs, TextField: string<br>Accordion: string[] | Accordion, AccordionItem, Checkbox, RadioGroup, RadioItem, Slider, Switch, TabItem, TabPanel, Tabs, TextField |
-| `variant` | axis | neutral · brand · danger | Button |
+| `variant` | axis | Button: neutral · brand · danger<br>Tag: neutral · brand · success · warning · danger | Button, Tag |
 
 ### 4. Drift report
 
 - `checked` (Checkbox, Switch) — `checked` is an enumeration on Checkbox and takes no value set on Switch. The index attributes each set to the components that declare it; nothing here resolves which is right. · **unreviewed**
+- `variant` (Button, Tag) — `variant` is exposed with 2 different value sets across components. · **unreviewed**
 
 
 ### Accordion
@@ -903,6 +967,16 @@ One spelling, one meaning. A new value is added here in the same change that int
 | --- | --- | --- | --- | --- |
 | disabled | input | boolean | disabled | ? |
 | value | model | string | value | juro-value-change |
+
+### Tag
+
+| Name | Role | Type | Attribute | Event |
+| --- | --- | --- | --- | --- |
+| removable | input | boolean | removable | ? |
+| variant | axis | 'neutral' \| 'brand' \| 'success' \| 'warning' \| 'danger' | variant | ? |
+| treatment | axis | 'solid' \| 'soft' | treatment | ? |
+| removeRequest | request | CustomEvent<void> | ? | juro-remove-request |
+| removeLabel | requestLabel | string | remove-label | ? |
 
 ### TextField
 

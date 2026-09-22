@@ -65,6 +65,6 @@ function onRootClick(event: MouseEvent) {
     data-juro-part="root"
     @click="onRootClick"
   >
-    <div data-juro-part="thumb" />
+    <span data-juro-part="thumb" />
   </button>
 </template>

@@ -37,6 +37,77 @@ export function partsOf(node, out = [], key = 'root') {
 }
 
 /**
+ * A state's TypeScript type and its effective initial value.
+ *
+ * The shape is framework-agnostic; only what a backend does with the answer differs. Keep this in
+ * one place so widening the schema's `default` cannot leave four readers silently substituting
+ * their historical fallbacks.
+ */
+export function stateTypeAndDefault(def) {
+  if (def.values) {
+    return { type: def.values.map((v) => `'${v}'`).join(' | '), default: def.default };
+  }
+  if (def.valueType === 'string') {
+    return { type: 'string', default: def.default ?? '' };
+  }
+  if (def.valueType === 'number') {
+    return { type: 'number', default: def.default ?? def.min ?? 0 };
+  }
+  return { type: 'boolean', default: def.default ?? false };
+}
+
+/** Every part declaring `activates.requests`, depth first. */
+export function requestingParts(contract) {
+  return partsOf(contract.anatomy?.root)
+    .filter(({ node }) => node.activates?.requests)
+    .map(({ key, node }) => ({ key, action: node.activates.requests }));
+}
+
+/**
+ * Whether a part is GUARANTEED to render text of its own that can provide its accessible name.
+ *
+ * `required` is the load-bearing half, and leaving it out was a real defect: the first version
+ * asked "can this hold text?" when the question a name depends on is "will it?". An optional text
+ * slot dropped the `…Label` prop from all four backends, and a consumer who then left the slot
+ * empty got a focusable button with no accessible name and no fallback anywhere to catch it.
+ *
+ * A part that only MIGHT be named by its content is treated as unnamed, because the cost of the
+ * two mistakes is not symmetric: a redundant label prop is noise a consumer can see, and a missing
+ * one is a control screen-reader users cannot identify.
+ */
+export function partHasOwnText(contract, key) {
+  const children = contract.composition?.children;
+  if (children?.part === key && children.required) return true;
+  return Object.entries(contract.composition?.slots ?? {}).some(
+    ([slot, def]) =>
+      (def.part ? def.part === key : camel(slot) === key) &&
+      (def.accepts ?? []).includes('text') &&
+      def.required === true,
+  );
+}
+
+/**
+ * Refuse an API surface that would emit the same public identifier twice.
+ *
+ * Contracts name facts; backends derive identifiers from them. Collisions therefore belong at
+ * this boundary rather than in one component's hand-written checks.
+ */
+export function uniqueSurface(entries, backend) {
+  const seen = new Map();
+  for (const entry of entries) {
+    const previous = seen.get(entry.name);
+    if (previous) {
+      throw new Error(
+        `${backend} surface derives "${entry.name}" from both ${previous.origin}:${previous.from} ` +
+          `and ${entry.origin}:${entry.from}. Rename one contract fact.`,
+      );
+    }
+    seen.set(entry.name, entry);
+  }
+  return entries;
+}
+
+/**
  * Which component names a collection admits as members.
  *
  * `collection.items` is a string when there is one kind and a list when there are several. Every
@@ -212,4 +283,35 @@ export function unsupportedResourceObservation(name, contract, backend) {
     );
   }
   return { imageSlots, derivedStates, message };
+}
+
+/**
+ * Numeric-state defaults that the state itself could never hold.
+ *
+ * Here rather than inline in `verify-contract.mjs` for one reason: JSON Schema cannot
+ * compare one field to another, so `min: 0, max: 100, default: 200` is legal there and always
+ * will be. That makes this a GATE'S rule rather than the schema's, and a rule nothing can express
+ * declaratively is one worth being able to test directly.
+ *
+ * Returns a list of sentences rather than throwing, so both the gate and its tests read the same
+ * answer.
+ */
+export function numericDefaultProblems(contract) {
+  const problems = [];
+  for (const [state, def] of Object.entries(contract.states ?? {})) {
+    if (def.valueType !== 'number' || typeof def.default !== 'number') continue;
+    const say = (why) => problems.push(`state "${state}" default ${def.default} ${why}.`);
+    if (def.min !== undefined && def.default < def.min) say(`is below its min of ${def.min}`);
+    if (def.max !== undefined && def.default > def.max) say(`is above its max of ${def.max}`);
+    if (def.step !== undefined) {
+      // Counted in steps from `min` (0 when unstated), which is the origin the control snaps to.
+      const origin = def.min ?? 0;
+      const steps = (def.default - origin) / def.step;
+      // Compared on the step COUNT, so a decimal step does not fail on binary rounding.
+      if (Math.abs(steps - Math.round(steps)) > 1e-9) {
+        say(`is not on a step of ${def.step} from ${origin}`);
+      }
+    }
+  }
+  return problems;
 }

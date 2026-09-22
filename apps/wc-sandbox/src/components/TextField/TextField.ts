@@ -135,7 +135,7 @@ export class TextField extends HTMLElement {
    * boundary by default would leak every internal click to the page.
    */
   #emit(type: string, detail: unknown): void {
-    this.dispatchEvent(new CustomEvent('ds-' + type, { detail, bubbles: true, composed: true }));
+    this.dispatchEvent(new CustomEvent('juro-' + type, { detail, bubbles: true, composed: true }));
   }
 
   #updating = false;

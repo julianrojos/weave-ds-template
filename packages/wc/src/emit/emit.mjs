@@ -46,6 +46,7 @@ import {
   referencedByASibling,
   visibilityCondition,
 } from '@juro/emit-web';
+import { formatIfPossible, writeEmittedFiles } from '@juro/emit-web/write';
 import { emitStructureShadow, emitThemeShadow } from './css-shadow.mjs';
 import { camel, kebab, pascal, slotsFrom, surfaceFrom, tagFor } from './surface.mjs';
 
@@ -69,16 +70,16 @@ const attrLit = (s) => String(s).replace(/"/g, '&quot;');
 // clone once in the constructor, then mutate attributes in an `#update()`. There is no diffing and
 // nothing recomputes structure, which is fine precisely because the contract's anatomy is STATIC —
 // every part exists always, and `visibleWhen` hides rather than removes.
-function renderPart(key, node, ctx, depth) {
+function renderPart(key, node, ctx, depth, within = ctx.rootElement) {
   const { slots, contract } = ctx;
   const pad = '  '.repeat(depth + 2);
   const slot = slots.find((x) => (x.part ? x.part === key : x.name === key));
   const takesChildrenHere = ctx.childrenPart === key;
   const attrs = [`part="${node.part}"`];
 
-  const nodeEl = defaultElement(node.activates?.toggles ? 'activatable' : 'container', WEB);
+  const nodeEl = defaultElement(node.activates ? 'activatable' : 'container', WEB, within);
   if (node.role && implicitRole(nodeEl, WEB) !== node.role) attrs.push(`role="${node.role}"`);
-  if (node.activates?.toggles && node.role === 'button') attrs.push(`type="button"`);
+  if (node.activates && node.role === 'button') attrs.push(`type="button"`);
 
   const kids = Object.entries(node.parts ?? {});
   const out = [];
@@ -90,7 +91,7 @@ function renderPart(key, node, ctx, depth) {
   out.push(open);
   if (slot) out.push(`${pad}  <slot name="${slot.name}"></slot>`);
   if (takesChildrenHere) out.push(`${pad}  <slot></slot>`);
-  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1));
+  for (const [k, child] of kids) out.push(...renderPart(k, child, ctx, depth + 1, nodeEl));
   out.push(`${pad}</${nodeEl}>`);
   void contract;
   return out;
@@ -124,11 +125,21 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   const models = props.filter((p) => p.role === 'model');
   const stateModels = models.filter((p) => p.from !== 'selection');
   const inputs = props.filter((p) => p.role === 'input');
+  const requests = props.filter((p) => p.role === 'request');
+  const requestLabels = props.filter((p) => p.role === 'requestLabel');
   const axes = props.filter((p) => p.role === 'axis');
   const identity = props.find((p) => p.role === 'identity');
   const namedSlots = slots.filter((s) => s.name !== 'default');
   const takesChildren = slots.some((s) => s.name === 'default');
   const childrenPart = contract.composition?.children?.part;
+
+  if (requests.length) {
+    assume(
+      'a request listener must be required',
+      'dispatch a composed custom event whose listener remains optional',
+      'The Custom Elements API cannot require a consumer to register an event listener. This is reported as non-conforming under ADR 0005 and ADR 0007.',
+    );
+  }
 
   const collection = contract.collection;
   const selShared = collection?.selection?.control === 'shared';
@@ -158,6 +169,14 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   const activator = allParts.find((p) => p.node.activates?.toggles);
   const rootToggles = root.activates?.toggles;
   const hasActivation = Boolean(activator || rootToggles);
+  const requestAvailability = (request) => {
+    const part = allParts.find((entry) => entry.key === request.from);
+    const label = requestLabels.find((entry) => entry.from === request.from);
+    const conditions = [];
+    if (part.node.visibleWhen) conditions.push(stateRead(part.node.visibleWhen, member));
+    if (label) conditions.push(`Boolean(this.${label.name}.trim())`);
+    return conditions.join(' && ');
+  };
 
   const range = contract.range ?? null;
   let rangeState = null;
@@ -259,6 +278,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   }
 
   const ctx = {
+    rootElement: el,
     slots: namedSlots,
     contract,
     childrenPart,
@@ -288,6 +308,8 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
 
   // --- the file --------------------------------------------------------------------------
   const s = [];
+  const ROOT_FIELD_DECL = '@@root-field-decl@@';
+  const ROOT_FIELD_ASSIGN = '@@root-field-assign@@';
   s.push(`// GENERATED from ${name}.contract.json + ${name}.wc.json. Do not edit by hand.`);
   s.push(`// Regenerate: node packages/wc/src/emit/emit.mjs ${name} --out <dir>`);
   s.push(`//`);
@@ -388,9 +410,13 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   }
 
   // --- the class -------------------------------------------------------------------------
-  const observed = [...inputs, ...axes, ...models, ...(identity ? [identity] : [])].map(
-    (p) => p.attribute,
-  );
+  const observed = [
+    ...inputs,
+    ...requestLabels,
+    ...axes,
+    ...models,
+    ...(identity ? [identity] : []),
+  ].map((p) => p.attribute);
   if (acceptsLabel) observed.push('aria-label');
   s.push(`export class ${className} extends HTMLElement {`);
   s.push(`  static readonly tagName = '${tag}';`);
@@ -409,7 +435,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     s.push(`  #customValidity = '';`);
     s.push(`  #initialFormValue: ${formModel.type} | undefined;`);
   }
-  s.push(`  readonly #root: HTMLElement;`);
+  s.push(ROOT_FIELD_DECL);
   if (range) s.push(`  readonly #track: HTMLElement;`);
   if (needsIds) s.push(`  readonly #baseId = '${prefix}-${kebab(name)}-' + nextId++;`);
   if (member) s.push(`  #collection: ${member.of} | null = null;`);
@@ -443,7 +469,7 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   s.push(`    const shadow = this.attachShadow({ mode: 'open', delegatesFocus: ${delegates} });`);
   s.push(`    shadow.adoptedStyleSheets = [SHEET];`);
   s.push(`    shadow.append(TEMPLATE.content.cloneNode(true));`);
-  s.push(`    this.#root = shadow.querySelector('[part="${root.part}"]')!;`);
+  s.push(ROOT_FIELD_ASSIGN);
   if (range) s.push(`    this.#track = shadow.querySelector('[part="${range.track}"]')!;`);
   s.push(``);
   if (dismissCauses.length) {
@@ -501,6 +527,20 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   if (rootToggles || activator) {
     const target = activator && activator.key !== 'root' ? `[part="${activator.node.part}"]` : null;
     listeners.push([target, 'click', 'this.#queueActivation(event as MouseEvent)']);
+  }
+  for (const request of requests) {
+    const part = allParts.find((p) => p.key === request.from);
+    const target = request.from === 'root' ? null : `[part="${part.node.part}"]`;
+    const available = requestAvailability(request);
+    const dispatch = `this.dispatchEvent(new CustomEvent('${prefix}-${request.event}', { bubbles: true, composed: true }))`;
+    s.push(
+      `    // NON-CONFORMING: Web Components cannot require the listener or a non-empty label.`,
+    );
+    listeners.push([
+      target,
+      'click',
+      available ? `{ if (!(${available})) return; ${dispatch}; }` : dispatch,
+    ]);
   }
   if (range) {
     listeners.push([null, 'keydown', 'this.#range.onKeyDown(event as KeyboardEvent)']);
@@ -653,10 +693,23 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   s.push(``);
 
   // --- the accessors, one per surface entry
-  for (const p of [...inputs, ...axes, ...models, ...(identity ? [identity] : [])]) {
+  for (const p of [
+    ...inputs,
+    ...requestLabels,
+    ...axes,
+    ...models,
+    ...(identity ? [identity] : []),
+  ]) {
     const d = (p.description ?? '').replace(/\s+/g, ' ');
     s.push(`  /** ${d} */`);
-    if (p.kind === 'boolean') {
+    if (p.kind === 'boolean-default-true') {
+      s.push(`  get ${p.name}(): boolean {`);
+      s.push(`    return this.getAttribute('${p.attribute}') !== 'false';`);
+      s.push(`  }`);
+      s.push(`  set ${p.name}(value: boolean) {`);
+      s.push(`    this.setAttribute('${p.attribute}', String(Boolean(value)));`);
+      s.push(`  }`);
+    } else if (p.kind === 'boolean') {
       s.push(`  get ${p.name}(): boolean {`);
       s.push(`    return this.hasAttribute('${p.attribute}');`);
       s.push(`  }`);
@@ -900,8 +953,21 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
   s.push(`    }`);
   s.push(`  }`);
   s.push(``);
+  const ROOT_DECL = '@@root-decl@@';
   s.push(`  #write(): void {`);
-  s.push(`    const root = this.#root;`);
+  s.push(ROOT_DECL);
+  for (const label of requestLabels) {
+    const part = allParts.find((p) => p.key === label.from);
+    const target = label.from === 'root' ? 'root' : `this.#part('${part.node.part}')`;
+    const value = `${label.name}Value`;
+    s.push(`    const ${value} = this.getAttribute('${label.attribute}');`);
+    s.push(
+      `    if (!${value}?.trim()) ${target}?.removeAttribute('${relationAttribute('namedLiterally', WEB)}');`,
+    );
+    s.push(
+      `    else ${target}?.setAttribute('${relationAttribute('namedLiterally', WEB)}', ${value});`,
+    );
+  }
   if (acceptsLabel) {
     s.push(
       `    // The semantic control is inside the shadow root; naming only the host misses it.`,
@@ -1088,17 +1154,21 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
           `    ${target}?.setAttribute('${relationAttribute('describedBy', WEB)}', [${pieces.join(', ')}].filter(Boolean).join(' '));`,
         );
       }
-      if (node.visibleWhen && p.key !== 'root') {
+      const request = requests.find((entry) => entry.from === p.key);
+      const available = request && requestAvailability(request);
+      if ((node.visibleWhen || available) && p.key !== 'root') {
         s.push(
-          `    ${target}?.toggleAttribute('hidden', !(${stateRead(node.visibleWhen, member)}));`,
+          `    ${target}?.toggleAttribute('hidden', !(${available || stateRead(node.visibleWhen, member)}));`,
         );
       }
     }
   } else {
     for (const p of allParts) {
-      if (p.key !== 'root' && p.node.visibleWhen) {
+      const request = requests.find((entry) => entry.from === p.key);
+      const available = request && requestAvailability(request);
+      if (p.key !== 'root' && (p.node.visibleWhen || available)) {
         s.push(
-          `    this.#part('${p.node.part}')?.toggleAttribute('hidden', !(${stateRead(p.node.visibleWhen, member)}));`,
+          `    this.#part('${p.node.part}')?.toggleAttribute('hidden', !(${available || stateRead(p.node.visibleWhen, member)}));`,
         );
       }
     }
@@ -1107,8 +1177,12 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     if (!contract.semantics?.focusable) s.push(`    root.setAttribute('tabindex', '-1');`);
     s.push(`    this.#syncForm();`);
   }
-  if (root.visibleWhen && !platformModal) {
-    s.push(`    this.toggleAttribute('hidden', !(${stateRead(root.visibleWhen, member)}));`);
+  const rootRequest = requests.find((entry) => entry.from === 'root');
+  const rootAvailable = rootRequest && requestAvailability(rootRequest);
+  if ((root.visibleWhen || rootAvailable) && !platformModal) {
+    s.push(
+      `    this.toggleAttribute('hidden', !(${rootAvailable || stateRead(root.visibleWhen, member)}));`,
+    );
   }
   if (platformModal) {
     const vis = visibilityOf(el, WEB);
@@ -1124,6 +1198,11 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     s.push(`    if (this.${v} && !dlg.${vis.reflects}) dlg.${vis.show}();`);
     s.push(`    else if (!this.${v} && dlg.${vis.reflects}) dlg.${vis.hide}();`);
   }
+  const rootDeclaration = s.indexOf(ROOT_DECL);
+  const writeUsesRoot = s
+    .slice(rootDeclaration + 1)
+    .some((line) => /\broot(?:\.|\?\.|\s+as\b)/.test(line));
+  s.splice(rootDeclaration, 1, ...(writeUsesRoot ? [`    const root = this.#root;`] : []));
   s.push(`  }`);
   s.push(``);
   if (form)
@@ -1160,8 +1239,31 @@ export function emitComponent(name, contract, binding, prefix, { declareTagTypes
     s.push(``);
   }
 
+  const keepsRootReference = s.some((line) => line.includes('this.#root'));
+  s.splice(
+    s.indexOf(ROOT_FIELD_DECL),
+    1,
+    ...(keepsRootReference ? [`  readonly #root: HTMLElement;`] : []),
+  );
+  s.splice(
+    s.indexOf(ROOT_FIELD_ASSIGN),
+    1,
+    ...(keepsRootReference
+      ? [`    this.#root = shadow.querySelector('[part="${root.part}"]')!;`]
+      : []),
+  );
+
   void attrLit;
   return s.join('\n');
+}
+
+/** Files wholly owned by this emitter. Consumer-authored theme CSS is deliberately absent. */
+export function emitOwnedFiles(name, contract, binding, prefix) {
+  return {
+    [`${name}.ts`]: emitComponent(name, contract, binding, prefix),
+    [`${name}.structure.css`]: emitStructureShadow(name, contract, prefix, assume),
+    'index.ts': `export { ${name} } from './${name}';\n`,
+  };
 }
 
 /** How a state name reads inside the class body. */
@@ -1191,25 +1293,27 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   });
   const prefix = readJson(join(REPO_ROOT, 'ds.config.json')).dataPrefix;
 
-  const source = emitComponent(name, contract, binding, prefix);
   mkdirSync(outDir, { recursive: true });
-  writeFileSync(join(outDir, `${name}.ts`), source, 'utf8');
-  writeFileSync(
-    join(outDir, `${name}.structure.css`),
-    emitStructureShadow(name, contract, prefix, assume),
-    'utf8',
+  // Formatted on the way out, so the command printed in every generated header produces a
+  // file that `format:check` and `sandboxes:check` accept. See @juro/emit-web/write.
+  const unformatted = await writeEmittedFiles(
+    outDir,
+    emitOwnedFiles(name, contract, binding, prefix),
   );
 
   const themePath = join(outDir, `${name}.theme.css`);
   if (existsSync(themePath)) {
     console.log(`  kept   ${name}.theme.css (yours — never regenerated)`);
   } else {
-    writeFileSync(themePath, emitThemeShadow(name, contract, WEB), 'utf8');
+    const theme = await formatIfPossible(emitThemeShadow(name, contract, WEB), themePath);
+    if (!theme.formatted) unformatted.push({ file: `${name}.theme.css`, reason: theme.reason });
+    writeFileSync(themePath, theme.text, 'utf8');
   }
 
-  writeFileSync(join(outDir, 'index.ts'), `export { ${name} } from './${name}';\n`, 'utf8');
-
   const surface = surfaceFrom(contract);
+  for (const { file, reason } of unformatted) {
+    console.warn(`  unformatted ${file} — ${reason}`);
+  }
   console.log(`\nemitted ${name} -> ${outDir}`);
   console.log(`  tag:    <${tagFor(name, prefix)}>`);
   console.log(`  attrs:  ${surface.map((p) => p.attribute).join(', ') || '(none)'}`);

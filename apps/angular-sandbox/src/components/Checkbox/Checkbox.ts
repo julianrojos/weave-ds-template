@@ -30,13 +30,13 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
     '(click)': 'activate($event)',
   },
   template: `
-    <div data-juro-part="box">
-      <div [attr.hidden]="checked() === 'checked' ? null : ''" data-juro-part="tick"></div>
-      <div [attr.hidden]="checked() === 'mixed' ? null : ''" data-juro-part="dash"></div>
-    </div>
-    <div data-juro-part="label">
+    <span data-juro-part="box">
+      <span [attr.hidden]="checked() === 'checked' ? null : ''" data-juro-part="tick"></span>
+      <span [attr.hidden]="checked() === 'mixed' ? null : ''" data-juro-part="dash"></span>
+    </span>
+    <span data-juro-part="label">
       <ng-content select="[slot=label]" />
-    </div>
+    </span>
     <ng-content />
   `,
 })

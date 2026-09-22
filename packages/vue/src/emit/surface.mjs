@@ -15,22 +15,24 @@
 //
 // Pure: no fs, no profile, no module state.
 
+import {
+  camel,
+  kebab,
+  partHasOwnText,
+  pascal,
+  requestingParts,
+  stateTypeAndDefault,
+  uniqueSurface,
+} from '@juro/emit-web';
+
 // Exported because emit.mjs needs the same two, and one home beats two copies that can drift.
-export const camel = (s) => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-export const pascal = (s) => {
-  const c = camel(s);
-  return c.charAt(0).toUpperCase() + c.slice(1);
-};
+export { camel, pascal };
 
 // A state's TypeScript type and its uncontrolled default, from the contract and nothing else.
 // Identical to React's reading of the same three fields — the divergence is in what is DONE with
 // the answer, not in the answer. Kept as its own function so that stays visible.
 export function typeOf(def) {
-  if (def.values)
-    return { type: def.values.map((v) => `'${v}'`).join(' | '), default: def.default };
-  if (def.valueType === 'string') return { type: 'string', default: '' };
-  if (def.valueType === 'number') return { type: 'number', default: def.min ?? 0 };
-  return { type: 'boolean', default: false };
+  return stateTypeAndDefault(def);
 }
 
 /**
@@ -68,6 +70,7 @@ export function surfaceFrom(contract) {
         origin: 'state',
         role: 'input',
         default: dflt,
+        declaredDefault: def.default !== undefined,
         description: def.description,
       });
     }
@@ -123,7 +126,32 @@ export function surfaceFrom(contract) {
     });
   }
 
-  return props;
+  for (const { key, action } of requestingParts(contract)) {
+    props.push({
+      name: `${camel(action)}Request`,
+      event: `${kebab(action)}-request`,
+      type: '[]',
+      from: key,
+      origin: 'request',
+      role: 'request',
+      action,
+      description: `Asks the consumer to ${action} this ${contract.component}.`,
+    });
+    if (!partHasOwnText(contract, key)) {
+      props.push({
+        name: `${camel(action)}Label`,
+        type: 'string',
+        from: key,
+        origin: 'request',
+        role: 'requestLabel',
+        action,
+        required: true,
+        description: `The accessible name of the control that asks to ${action} this ${contract.component}.`,
+      });
+    }
+  }
+
+  return uniqueSurface(props, 'Vue');
 }
 
 /**

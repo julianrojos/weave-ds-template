@@ -1,3 +1,5 @@
+import { partHasOwnText, requestingParts } from '../packages/emit-web/contract.mjs';
+
 /** Known structural gaps only. An empty list is not an accessibility certification. */
 export function relationshipConformance(contract, backend) {
   const gaps = [];
@@ -42,6 +44,30 @@ export function relationshipConformance(contract, backend) {
     status: gaps.length ? 'non-conforming' : 'not-evaluated',
     scope: 'anatomy relationships',
     gaps,
+  };
+}
+
+/** Whether the backend can make a request listener mandatory, as ADR 0007 requires. */
+export function requestConformance(contract, backend) {
+  const requests = requestingParts(contract);
+  if (!requests.length) return { status: 'not-applicable' };
+  if (backend === 'react')
+    return {
+      status: 'implemented',
+      scope: 'required request callback',
+    };
+  const requiresExternalLabel = requests.some(({ key }) => !partHasOwnText(contract, key));
+  const labelGap =
+    backend === 'wc' && requiresExternalLabel
+      ? ' It also cannot statically require the non-empty label attribute; the generated fallback hides the request control and suppresses its event until one is present.'
+      : '';
+  return {
+    status: 'non-conforming',
+    scope: 'required request listener',
+    detail:
+      `${backend} emits ${requests.map(({ action }) => action).join(', ')} as an event, ` +
+      'but its public API cannot require a consumer to listen for it.' +
+      labelGap,
   };
 }
 

@@ -41,10 +41,10 @@ import { TABS, type TabsContext } from '../Tabs/Tabs';
     '(click)': 'activate($event)',
   },
   template: `
-    <div data-juro-part="label">
+    <span data-juro-part="label">
       <ng-content select="[slot=label]" />
-    </div>
-    <div [attr.hidden]="selected() ? null : ''" data-juro-part="indicator"></div>
+    </span>
+    <span [attr.hidden]="selected() ? null : ''" data-juro-part="indicator"></span>
     <ng-content />
   `,
 })

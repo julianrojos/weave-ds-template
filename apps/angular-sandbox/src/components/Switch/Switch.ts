@@ -28,7 +28,7 @@ import { Component, ViewEncapsulation, input, model } from '@angular/core';
     'data-juro-part': 'root',
     '(click)': 'activate($event)',
   },
-  template: ` <div data-juro-part="thumb"></div> `,
+  template: ` <span data-juro-part="thumb"></span> `,
 })
 export class Switch {
   /** The platform's own disabled state. Removed from the focus order and cannot be toggled. */

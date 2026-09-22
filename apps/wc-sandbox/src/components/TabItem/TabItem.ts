@@ -22,10 +22,10 @@ SHEET.replaceSync(structureCss + '\n' + themeCss);
 const TEMPLATE = document.createElement('template');
 TEMPLATE.innerHTML = `
     <button part="root" type="button" role="tab">
-      <div part="label">
+      <span part="label">
         <slot name="label"></slot>
-      </div>
-      <div part="indicator"></div>
+      </span>
+      <span part="indicator"></span>
       <slot></slot>
     </button>
 `;

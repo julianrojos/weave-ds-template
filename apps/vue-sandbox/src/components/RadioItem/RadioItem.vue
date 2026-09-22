@@ -43,6 +43,7 @@ const collection = ctx;
 
 const selected = computed(() => collection.selection.value === props.value);
 const isDisabled = computed(() => Boolean(props.disabled) || collection.disabled.value);
+const baseId = computed(() => `${collection.baseId}-RadioItem-${props.value}`);
 
 // The collection moves focus between its members, so each one announces its element.
 // Vue's template ref plus a watcher replaces React's composed callback ref — and
@@ -94,6 +95,7 @@ function onRootClick(event: MouseEvent) {
     v-bind="fallthrough"
     ref="rootEl"
     role="radio"
+    :id="baseId"
     :aria-disabled="disabled || undefined"
     :aria-checked="selected"
     :tabindex="collection.isTabStop(value) ? 0 : -1"

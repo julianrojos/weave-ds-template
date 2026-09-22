@@ -25,7 +25,7 @@ TEMPLATE.innerHTML = `
       <div part="header">
         <button part="trigger" type="button">
           <slot name="heading"></slot>
-          <div part="indicator"></div>
+          <span part="indicator"></span>
         </button>
       </div>
       <div part="panel" role="region">

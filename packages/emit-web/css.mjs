@@ -32,7 +32,7 @@ import { kebab, partsOf } from './contract.mjs';
  * `data-<prefix>-state-<name>` as a bare attribute, so an unprefixed `[data-state~=...]` matches
  * nothing at all — a dead rule that styles nothing and reports no error.
  */
-export function stateSelector(base, spec, prefix, profile) {
+export function stateSelector(base, spec, prefix, profile, ownsPseudo = false) {
   const [state, value] = spec.includes('=') ? spec.split('=') : [spec, null];
   const isChild = base.includes('] [');
   const rootSel = isChild ? base.split('] [')[0] + ']' : base;
@@ -42,9 +42,26 @@ export function stateSelector(base, spec, prefix, profile) {
     return isChild ? `${rootSel}${on} ${childSel}` : `${base}${on}`;
   }
   let on;
-  if (pseudoClassFor(state, profile)) on = pseudoClassFor(state, profile);
+  const pseudo = pseudoClassFor(state, profile);
+  if (pseudo) on = pseudo;
   else if (ariaAttributeFor(state, profile)) on = `[${ariaAttributeFor(state, profile)}='true']`;
   else on = `[data-${prefix}-state-${state}]`;
+
+  // WHERE THE MARKER GOES, and the two cases are genuinely different.
+  //
+  // A pseudo-class describes the element the user is actually touching. When the PART is the
+  // interactive one — it declares a role or `activates` — its own `:hover` and `:focus-visible`
+  // are what matter, and hanging them on the root means a ring that never draws, because the root
+  // is a div or a span that nothing can focus. When the ROOT is the interactive one and the part
+  // is a passive mark, the opposite holds: the thumb of a slider reacts to the slider's focus.
+  //
+  // Everything else stays on the root unconditionally: an `aria-*` or `data-*-state` marker is
+  // WRITTEN there by the emitter, so a selector looking for it on the child matches nothing.
+  //
+  // Derived, not chosen: this rule reproduces every hand-filled theme in the repository —
+  // AccordionItem's trigger carries its own pseudo, while Slider's thumb, RadioItem's control,
+  // Checkbox's box and Field's label take the root's.
+  if (isChild && pseudo && ownsPseudo) return `${rootSel} ${childSel}${on}`;
   return isChild ? `${rootSel}${on} ${childSel}` : `${base}${on}`;
 }
 
@@ -169,7 +186,8 @@ export function emitTheme(name, contract, prefix, profile) {
     for (const [state, paints] of Object.entries(p.node.states ?? {})) {
       const def = contract.states?.[state];
       L.push(`/* state: ${state} — ${def?.visual ?? 'no visual recorded'} */`);
-      L.push(`${stateSelector(sel, state, prefix, profile)} {`);
+      const ownsPseudo = Boolean(p.node.role || p.node.activates);
+      L.push(`${stateSelector(sel, state, prefix, profile, ownsPseudo)} {`);
       for (const c of Object.keys(paints)) L.push(`  /* ${c}: ; */`);
       L.push(`}`);
       L.push(``);

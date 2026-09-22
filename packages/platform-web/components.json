@@ -12,6 +12,7 @@
     "RadioItem": "div",
     "Slider": "div",
     "Switch": "button",
+    "Tag": "span",
     "TabItem": "button",
     "TabPanel": "div",
     "Tabs": "div",

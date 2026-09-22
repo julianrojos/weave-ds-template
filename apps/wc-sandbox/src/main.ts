@@ -43,7 +43,7 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 const volume = $<Slider>('volume');
 const volumeReadout = $('volume-readout');
 const showVolume = () => (volumeReadout.textContent = `value: ${volume.value}`);
-volume.addEventListener('ds-value-change', showVolume);
+volume.addEventListener('juro-value-change', showVolume);
 $('volume-down').addEventListener('click', () => {
   volume.value = Math.max(0, volume.value - 10);
   showVolume();
@@ -56,7 +56,7 @@ $('volume-up').addEventListener('click', () => {
 // --- RadioGroup --------------------------------------------------------------------------
 const plan = $<RadioGroup>('plan');
 const planReadout = $('plan-readout');
-plan.addEventListener('ds-value-change', () => {
+plan.addEventListener('juro-value-change', () => {
   planReadout.textContent = `chosen: ${plan.value}`;
 });
 
@@ -88,6 +88,6 @@ $('toggle-tip').addEventListener('click', () => {
 // --- Field -------------------------------------------------------------------------------
 const email = $<TextField>('email');
 const field = $<Field>('field');
-email.addEventListener('ds-value-change', () => {
+email.addEventListener('juro-value-change', () => {
   field.invalid = email.value.length > 0 && !email.value.includes('@');
 });

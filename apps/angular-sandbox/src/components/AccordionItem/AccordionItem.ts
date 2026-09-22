@@ -38,7 +38,7 @@ import { ACCORDION, type AccordionContext } from '../Accordion/Accordion';
         data-juro-part="trigger"
       >
         <ng-content select="[slot=heading]" />
-        <div data-juro-part="indicator"></div>
+        <span data-juro-part="indicator"></span>
       </button>
     </div>
     <div

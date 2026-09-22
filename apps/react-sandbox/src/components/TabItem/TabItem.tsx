@@ -83,8 +83,8 @@ export const TabItem = forwardRef<HTMLButtonElement, TabItemProps>(function TabI
       data-juro-part="root"
       className={className}
     >
-      <div data-juro-part="label">{label}</div>
-      <div hidden={!selected} data-juro-part="indicator" />
+      <span data-juro-part="label">{label}</span>
+      <span hidden={!selected} data-juro-part="indicator" />
       {children}
     </button>
   );

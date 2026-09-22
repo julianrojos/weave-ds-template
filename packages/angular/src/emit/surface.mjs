@@ -17,11 +17,16 @@
 //
 // Pure: no fs, no profile, no module state.
 
-export const camel = (s) => s.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-export const pascal = (s) => {
-  const c = camel(s);
-  return c.charAt(0).toUpperCase() + c.slice(1);
-};
+import {
+  camel,
+  partHasOwnText,
+  pascal,
+  requestingParts,
+  stateTypeAndDefault,
+  uniqueSurface,
+} from '@juro/emit-web';
+
+export { camel, pascal };
 
 /**
  * The component's selector, and the single biggest structural difference between this backend and
@@ -41,11 +46,7 @@ export function selectorFor(element, component, prefix) {
 
 /** A state's TypeScript type and its default, from the contract and nothing else. */
 export function typeOf(def) {
-  if (def.values)
-    return { type: def.values.map((v) => `'${v}'`).join(' | '), default: def.default };
-  if (def.valueType === 'string') return { type: 'string', default: '' };
-  if (def.valueType === 'number') return { type: 'number', default: def.min ?? 0 };
-  return { type: 'boolean', default: false };
+  return stateTypeAndDefault(def);
 }
 
 /**
@@ -128,7 +129,31 @@ export function surfaceFrom(contract) {
     });
   }
 
-  return props;
+  for (const { key, action } of requestingParts(contract)) {
+    props.push({
+      name: `${camel(action)}Request`,
+      type: 'void',
+      from: key,
+      origin: 'request',
+      role: 'request',
+      action,
+      description: `Asks the consumer to ${action} this ${contract.component}.`,
+    });
+    if (!partHasOwnText(contract, key)) {
+      props.push({
+        name: `${camel(action)}Label`,
+        type: 'string',
+        from: key,
+        origin: 'request',
+        role: 'requestLabel',
+        action,
+        required: true,
+        description: `The accessible name of the control that asks to ${action} this ${contract.component}.`,
+      });
+    }
+  }
+
+  return uniqueSurface(props, 'Angular');
 }
 
 /**

@@ -9,20 +9,26 @@
     "https://www.w3.org/TR/html-aria/"
   ],
   "defaults": {
-    "_doc": "The element a backend reaches for when the contract names none. `activatable` is what a part declaring `activates` becomes; `container` is everything else.",
+    "_doc": "The element a backend reaches for when the contract names none. `activatable` is what a part declaring `activates` becomes; `container` is everything else. `containerInPhrasing` replaces `container` when the ancestor is phrasing content — a `div` inside a `span` is invalid HTML, and the browser's parser silently restructures it rather than reporting anything.",
     "container": "div",
-    "activatable": "button"
+    "activatable": "button",
+    "containerInPhrasing": "span"
   },
   "elements": {
     "div": {
       "_note": "The neutral container. Deliberately featureless: bears no role, is not focusable, takes no native state attribute. Listed rather than omitted so its emptiness is a statement rather than an oversight."
+    },
+    "span": {
+      "_note": "The neutral INLINE container, and the only difference from `div` that matters here: it flows with surrounding text instead of breaking it. Bears no role, is not focusable, takes no native state attribute. Added for Tag, which sits in a line of prose or beside its siblings rather than owning a block.",
+      "phrasing": true
     },
     "button": {
       "implicitRole": "button",
       "bearsRole": true,
       "focusable": true,
       "submitsByDefault": true,
-      "nativeAttributes": ["disabled"]
+      "nativeAttributes": ["disabled"],
+      "phrasing": true
     },
     "input": {
       "implicitRole": "textbox",
@@ -31,7 +37,8 @@
       "void": true,
       "editsOwnValue": true,
       "nativeAttributes": ["disabled"],
-      "_note": "`implicitRole` is `textbox` only for a type-less or text input. This profile has no `type` axis, matching the emitter it was extracted from."
+      "_note": "`implicitRole` is `textbox` only for a type-less or text input. This profile has no `type` axis, matching the emitter it was extracted from.",
+      "phrasing": true
     },
     "textarea": {
       "implicitRole": "textbox",
@@ -70,13 +77,15 @@
     },
     "a": {
       "focusable": true,
-      "_note": "Transcribed as unconditionally focusable. On the platform it is focusable only WITH an href. No binding renders an anchor, so the simplification has never been exercised."
+      "_note": "Transcribed as unconditionally focusable. On the platform it is focusable only WITH an href. No binding renders an anchor, so the simplification has never been exercised.",
+      "phrasing": true
     },
     "img": {
       "implicitRole": "img",
       "bearsRole": false,
       "void": true,
-      "_note": "Renders an image resource from `src`. `alt` is its accessible name, and an empty `alt` marks it decorative — which is what an image inside an already-named root needs, so the name is not announced twice. The element reports its outcome through `load` and `error` events, which is what a `derivedFrom` state observes."
+      "_note": "Renders an image resource from `src`. `alt` is its accessible name, and an empty `alt` marks it decorative — which is what an image inside an already-named root needs, so the name is not announced twice. The element reports its outcome through `load` and `error` events, which is what a `derivedFrom` state observes.",
+      "phrasing": true
     }
   },
   "states": {
@@ -178,9 +187,10 @@
     "mixed": "mixed"
   },
   "relations": {
-    "_doc": "A contract's word for a relationship between parts, and the ARIA attribute that carries it.",
+    "_doc": "A contract's word for a relationship between parts, and the ARIA attribute that carries it. `namedBy` points at another part that already shows the name; `namedLiterally` is the name itself, for a control with no visible text of its own — the two are alternatives and a part takes at most one.",
     "controls": "aria-controls",
     "namedBy": "aria-labelledby",
+    "namedLiterally": "aria-label",
     "describedBy": "aria-describedby"
   },
   "range": {
