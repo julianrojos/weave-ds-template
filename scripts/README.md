@@ -11,13 +11,14 @@ earns a place in `pnpm verify`.
 
 ## What is here
 
-| Script                                     | Command                                   | Kind      | What it is for                                                                                                    |
-| ------------------------------------------ | ----------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- |
-| [`init-ds.mjs`](./init-ds.mjs)             | `pnpm init-ds <name> [--dry]`             | codemod   | Brand the template **once**: package scope, token prefix and data-attribute prefix together                       |
-| [`verify-docs.mjs`](./verify-docs.mjs)     | `pnpm verify:docs`                        | **gate**  | Every link, path and `pnpm` command named in the docs resolves                                                    |
-| [`adr-index.mjs`](./adr-index.mjs)         | `pnpm adr-index` / `pnpm adr-index:check` | generator | The ADR index, derived from the records themselves                                                                |
-| [`verify-figma.mjs`](./verify-figma.mjs)   | `pnpm verify:figma`                       | **gate**  | `.figma/maps/*.json` validate against their schemas, and claim no code path they lack                             |
-| [`verify-parity.mjs`](./verify-parity.mjs) | `pnpm verify:parity`                      | **gate**  | Backends have not drifted: no shared core copied back into one, barrels agree, bindings agree on the root element |
+| Script                                       | Command                                        | Kind                 | What it is for                                                                                                    |
+| -------------------------------------------- | ---------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| [`init-ds.mjs`](./init-ds.mjs)               | `pnpm init-ds <name> [--dry]`                  | codemod              | Brand the template **once**: package scope, token prefix and data-attribute prefix together                       |
+| [`verify-docs.mjs`](./verify-docs.mjs)       | `pnpm verify:docs`                             | **gate**             | Every link, path and `pnpm` command named in the docs resolves                                                    |
+| [`adr-index.mjs`](./adr-index.mjs)           | `pnpm adr-index` / `pnpm adr-index:check`      | generator            | The ADR index, derived from the records themselves                                                                |
+| [`verify-figma.mjs`](./verify-figma.mjs)     | `pnpm verify:figma`                            | **gate**             | `.figma/maps/*.json` validate against their schemas, and claim no code path they lack                             |
+| [`verify-parity.mjs`](./verify-parity.mjs)   | `pnpm verify:parity`                           | **gate**             | Backends have not drifted: no shared core copied back into one, barrels agree, bindings agree on the root element |
+| [`sync-sandboxes.mjs`](./sync-sandboxes.mjs) | `pnpm sandboxes:sync` / `pnpm sandboxes:check` | generator + **gate** | Refresh emitter-owned sandbox files, or fail when committed output differs from the current emitters              |
 
 ## The rule these follow
 
@@ -65,3 +66,9 @@ file traversal as the codemod. It does not mutate files. CI runs it for each bra
 
 `pnpm browser:generate` invokes importable emitters for alternate-contract browser fixtures.
 These generated fixtures are ignored by Git and formatting, and are typechecked before use.
+
+`pnpm sandboxes:sync` refreshes the committed components used by the four ordinary sandboxes.
+`pnpm sandboxes:check` performs the same generation and repository-standard Prettier formatting in
+memory, then fails on byte drift. Both operate only on the component source, structural CSS and
+barrel owned by each emitter; consumer-authored `*.theme.css` files are deliberately outside their
+reach.

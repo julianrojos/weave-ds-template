@@ -57,6 +57,11 @@ jobs:
 
       - run: pnpm format:check
 
+      # A checked-in generated component can keep compiling after its emitter changes. This
+      # regenerates and formats every emitter-owned sandbox file in memory, then catches that
+      # invisible drift; consumer-owned theme files are deliberately excluded.
+      - run: pnpm sandboxes:check
+
       # Covers both packages AND both sandboxes. A sandbox matters because it is where GENERATED
       # components land: three real defects in emitted code were found by running tsc against the
       # React one by hand, and none would have failed here — the script reached only
